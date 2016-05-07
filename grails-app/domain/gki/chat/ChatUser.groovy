@@ -12,12 +12,16 @@ class ChatUser {
   String role
   String created = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
   boolean enabled = true
+  long chatroom
+  long heartbeatCount
   
   static constraints = {
     username blank: false, editable: true
     password size: 5..15, editable: false, nullable: true
     role inList: ["Admin", "User"]
+    chatroom editable: false
     created editable: false
+    heartbeatCount editable: false
     enabled editable: true
   }
 }

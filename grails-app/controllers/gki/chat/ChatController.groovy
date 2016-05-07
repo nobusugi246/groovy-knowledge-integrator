@@ -13,17 +13,32 @@ class ChatController {
   def index() { }
 
   @MessageMapping("/addUser")
-  @SendTo("/topic/result")
-  protected String addUser(String name) {
-    log.info("addUser: ${name}")
-    return chatService.addUser(name)
+  protected void addUser(ChatMessage message) {
+    log.info("addUser: ${message.username}")
+    chatService.addUser(message.username, message.sendto)
+
+    chatService.sendTodayLog(message)
+    chatService.sendUserList()
   }
+
+
+  @MessageMapping("/todayLog")
+  protected String sendTodayLog(ChatMessage message) {
+    log.info("todayLog: ${message}")
+    chatService.sendTodayLog(message)
+  }
+
   
   @MessageMapping("/message")
-  @SendTo("/topic/result")
   protected String receiveMessage(ChatMessage message) {
     log.info("message: ${message}")
-    return chatService.receiveMessage(message)
+    chatService.receiveMessage(message)
   }
   
+
+  @MessageMapping("/heartbeat")
+  protected String heartbeatCount(ChatMessage message) {
+    log.info("heartbeat: ${message}")
+    chatService.heartbeatCount(message)
+  }
 }

@@ -1,6 +1,9 @@
+# WebSocket Stomp Client
 stompClient = {}
+lastUser = {}
 
-# DateTimePickerの表示
+
+# display DateTimePicker inline
 $('#datetimepickerInline').datetimepicker({
     inline: true
     locale: 'ja'
@@ -9,14 +12,14 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
-# DateTimePicker changed
+# DateTimePicker changed eventhandler
 $('#datetimepickerInline').on 'dp.change', (event)->
     console.log 'DateTimePicker: ' + moment(event.date).format('YYYY-MM-DD')
 
 
 # update Date, Time
 setInterval ->
-        $('#currentTime').text moment().format('MM/DD HH:mm:ss')
+        $('#currentTime').text moment().format('MM/DD HH:mm')
     , 1000
 
 
@@ -25,50 +28,159 @@ $('#userName').on 'keyup', ->
     localStorage['userName'] = $('#userName').val()
 
 
+# subscribe UserName and ChatRoom
+subscribeAll = () ->
+    stompClient.subscribe "/topic/#{$('#userName').val()}", (message) ->
+        onReceiveByUser(message)
+
+    stompClient.subscribe "/topic/#{$('#chatRoomSelected').val()}", (message) ->
+        onReceiveChatRoom(message)
+
+
+# unsubscribe all subscriptions
+unsubscribeAll = () ->
+    _.each _.allKeys(stompClient.subscriptions), (it) ->
+        stompClient.unsubscribe it
+
+
+# update userName
+$('#userName').focusout ->
+    unsubscribeAll()
+    subscribeAll()
+
+
+# update ChatRoomSelected
+$('#chatRoomSelected').on 'change', (event) ->
+    unsubscribeAll()
+    subscribeAll()
+    $('#area00').html ''
+    lastUser = ''
+
+    message = {}
+    message.text = ''
+    message.status = ''
+    message.sendto = $('#chatRoomSelected').val()
+    message.username = $('#userName').val()
+
+    stompClient.send "/app/todayLog", {}, JSON.stringify(message)
+
+
 # send chat message
 $('#chatMessage').on 'keyup', (event) ->
-    if event.keyCode is 13 and $('#chatMessage').val() isnt ''
+    if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
         message = {}
-        message.text = $('#chatMessage').val()
-        message.status = ''
+        message.text = _.escape($.trim($('#chatMessage').val()))
+        message.status = 'fixed'
         message.sendto = $('#chatRoomSelected').val()
         message.username = $('#userName').val()
 
         stompClient.send "/app/message", {}, JSON.stringify(message)
         $('#chatMessage').val ''
-        
+
+
+# heartbeat user
+heartbeatUser = () ->
+    message = {}
+    message.text = ''
+    message.status = 'heartbeat'
+    message.sendto = $('#chatRoomSelected').val()
+    message.username = $('#userName').val()
+
+    stompClient.send "/app/heartbeat", {}, JSON.stringify(message)
+
+
+setInterval ->
+        heartbeatUser()
+    , 3000
+
     
 # WebSocket user message receive eventhandler
 onReceiveByUser = (message) ->
-    console.log "@#{}: " +  message.body
+    console.log "@#{$('#userName').val()}: " +  message.body
+    msg = JSON.parse(message.body)
 
+    if msg?.text
+        onReceiveChatRoom(message)
+    else
+        tableDef = """<table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User Name</th>
+              </tr>
+            </thead>
+            <tbody>"""
 
-# WebSocket result message receive eventhandler
-onReceiveResult = (message) ->
-    console.log 'Result: ' +  message.body
+        _.each msg, (it) ->
+            tableDef += """<tr>
+                  <td style="width: 4em;">#{it.id}</td>
+                  <td>#{it.username}</td>
+                </tr>"""
+
+        tableDef += """</tbody>
+          </table>"""
+
+        $('#connectedUsersTable').html tableDef
 
 
 # WebSocket chat message receive eventhandler
 onReceiveChatRoom = (message) ->
     console.log "Chat Message: " + message.body
+    msg = JSON.parse(message.body)
 
+    if lastUser is msg['username']
+        $('#area00').append """
+        <div class="row">
+        <div class="col-sm-11 col-sm-offset-1">
+            <!-- div class="row">
+                <i>#{msg.time}</i>
+            </div -->
+            <div class="row" id="message#{msg['id']}" data-toggle="tooltip"
+                 data-placement="left" title="#{msg['time']}">
+                #{msg['text']}
+            </div>
+        </div>
+        </div>
+        """
+    else
+        $('#area00').append """
+        <div class="row">
+        <div class="col-sm-1" align="center">
+            <svg width="40" height="40" id="identicon#{msg['id']}"></svg>
+        </div>
+        <div class="col-sm-11">
+            <div class="row">
+                <strong>#{msg['username']}</strong>&nbsp;<i>#{msg.time}</i>
+            </div>
+            <div class="row" id="message#{msg['id']}" data-toggle="tooltip"
+                 data-placement="left" title="#{msg['time']}">
+                #{msg['text']}
+            </div>
+        </div>
+        </div>
+        """
+        jdenticon.update("#identicon#{msg['id']}", sha1(msg['username']))
 
+    $('#area00').scrollTop(($("#area00")[0].scrollHeight))
+    lastUser = msg['username']
+    $("#message#{msg['id']}").tooltip()
+    
+    
 # WebSocket connect eventhandler
 onConnect = (frame) ->
     $('#wsstatus').removeClass 'label-danger'
     $('#wsstatus').addClass 'label-info'
     $('#wsstatus').html 'OnLine'
 
-    stompClient.send '/app/addUser', {}, $('#userName').val()
+    message = {}
+    message.text = ''
+    message.status = ''
+    message.sendto = $('#chatRoomSelected').val()
+    message.username = $('#userName').val()
 
-    stompClient.subscribe "/topic/result", (message) ->
-        onReceiveResult(message)
+    stompClient.send '/app/addUser', {}, JSON.stringify(message)
 
-    stompClient.subscribe "/topic/#{$('#userName').val()}", (message) ->
-        onReceiveByUser(message)
-
-    stompClient.subscribe "/topic/#{$('#chatRoomSelected').val()}", (message) ->
-        onReceiveChatRoom(message)
+    subscribeAll()
         
 
 # WebSocket disconnect eventhandler
@@ -97,4 +209,5 @@ $(document).ready ->
         # WebSocket DisConnected
         client.disconnect {}, (frame) ->
             onDisconnect(frame)
+
 

@@ -7,7 +7,7 @@
   <body>
     <div class="row">
       <!-- Sidebar -->
-      <div class="col-sm-3">
+      <div class="col-sm-3" style="background-color: #f0f0f0;">
         <!-- -->
         <div id="datetimepickerInline"></div>
 
@@ -64,7 +64,7 @@
         <div class="row">
           <div class="col-sm-12">
             <input type="text" id="chatMessage" class="form-control" 
-                   placeholder="Input chat message..." autofocus>
+                   placeholder=" Input chat message..." autofocus>
             </input>
           </div>
         </div>
@@ -116,8 +116,9 @@
             </div>
           </form>
         </div>
+        <hr/>
         <div class="row">
-          <div id="area01" style="height: 800px; background-color: #eeeeee;">
+          <div id="area00" style="height: 800px; overflow: scroll;">
           </div>
         </div>
       </div>

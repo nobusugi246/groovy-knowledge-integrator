@@ -9,10 +9,13 @@
 //= require moment-with-locales
 //= require bootstrap
 //= require bootstrap-datetimepicker
+//= require underscore
 //= require chat
 //= require spring-websocket
 //= require stomp
 //= require sockjs
+//= require sha1
+//= require jdenticon-1.3.2
 //= require_tree .
 //= require_self
 
