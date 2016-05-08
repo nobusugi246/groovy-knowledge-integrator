@@ -73,6 +73,7 @@ $('#chatRoomSelected').on 'change', (event) ->
 
     stompClient.send "/app/updateUser", {}, JSON.stringify(message)
     stompClient.send "/app/todayLog", {}, JSON.stringify(message)
+    $('#chatMessage').focus()
 
 
 # send chat message
@@ -86,6 +87,7 @@ $('#chatMessage').on 'keyup', (event) ->
 
         stompClient.send "/app/message", {}, JSON.stringify(message)
         $('#chatMessage').val ''
+        $('#chatMessage').focus()
 
 
 # heartbeat user

@@ -3,7 +3,9 @@ import gki.chat.ChatUser
 
 class BootStrap {
   def init = { servletContext ->
-    new ChatRoom(name: "Entrance").save()
+    if ( !ChatRoom.get(1) ) {
+      new ChatRoom(name: "Entrance").save()
+    }
   }
 
   def destroy = {
