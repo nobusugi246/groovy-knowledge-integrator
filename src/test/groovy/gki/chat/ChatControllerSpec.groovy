@@ -17,6 +17,6 @@ class ChatControllerSpec extends Specification {
 
     void "test something"() {
         expect:"fix me"
-            true == true
+            true == false
     }
 }

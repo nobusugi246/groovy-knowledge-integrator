@@ -10,7 +10,22 @@ import org.springframework.scheduling.annotation.Scheduled
 @Transactional
 class ChatService {
 
+  def chatBotDefaultService
+  
   SimpMessagingTemplate brokerMessagingTemplate
+
+  void receiveMessage(ChatMessage message) {
+    message.save()
+    addUser(message.username, message.chatroom)
+
+    String to = "/topic/${message.chatroom}"
+    String msg = message as JSON
+    
+    brokerMessagingTemplate.convertAndSend to, msg
+
+    chatBotDefaultService.defaultHandler(message)
+  }
+
 
   void addUser(String name, String chatroom) {
     def user = ChatUser.findByUsername(name)
@@ -21,19 +36,9 @@ class ChatService {
     } else {
       new ChatUser(username: name, role: "User", chatroom: chatroom as long).save()
       log.info "${name} was added."
-      return
+
+      chatBotDefaultService.hello(name)
     }
-  }
-
-
-  void receiveMessage(ChatMessage message) {
-    message.save()
-    addUser(message.username, message.chatroom)
-
-    String to = "/topic/${message.chatroom}"
-    String msg = (message as JSON).toString()
-    
-    brokerMessagingTemplate.convertAndSend to, msg
   }
 
 
@@ -45,7 +50,7 @@ class ChatService {
     log.findAll {
       it.chatroom == message.chatroom
     }.each {
-      String msg = (it as JSON).toString()
+      String msg = it as JSON
       brokerMessagingTemplate.convertAndSend to, msg
     }
   }
