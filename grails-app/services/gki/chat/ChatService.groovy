@@ -12,13 +12,14 @@ class ChatService {
 
   SimpMessagingTemplate brokerMessagingTemplate
 
-  void addUser(String name, String sendto) {
+  void addUser(String name, String chatroom) {
     def user = ChatUser.findByUsername(name)
     if( user ) {
+      user.chatroom = chatroom as long
       user.enabled = true
       user.save()
     } else {
-      new ChatUser(username: name, role: "User", chatroom: sendto as long).save()
+      new ChatUser(username: name, role: "User", chatroom: chatroom as long).save()
       log.info "${name} was added."
       return
     }
@@ -27,9 +28,9 @@ class ChatService {
 
   void receiveMessage(ChatMessage message) {
     message.save()
-    addUser(message.username, message.sendto)
+    addUser(message.username, message.chatroom)
 
-    String to = "/topic/${message.sendto}"
+    String to = "/topic/${message.chatroom}"
     String msg = (message as JSON).toString()
     
     brokerMessagingTemplate.convertAndSend to, msg
@@ -42,7 +43,7 @@ class ChatService {
     def log = ChatMessage.findAllByDate(message.date, [sort: "id"])
 
     log.findAll {
-      it.sendto == message.sendto
+      it.chatroom == message.chatroom
     }.each {
       String msg = (it as JSON).toString()
       brokerMessagingTemplate.convertAndSend to, msg
@@ -53,30 +54,41 @@ class ChatService {
   void heartbeatCount(ChatMessage message) {
     def user = ChatUser.findByUsername(message.username)
     if(user) {
+      user.enabled = true
       user.heartbeatCount++
+      user.save()
     }
   }
 
 
   void sendUserList() {
     def users = ChatUser.findAll()
-    def userList = users.findAll {
+    def userListActive = users.findAll {
       it.enabled == true
-    }.collect {
-      ['id': it.id, 'username': it.username]
     }
 
-    users.each {
-      String to = "/topic/${it.username}"
-      String msg = (userList as JSON).toString()
-      brokerMessagingTemplate.convertAndSend to, msg
+    def chatRooms = ChatRoom.findAll()
+
+    userListActive.each { user ->
+      String to = "/topic/${user.username}"
+
+      def userListByChatRoom = userListActive.findAll {
+        user.chatroom == it.chatroom
+      }.collect {
+        ['id': it.id, 'username': it.username]
+      }
+      String msgUL = [userList: userListByChatRoom] as JSON
+      String msgCRL = [chatRoomList: chatRooms] as JSON
+      
+      brokerMessagingTemplate.convertAndSend to, msgUL
+      brokerMessagingTemplate.convertAndSend to, msgCRL
     }
   }
   
 
   @Scheduled(fixedRate=10000L)
   void updateUserConnection() {
-    log.info 'executed...'
+    log.info 'update UserList'
 
     def users = ChatUser.findAll()
     users.findAll{

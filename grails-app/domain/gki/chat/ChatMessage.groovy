@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 @ToString(includeNames=true)
 class ChatMessage {
   String status
-  String sendto
+  String chatroom
   String text
   String username
 
@@ -18,7 +18,7 @@ class ChatMessage {
   static constraints = {
     text editable: true
     status editable: true, nullable: true
-    sendto editable: true
+    chatroom editable: true
     username editable: true
     date editable: false
     time editable: false

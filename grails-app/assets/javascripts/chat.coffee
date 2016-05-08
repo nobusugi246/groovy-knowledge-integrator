@@ -48,20 +48,30 @@ $('#userName').focusout ->
     unsubscribeAll()
     subscribeAll()
 
+    message = {}
+    message.text = ''
+    message.status = ''
+    message.chatroom = $('#chatRoomSelected').val()
+    message.username = $('#userName').val()
+
+    stompClient.send "/app/updateUser", {}, JSON.stringify(message)
+
 
 # update ChatRoomSelected
 $('#chatRoomSelected').on 'change', (event) ->
-    unsubscribeAll()
-    subscribeAll()
     $('#area00').html ''
     lastUser = ''
+
+    unsubscribeAll()
+    subscribeAll()
 
     message = {}
     message.text = ''
     message.status = ''
-    message.sendto = $('#chatRoomSelected').val()
+    message.chatroom = $('#chatRoomSelected').val()
     message.username = $('#userName').val()
 
+    stompClient.send "/app/updateUser", {}, JSON.stringify(message)
     stompClient.send "/app/todayLog", {}, JSON.stringify(message)
 
 
@@ -71,7 +81,7 @@ $('#chatMessage').on 'keyup', (event) ->
         message = {}
         message.text = _.escape($.trim($('#chatMessage').val()))
         message.status = 'fixed'
-        message.sendto = $('#chatRoomSelected').val()
+        message.chatroom = $('#chatRoomSelected').val()
         message.username = $('#userName').val()
 
         stompClient.send "/app/message", {}, JSON.stringify(message)
@@ -83,7 +93,7 @@ heartbeatUser = () ->
     message = {}
     message.text = ''
     message.status = 'heartbeat'
-    message.sendto = $('#chatRoomSelected').val()
+    message.chatroom = $('#chatRoomSelected').val()
     message.username = $('#userName').val()
 
     stompClient.send "/app/heartbeat", {}, JSON.stringify(message)
@@ -99,9 +109,12 @@ onReceiveByUser = (message) ->
     console.log "@#{$('#userName').val()}: " +  message.body
     msg = JSON.parse(message.body)
 
-    if msg?.text
-        onReceiveChatRoom(message)
-    else
+    if msg.chatRoomList
+        crlDef = ''
+        _.each msg.chatRoomList, (it) ->
+            crlDef += "<option value='#{it.id}'>#{it.name}</option>"
+        $('#chatRoomSelected').html crlDef
+    else if msg.userList
         tableDef = """<table class="table table-striped">
             <thead>
               <tr>
@@ -111,7 +124,7 @@ onReceiveByUser = (message) ->
             </thead>
             <tbody>"""
 
-        _.each msg, (it) ->
+        _.each msg.userList, (it) ->
             tableDef += """<tr>
                   <td style="width: 4em;">#{it.id}</td>
                   <td>#{it.username}</td>
@@ -121,6 +134,8 @@ onReceiveByUser = (message) ->
           </table>"""
 
         $('#connectedUsersTable').html tableDef
+    else
+        onReceiveChatRoom(message)
 
 
 # WebSocket chat message receive eventhandler
@@ -175,7 +190,7 @@ onConnect = (frame) ->
     message = {}
     message.text = ''
     message.status = ''
-    message.sendto = $('#chatRoomSelected').val()
+    message.chatroom = $('#chatRoomSelected').val()
     message.username = $('#userName').val()
 
     stompClient.send '/app/addUser', {}, JSON.stringify(message)
