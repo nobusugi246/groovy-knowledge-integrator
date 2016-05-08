@@ -82,20 +82,6 @@
         <div class="row" id="connectedUsersTable"
              style="height: 330px; overflow: scroll;">
           <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>User Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              <g:each in="${gki.chat.ChatUser.list()}" var="user">
-                <tr>
-                  <td style="width: 4em;">${user.id}</td>
-                  <td>${user.username}</td>
-                </tr>
-              </g:each>
-            </tbody>
           </table>
         </div>
       </div>

@@ -114,6 +114,7 @@ onReceiveByUser = (message) ->
         _.each msg.chatRoomList, (it) ->
             crlDef += "<option value='#{it.id}'>#{it.name}</option>"
         $('#chatRoomSelected').html crlDef
+        $('#chatRoomSelected').val msg.selected
     else if msg.userList
         tableDef = """<table class="table table-striped">
             <thead>
@@ -224,5 +225,4 @@ $(document).ready ->
         # WebSocket DisConnected
         client.disconnect {}, (frame) ->
             onDisconnect(frame)
-
 

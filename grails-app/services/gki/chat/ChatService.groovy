@@ -78,7 +78,7 @@ class ChatService {
         ['id': it.id, 'username': it.username]
       }
       String msgUL = [userList: userListByChatRoom] as JSON
-      String msgCRL = [chatRoomList: chatRooms] as JSON
+      String msgCRL = [chatRoomList: chatRooms, selected: user.chatroom] as JSON
       
       brokerMessagingTemplate.convertAndSend to, msgUL
       brokerMessagingTemplate.convertAndSend to, msgCRL
