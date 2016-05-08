@@ -45,16 +45,17 @@ unsubscribeAll = () ->
 
 # update userName
 $('#userName').focusout ->
-    unsubscribeAll()
-    subscribeAll()
+    if $('#userName').val() isnt ''
+        unsubscribeAll()
+        subscribeAll()
 
-    message = {}
-    message.text = ''
-    message.status = ''
-    message.chatroom = $('#chatRoomSelected').val()
-    message.username = $('#userName').val()
+        message = {}
+        message.text = ''
+        message.status = ''
+        message.chatroom = $('#chatRoomSelected').val()
+        message.username = $('#userName').val()
 
-    stompClient.send "/app/updateUser", {}, JSON.stringify(message)
+        stompClient.send "/app/updateUser", {}, JSON.stringify(message)
 
 
 # update ChatRoomSelected
@@ -186,19 +187,20 @@ onReceiveChatRoom = (message) ->
     
 # WebSocket connect eventhandler
 onConnect = (frame) ->
+    subscribeAll()
+
     $('#wsstatus').removeClass 'label-danger'
     $('#wsstatus').addClass 'label-info'
     $('#wsstatus').html 'OnLine'
 
-    message = {}
-    message.text = ''
-    message.status = ''
-    message.chatroom = $('#chatRoomSelected').val()
-    message.username = $('#userName').val()
+    if $('#userName').val() isnt ''
+        message = {}
+        message.text = ''
+        message.status = ''
+        message.chatroom = $('#chatRoomSelected').val()
+        message.username = $('#userName').val()
 
-    stompClient.send '/app/addUser', {}, JSON.stringify(message)
-
-    subscribeAll()
+        stompClient.send '/app/addUser', {}, JSON.stringify(message)
         
 
 # WebSocket disconnect eventhandler
