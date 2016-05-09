@@ -42,16 +42,21 @@ class ChatService {
   }
 
 
-  void sendTodayLog(ChatMessage message) {
+  void sendLog(ChatMessage message) {
     String to = "/topic/${message.username}"
 
-    def log = ChatMessage.findAllByDate(message.date, [sort: "id"])
+    def log = ChatMessage.findAllByDate(message.text, [sort: "id"])
 
     log.findAll {
       it.chatroom == message.chatroom
     }.each {
       String msg = it as JSON
       brokerMessagingTemplate.convertAndSend to, msg
+    }
+
+    if (message.text != message.date) {
+      String closeTimeMsg = new ChatMessage(status: 'closeTime') as JSON
+      brokerMessagingTemplate.convertAndSend to, closeTimeMsg
     }
   }
 

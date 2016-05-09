@@ -14,7 +14,16 @@
   });
 
   $('#datetimepickerInline').on('dp.change', function(event) {
-    return console.log('DateTimePicker: ' + moment(event.date).format('YYYY-MM-DD'));
+    var message, selectedDate;
+    selectedDate = moment(event.date).format('YYYY-MM-DD');
+    $('#area00').append("<hr/>\n<div class=\"row\">\n<div class=\"col-sm-11 col-sm-offset-1\">\n    <div class=\"row\">\n        <i>" + selectedDate + "</i>\n    </div>\n</div>\n</div>");
+    lastUser = {};
+    message = {};
+    message.text = selectedDate;
+    message.status = '';
+    message.chatroom = $('#chatRoomSelected').val();
+    message.username = $('#userName').val();
+    return stompClient.send("/app/log", {}, JSON.stringify(message));
   });
 
   setInterval(function() {
@@ -61,12 +70,12 @@
     unsubscribeAll();
     subscribeAll();
     message = {};
-    message.text = '';
+    message.text = moment().format('YYYY-MM-DD');
     message.status = '';
     message.chatroom = $('#chatRoomSelected').val();
     message.username = $('#userName').val();
     stompClient.send("/app/updateUser", {}, JSON.stringify(message));
-    stompClient.send("/app/todayLog", {}, JSON.stringify(message));
+    stompClient.send("/app/log", {}, JSON.stringify(message));
     return $('#chatMessage').focus();
   });
 
@@ -99,7 +108,7 @@
   }, 3000);
 
   onReceiveByUser = function(message) {
-    var crlDef, msg, tableDef;
+    var crlDef, msg, selectedDate, tableDef;
     console.log(("@" + ($('#userName').val()) + ": ") + message.body);
     msg = JSON.parse(message.body);
     if (msg.chatRoomList) {
@@ -116,6 +125,10 @@
       });
       tableDef += "</tbody>\n</table>";
       return $('#connectedUsersTable').html(tableDef);
+    } else if (msg.status === 'closeTime') {
+      selectedDate = $('#datetimepickerInline').data('DateTimePicker').date().format('YYYY-MM-DD');
+      $('#area00').append("<div class=\"row\">\n<div class=\"col-sm-11 col-sm-offset-1\">\n    <div class=\"row\">\n        <i>" + selectedDate + "</i>\n    </div>\n</div>\n</div>\n<hr/>");
+      return $('#area00').scrollTop(($("#area00")[0].scrollHeight));
     } else {
       return onReceiveChatRoom(message);
     }
@@ -144,7 +157,7 @@
     $('#wsstatus').html('OnLine');
     if ($('#userName').val() !== '') {
       message = {};
-      message.text = '';
+      message.text = moment().format('YYYY-MM-DD');
       message.status = '';
       message.chatroom = $('#chatRoomSelected').val();
       message.username = $('#userName').val();

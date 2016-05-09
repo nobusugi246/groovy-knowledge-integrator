@@ -14,7 +14,26 @@ $('#datetimepickerInline').datetimepicker({
 
 # DateTimePicker changed eventhandler
 $('#datetimepickerInline').on 'dp.change', (event)->
-    console.log 'DateTimePicker: ' + moment(event.date).format('YYYY-MM-DD')
+    selectedDate = moment(event.date).format('YYYY-MM-DD')
+    $('#area00').append """
+    <hr/>
+    <div class="row">
+    <div class="col-sm-11 col-sm-offset-1">
+        <div class="row">
+            <i>#{selectedDate}</i>
+        </div>
+    </div>
+    </div>
+    """
+
+    lastUser = {}
+    message = {}
+    message.text = selectedDate
+    message.status = ''
+    message.chatroom = $('#chatRoomSelected').val()
+    message.username = $('#userName').val()
+
+    stompClient.send "/app/log", {}, JSON.stringify(message)
 
 
 # update Date, Time
@@ -67,13 +86,13 @@ $('#chatRoomSelected').on 'change', (event) ->
     subscribeAll()
 
     message = {}
-    message.text = ''
+    message.text = moment().format('YYYY-MM-DD')
     message.status = ''
     message.chatroom = $('#chatRoomSelected').val()
     message.username = $('#userName').val()
 
     stompClient.send "/app/updateUser", {}, JSON.stringify(message)
-    stompClient.send "/app/todayLog", {}, JSON.stringify(message)
+    stompClient.send "/app/log", {}, JSON.stringify(message)
     $('#chatMessage').focus()
 
 
@@ -138,6 +157,19 @@ onReceiveByUser = (message) ->
           </table>"""
 
         $('#connectedUsersTable').html tableDef
+    else if msg.status is 'closeTime'
+        selectedDate = $('#datetimepickerInline').data('DateTimePicker').date().format('YYYY-MM-DD')
+        $('#area00').append """
+        <div class="row">
+        <div class="col-sm-11 col-sm-offset-1">
+            <div class="row">
+                <i>#{selectedDate}</i>
+            </div>
+        </div>
+        </div>
+        <hr/>
+        """
+        $('#area00').scrollTop(($("#area00")[0].scrollHeight))
     else
         onReceiveChatRoom(message)
 
@@ -195,7 +227,7 @@ onConnect = (frame) ->
 
     if $('#userName').val() isnt ''
         message = {}
-        message.text = ''
+        message.text = moment().format('YYYY-MM-DD')
         message.status = ''
         message.chatroom = $('#chatRoomSelected').val()
         message.username = $('#userName').val()

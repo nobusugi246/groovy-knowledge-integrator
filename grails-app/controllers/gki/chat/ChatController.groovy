@@ -17,7 +17,7 @@ class ChatController {
     log.info "addUser: ${message.username}"
     chatService.addUser(message.username, message.chatroom)
 
-    chatService.sendTodayLog(message)
+    chatService.sendLog(message)
     chatService.sendUserList()
   }
 
@@ -31,10 +31,10 @@ class ChatController {
   }
 
 
-  @MessageMapping("/todayLog")
-  protected String sendTodayLog(ChatMessage message) {
-    log.info "todayLog: ${message}"
-    chatService.sendTodayLog(message)
+  @MessageMapping("/log")
+  protected String sendLog(ChatMessage message) {
+    log.info "log: ${message}"
+    chatService.sendLog(message)
   }
 
   
