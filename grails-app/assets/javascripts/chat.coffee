@@ -34,6 +34,7 @@ $('#datetimepickerInline').on 'dp.change', (event)->
     message.username = $('#userName').val()
 
     stompClient.send "/app/log", {}, JSON.stringify(message)
+    $('#chatMessage').focus()
 
 
 # update Date, Time
@@ -241,6 +242,23 @@ onDisconnect = (frame) ->
     $('#wsstatus').addClass 'label-danger'
     $('#wsstatus').html 'OffLine'
 
+
+# connect to WebSocket Server
+connect = () ->
+    # Connect WebSocket
+    socket = new SockJS '/stomp'
+    client = Stomp.over socket
+
+    # WebSocket Connected
+    client.connect {}, (frame) ->
+        stompClient = client
+        stompClient.debug = null
+        onConnect(frame)
+
+    # WebSocket DisConnected
+    client.disconnect {}, (frame) ->
+        onDisconnect(frame)
+
     
 # initialize display
 $(document).ready ->
@@ -248,17 +266,4 @@ $(document).ready ->
     if localStorage['userName']? and $('#userName').val()?
         $('#userName').val localStorage['userName']
 
-        # Connect WebSocket
-        socket = new SockJS '/stomp'
-        client = Stomp.over socket
-
-        # WebSocket Connected
-        client.connect {}, (frame) ->
-            stompClient = client
-            stompClient.debug = null
-            onConnect(frame)
-
-        # WebSocket DisConnected
-        client.disconnect {}, (frame) ->
-            onDisconnect(frame)
-
+        connect()

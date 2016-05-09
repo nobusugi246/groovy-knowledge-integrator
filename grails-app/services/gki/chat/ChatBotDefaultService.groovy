@@ -10,6 +10,7 @@ import groovy.xml.XmlUtil
 @Transactional
 class ChatBotDefaultService {
 
+  def chatService
   SimpMessagingTemplate brokerMessagingTemplate
 
   ChatMessage message
@@ -20,7 +21,9 @@ class ChatBotDefaultService {
     ['makeChatRoom <ChatRoom名>', 'ChatRoomの作成', /makeChatRoom .+/,
      { makeChatRoom(this.message) }],
     ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /deleteChatRoom .+/,
-     { deleteChatRoom(this.message) }]
+     { deleteChatRoom(this.message) }],
+    ['users', '接続している全ユーザのリストを表示', /users/,
+     { displayAllConnectedUsers() }]
   ]
 
   
@@ -77,6 +80,7 @@ class ChatBotDefaultService {
         replyMessage message.chatroom,
                      "${message.username}さん, ChatRoom '${words[1]}'を作成しました。",
                      true
+        chatService.sendUserList()
       }
     }
   }
@@ -96,11 +100,25 @@ class ChatBotDefaultService {
         replyMessage message.chatroom,
                      "${message.username}さん, ChatRoom '${words[1]}'を削除しました。",
                      true
+        chatService.sendUserList()
       } else {
         replyMessage message.chatroom,
                      "${message.username}さん, ChatRoom '${words[1]}'は有りません。",
                      true
       }
+    }
+  }
+
+
+  void displayAllConnectedUsers() {
+    def userList = ChatUser.findAllWhere(enabled: true)
+
+    replyMessage message.username,
+                 "${message.username}さん, 接続中のユーザは ${userList.size}名です。"
+    userList.each { user ->
+      def chatroom = ChatRoom.get(user.chatroom)
+      replyMessage message.username,
+                   "${user.username}さんが '${chatroom.name}' にいます。"
     }
   }
   
