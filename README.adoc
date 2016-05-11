@@ -20,6 +20,7 @@ This is a Chat Application builded by Grails Ver.3.1.
 . Accept Github webhooks.
 ** Now tested by Gitbucket's webhooks.
 . Display Spring Boot Actuator info/health/metrics of this Chat Server.
+. User Icon(Identicon) by Jdenticon.
 . Chat Rooms.
 . Chat log display by selecting a day on Calendar.
 
@@ -57,6 +58,11 @@ Apache License Version 2.0
 
 == Acknowledgements / 謝辞
 
+* Very thanks to Grails and it's ecosystem.
+** https://grails.org/
+
+* Very thanks to Jdenticon.
+** https://github.com/dmester/jdenticon
 
 
 == ChangLog / 変更履歴
