@@ -15,6 +15,10 @@ $('#datetimepickerInline').datetimepicker({
 # DateTimePicker changed eventhandler
 $('#datetimepickerInline').on 'dp.change', (event)->
     selectedDate = moment(event.date).format('YYYY-MM-DD')
+
+    if selectedDate > moment().format('YYYY-MM-DD')
+        return
+
     $('#area00').append """
     <hr/>
     <div class="row">
@@ -180,13 +184,13 @@ onReceiveChatRoom = (message) ->
     console.log "Chat Message: " + message.body
     msg = JSON.parse(message.body)
 
+    if msg.text.match /^http:\/\/.+/
+        msg.text = "<a href='#{msg.text}'>#{msg.text}</a>"
+
     if lastUser is msg['username']
         $('#area00').append """
         <div class="row">
         <div class="col-sm-11 col-sm-offset-1">
-            <!-- div class="row">
-                <i>#{msg.time}</i>
-            </div -->
             <div class="row" id="message#{msg['id']}" data-toggle="tooltip"
                  data-placement="left" title="#{msg['time']}">
                 #{msg['text']}
@@ -215,7 +219,9 @@ onReceiveChatRoom = (message) ->
 
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
     lastUser = msg['username']
-    $("#message#{msg['id']}").tooltip()
+
+    if msg['id']?
+        $("#message#{msg['id']}").tooltip()
     
     
 # WebSocket connect eventhandler

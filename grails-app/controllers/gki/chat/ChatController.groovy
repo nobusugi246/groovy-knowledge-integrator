@@ -1,6 +1,7 @@
 package gki.chat
 
 import groovy.util.logging.Slf4j
+import groovy.json.JsonSlurper
 
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
@@ -9,12 +10,15 @@ import org.springframework.messaging.handler.annotation.SendTo
 class ChatController {
 
   def chatService
+  def chatBotDefaultService
+
+  def jsonSlurper = new JsonSlurper()
   
   def index() { }
 
   @MessageMapping("/addUser")
   protected void addUser(ChatMessage message) {
-    log.info "addUser: ${message.username}"
+    log.info "addUser: ${message}"
     chatService.addUser(message.username, message.chatroom)
 
     chatService.sendLog(message)
@@ -24,7 +28,7 @@ class ChatController {
 
   @MessageMapping("/updateUser")
   protected void updateUser(ChatMessage message) {
-    log.info "updateUser: ${message.username}"
+    log.info "updateUser: ${message}"
     chatService.addUser(message.username, message.chatroom)
 
     chatService.sendUserList()
@@ -49,5 +53,18 @@ class ChatController {
   protected String heartbeatCount(ChatMessage message) {
     log.info "heartbeat: ${message}"
     chatService.heartbeatCount(message)
+  }
+
+
+  def webhook() {
+    log.info 'webhook called.'
+
+    if( params.payload ) {
+      log.info "${params.payload}"
+      def payload = jsonSlurper.parseText(params.payload)
+      chatBotDefaultService.webhook(payload)
+    }
+
+    render ''
   }
 }

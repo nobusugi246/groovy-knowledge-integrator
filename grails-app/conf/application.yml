@@ -119,3 +119,6 @@ grails:
 endpoints:
     jmx:
         unique-names: true
+    health:
+        sensitive: false
+

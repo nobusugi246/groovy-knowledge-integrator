@@ -10,20 +10,30 @@ import groovy.xml.XmlUtil
 @Transactional
 class ChatBotDefaultService {
 
+  def infoEndpoint
+  def healthEndpoint
+  def metricsEndpoint
+  
   def chatService
   SimpMessagingTemplate brokerMessagingTemplate
 
   ChatMessage message
   
   def commandList = [
-    ['hello', '利用方法の説明', /(こんにちは|今日は|hello|help)/,
+    ['hello', '利用方法の説明(このメッセージ)', /(こんにちは|今日は|hello|help)/,
      { hello(this.message.username) }],
     ['makeChatRoom <ChatRoom名>', 'ChatRoomの作成', /makeChatRoom .+/,
      { makeChatRoom(this.message) }],
     ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /deleteChatRoom .+/,
      { deleteChatRoom(this.message) }],
     ['users', '接続している全ユーザのリストを表示', /users/,
-     { displayAllConnectedUsers() }]
+     { displayAllConnectedUsers() }],
+    ['info', 'Spring Boot Actuatorの infoを表示', /info/,
+     { actuator() }],
+    ['health', 'Spring Boot Actuatorの healthを表示', /health/,
+     { actuator() }],
+    ['metrics', 'Spring Boot Actuatorの metricsを表示', /metrics/,
+     { actuator() }]
   ]
 
   
@@ -58,7 +68,7 @@ class ChatBotDefaultService {
 
     commandList.each { commandName, desc, trigger, closure ->
       log.info commandName
-      replyMessage username, "${XmlUtil.escapeXml commandName}: ${XmlUtil.escapeXml desc}"
+      replyMessage username, "&nbsp; &nbsp; ${XmlUtil.escapeXml commandName}: ${XmlUtil.escapeXml desc}"
     }    
   }
 
@@ -121,7 +131,91 @@ class ChatBotDefaultService {
                    "${user.username}さんが '${chatroom.name}' にいます。"
     }
   }
+
+
+  void actuator() {
+    def type = this.message.text
+    def endpoints = ['info': infoEndpoint, 'health': healthEndpoint,
+                     'metrics': metricsEndpoint
+                    ]
+    def endpoint = endpoints[type]
+
+    replyMessage message.username,
+                 "${message.username}さん, このチャットサーバの ${type}です。"
+
+    def result
+    if( type == 'health' ) {
+      def health = endpoint.invoke()
+      def status = health.getStatus()
+
+      replyMessage message.username, "status : ${status}"
+      result = health.getDetails()
+    } else {
+      result = endpoint.invoke()
+    }
+                 
+    result.each { key, value ->
+      replyMessage message.username, "${key} : ${value}"
+    }
+  }
   
+
+  void webhook(payload) {
+    def url = payload.repository.html_url
+
+    def roomList = ChatRoom.findAll()
+
+    roomList.each { room ->
+      def to = room.id as String
+
+      if( payload.pusher ) {
+        replyMessage to, "gitレポジトリに Pushされました。", true
+      } else if( payload.issue ) {
+        if( payload.action == 'opened' ) {
+          replyMessage to, "gitレポジトリに Issueが作成されました。", true
+        } else if( payload.action == 'closed' ) {
+          replyMessage to, "gitレポジトリの Issueがクローズされました。", true
+        } else if( payload.action == 'reopened' ) {
+          replyMessage to, "gitレポジトリの Issueが再開されました。", true
+        } else if( payload.action == 'created' && payload.comment ) {
+          replyMessage to, "gitレポジトリの Issueにコメントが追加されました。", true
+        }
+      } else if( payload.pull_request ) {
+        if( payload.action == 'opened' ) {
+          replyMessage to, "gitレポジトリに Pull Requestが作成されました。", true
+        } else if( payload.action == 'closed' ) {
+          replyMessage to, "gitレポジトリの Pull Requestがクローズされました。", true
+        } else if( payload.action == 'reopened' ) {
+          replyMessage to, "gitレポジトリの Pull Requestが再開されました。", true
+        }
+      }
+
+      replyMessage to, "repository: <a href='${url}'>${url}</a>", true
+
+      if( payload.pusher ) {
+        replyMessage to, "ref: ${payload.ref}", true
+      }
+
+      if( payload.issue ) {
+        replyMessage to, "issue No.: ${payload.issue.number}", true
+        replyMessage to, "title: ${payload.issue.title}", true
+      }
+
+      if( payload.pull_request ) {
+        replyMessage to, "pull request No.: ${payload.pull_request.number}", true
+        replyMessage to, "title: ${payload.pull_request.title}", true
+      }
+
+      if( payload.comment ) {
+        replyMessage to, "comment: ${payload.comment.body}", true
+      }
+
+      if( payload.sender ) {
+        replyMessage to, "by : ${payload.sender.login}", true
+      }
+    }
+  }
+
   
   void replyMessage(String to, String message, boolean persistence = false) {
     String replyto = "/topic/${to}"
@@ -129,7 +223,7 @@ class ChatBotDefaultService {
 
     if (persistence) {
       msg.status = 'fixed'
-      msg.chatroom = this.message.chatroom
+      msg.chatroom = to
 
       log.info msg.toString()
       msg.save()

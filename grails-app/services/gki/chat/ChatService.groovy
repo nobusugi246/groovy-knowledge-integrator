@@ -16,7 +16,7 @@ class ChatService {
 
   void receiveMessage(ChatMessage message) {
     message.save()
-    addUser(message.username, message.chatroom)
+    //    addUser(message.username, message.chatroom)
 
     String to = "/topic/${message.chatroom}"
     String msg = message as JSON
