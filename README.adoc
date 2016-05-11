@@ -16,7 +16,7 @@ image::https://raw.githubusercontent.com/nobusugi246/groovy-knowledge-integrator
 This is a Chat Application builded by Grails Ver.3.1.
 
 . Chatbot by groovy language.
-** Now only embedded. It will be connected with other microservices of bots.
+** Now only embedded one. It will be connected with other microservices of bots.
 . Accept Github webhooks.
 ** Now tested by Gitbucket's webhooks.
 . Display Spring Boot Actuator info/health/metrics of this Chat Server.
