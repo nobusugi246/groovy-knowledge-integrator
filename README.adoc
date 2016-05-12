@@ -17,12 +17,12 @@ This is a Chat Application builded by Grails Ver.3.1.
 
 . Chatbot by groovy language.
 ** Now only embedded one. It will be connected with other microservices of bots.
-. Accept Github webhooks.
+. Accepts Github webhooks.
 ** Now tested by Gitbucket's webhooks.
 ** Payload URL (ex. http://localhost:8080/chat/webhook/) with
    Content type "application/x-www-form-urlencoded".
-. Display Spring Boot Actuator info/health/metrics of this Chat Server.
-. User Icon(Identicon) by Jdenticon.
+. Displays Spring Boot Actuator info/health/metrics of this Chat Server.
+. User Icon (Identicon) by Jdenticon.
 . Chat Rooms.
 . Chat log display by selecting a day on Calendar.
 
