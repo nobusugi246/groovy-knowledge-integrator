@@ -59,8 +59,8 @@ class ChatController {
   def webhook() {
     log.info 'webhook called.'
 
+    log.info "${params}"
     if( params.payload ) {
-      log.info "${params.payload}"
       def payload = jsonSlurper.parseText(params.payload)
       chatBotDefaultService.webhook(payload)
     }

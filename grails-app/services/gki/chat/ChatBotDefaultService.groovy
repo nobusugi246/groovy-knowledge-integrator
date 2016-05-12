@@ -169,24 +169,24 @@ class ChatBotDefaultService {
       def to = room.id as String
 
       if( payload.pusher ) {
-        replyMessage to, "gitレポジトリに Pushされました。", true
+        replyMessage to, "レポジトリに Pushされました。", true
       } else if( payload.issue ) {
         if( payload.action == 'opened' ) {
-          replyMessage to, "gitレポジトリに Issueが作成されました。", true
+          replyMessage to, "レポジトリに Issueが作成されました。", true
         } else if( payload.action == 'closed' ) {
-          replyMessage to, "gitレポジトリの Issueがクローズされました。", true
+          replyMessage to, "レポジトリの Issueがクローズされました。", true
         } else if( payload.action == 'reopened' ) {
-          replyMessage to, "gitレポジトリの Issueが再開されました。", true
+          replyMessage to, "レポジトリの Issueが再開されました。", true
         } else if( payload.action == 'created' && payload.comment ) {
-          replyMessage to, "gitレポジトリの Issueにコメントが追加されました。", true
+          replyMessage to, "レポジトリの Issueにコメントが追加されました。", true
         }
       } else if( payload.pull_request ) {
         if( payload.action == 'opened' ) {
-          replyMessage to, "gitレポジトリに Pull Requestが作成されました。", true
+          replyMessage to, "レポジトリに Pull Requestが作成されました。", true
         } else if( payload.action == 'closed' ) {
-          replyMessage to, "gitレポジトリの Pull Requestがクローズされました。", true
+          replyMessage to, "レポジトリの Pull Requestがクローズされました。", true
         } else if( payload.action == 'reopened' ) {
-          replyMessage to, "gitレポジトリの Pull Requestが再開されました。", true
+          replyMessage to, "レポジトリの Pull Requestが再開されました。", true
         }
       }
 
@@ -197,12 +197,14 @@ class ChatBotDefaultService {
       }
 
       if( payload.issue ) {
-        replyMessage to, "issue No.: ${payload.issue.number}", true
+        def issueurl = "${url}/issues/${payload.issue.number}"
+        replyMessage to, "issue: <a href='${issueurl}'>No. ${payload.issue.number}</a>", true
         replyMessage to, "title: ${payload.issue.title}", true
       }
 
       if( payload.pull_request ) {
-        replyMessage to, "pull request No.: ${payload.pull_request.number}", true
+        def prurl = "${url}/pull/${payload.pull_request.number}"
+        replyMessage to, "pull request: <a href='${prurl}'>No. ${payload.pull_request.number}</a>", true
         replyMessage to, "title: ${payload.pull_request.title}", true
       }
 
