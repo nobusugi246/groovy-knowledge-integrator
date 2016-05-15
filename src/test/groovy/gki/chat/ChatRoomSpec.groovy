@@ -15,8 +15,22 @@ class ChatRoomSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
-        expect:"fix me"
-            true == false
+    void "test default constructor"() {
+        when:
+        def room = new ChatRoom()
+
+        then:
+        room.name == ''
+        room.created ==~ /\d{4}-\d{2}-\d{2}/
+    }
+
+    @Unroll
+    void "test map constructor"() {
+        when:
+        def room = new ChatRoom(name: '髙低薫')
+
+        then:
+        room.username == '髙低薫'
+        room.created ==~ /\d{4}-\d{2}-\d{2}/
     }
 }
