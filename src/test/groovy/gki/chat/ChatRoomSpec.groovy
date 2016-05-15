@@ -29,7 +29,7 @@ class ChatRoomSpec extends Specification {
         def room = new ChatRoom(name: '髙低薫')
 
         then:
-        room.username == '髙低薫'
+        room.name == '髙低薫'
         room.created ==~ /\d{4}-\d{2}-\d{2}/
     }
 }
