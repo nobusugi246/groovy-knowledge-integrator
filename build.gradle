@@ -15,7 +15,6 @@ buildscript {
         classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.8.2'
         classpath 'com.bertramlabs.plugins:coffee-asset-pipeline:2.8.2'
         classpath 'org.grails.plugins:hibernate4:5.0.5'
-        //        classpath 'org.grails.plugins:views-gradle:1.0.9'
     }
 }
 
@@ -98,7 +97,6 @@ dependencies {
     compile 'org.grails.plugins:hibernate4'
     compile 'org.grails.plugins:scaffolding'
     compile 'org.grails.plugins:grails-spring-websocket:2.3.0'
-    //    compile 'org.grails.plugins:views-json:1.0.9'
     compile 'org.hibernate:hibernate-ehcache'
 
     console 'org.grails:grails-console'
