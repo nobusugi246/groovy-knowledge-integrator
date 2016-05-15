@@ -7,13 +7,13 @@ import java.time.format.DateTimeFormatter
 
 @ToString(includeNames=true)
 class ChatUser {
-  String username
-  String password
-  String role
+  String username = ''
+  String password = ''
+  String role = ''
   String created = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
   boolean enabled = true
-  long chatroom
-  long heartbeatCount
+  long chatroom = 0
+  long heartbeatCount = 0
   
   static constraints = {
     username blank: false, editable: true
