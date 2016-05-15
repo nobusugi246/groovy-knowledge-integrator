@@ -8,12 +8,13 @@ buildscript {
     }
     dependencies {
         classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.0'
+        classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.12.1"
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
+
         classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
         classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.8.2'
         classpath 'com.bertramlabs.plugins:coffee-asset-pipeline:2.8.2'
         classpath 'org.grails.plugins:hibernate4:5.0.5'
-        classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.12.1"
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
         //        classpath 'org.grails.plugins:views-gradle:1.0.9'
     }
 }
@@ -21,9 +22,9 @@ buildscript {
 version '0.1.3'
 group 'gki'
 
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: "com.github.hierynomus.license"
 apply plugin: 'org.kordamp.gradle.stats'
+apply plugin: "com.github.hierynomus.license"
+apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 // apply plugin: 'war'
