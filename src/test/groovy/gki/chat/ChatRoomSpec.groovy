@@ -24,7 +24,6 @@ class ChatRoomSpec extends Specification {
         room.created ==~ /\d{4}-\d{2}-\d{2}/
     }
 
-    @Unroll
     void "test map constructor"() {
         when:
         def room = new ChatRoom(name: '髙低薫')

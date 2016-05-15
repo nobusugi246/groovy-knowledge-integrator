@@ -2,7 +2,6 @@ package gki.chat
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification
-import spock.lang.Unroll
 
 @TestFor(ChatMessage)
 class ChatMessageSpec extends Specification {
@@ -26,7 +25,6 @@ class ChatMessageSpec extends Specification {
         message.time ==~ /\d{2}:\d{2}:\d{2}/
     }
 
-    @Unroll
     void "test map constructor"() {
         when:
         def message = new ChatMessage(status: 'abc123', sendto: 'def456', text: '√①№〜㈱ⅲ', username: '髙低薫')
