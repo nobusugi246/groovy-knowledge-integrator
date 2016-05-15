@@ -156,6 +156,7 @@ class ChatBotDefaultService {
                  
     result.each { key, value ->
       replyMessage message.username, "${key} : ${value}"
+      Thread.sleep(100)
     }
   }
   
