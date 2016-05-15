@@ -18,7 +18,7 @@ class ChatMessageSpec extends Specification {
 
         then:
         message.status == ''
-        message.sendto == ''
+        message.chatroom == ''
         message.text == ''
         message.username == ''
         message.date ==~ /\d{4}-\d{2}-\d{2}/
@@ -27,11 +27,11 @@ class ChatMessageSpec extends Specification {
 
     void "test map constructor"() {
         when:
-        def message = new ChatMessage(status: 'abc123', sendto: 'def456', text: '√①№〜㈱ⅲ', username: '髙低薫')
+        def message = new ChatMessage(status: 'abc123', chatroom: 'def456', text: '√①№〜㈱ⅲ', username: '髙低薫')
 
         then:
         message.status == 'abc123'
-        message.sendto == 'def456'
+        message.chatroom == 'def456'
         message.text == '√①№〜㈱ⅲ'
         message.username == '髙低薫'
         message.date ==~ /\d{4}-\d{2}-\d{2}/

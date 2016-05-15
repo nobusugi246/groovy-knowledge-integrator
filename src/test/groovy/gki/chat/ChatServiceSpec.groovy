@@ -9,14 +9,14 @@ import spock.lang.Specification
 @TestFor(ChatService)
 class ChatServiceSpec extends Specification {
 
-    def setup() {
-    }
+  def setup() {
+  }
 
-    def cleanup() {
-    }
+  def cleanup() {
+  }
 
-    void "test something"() {
-        expect:"fix me"
-            true == false
-    }
+  void "test initialization"() {
+  expect:
+    service != null
+  }
 }

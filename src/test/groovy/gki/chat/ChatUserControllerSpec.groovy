@@ -10,13 +10,16 @@ class ChatUserControllerSpec extends Specification {
     def populateValidParams(params) {
         assert params != null
 
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-        assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
+        params["username"] = 'abc123'
+        params["password"] = 'def456'
+        params["role"] = 'User'
+        params["created"] = '2001-01-01'
+        params["enabled"] = false
+        params["chatroom"] = 0
+        params["heartbeatCount"] = 0
     }
 
     void "Test the index action returns the correct model"() {
-
         when:"The index action is executed"
             controller.index()
 
@@ -34,7 +37,6 @@ class ChatUserControllerSpec extends Specification {
     }
 
     void "Test the save action correctly persists an instance"() {
-
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
