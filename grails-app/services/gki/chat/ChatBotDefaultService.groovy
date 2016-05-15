@@ -69,6 +69,7 @@ class ChatBotDefaultService {
     commandList.each { commandName, desc, trigger, closure ->
       log.info commandName
       replyMessage username, "&nbsp; &nbsp; ${XmlUtil.escapeXml commandName}: ${XmlUtil.escapeXml desc}"
+      Thread.sleep(20)
     }    
   }
 
@@ -156,7 +157,7 @@ class ChatBotDefaultService {
                  
     result.each { key, value ->
       replyMessage message.username, "${key} : ${value}"
-      Thread.sleep(100)
+      Thread.sleep(20)
     }
   }
   
