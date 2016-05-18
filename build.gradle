@@ -18,11 +18,11 @@ buildscript {
     }
 }
 
-version '0.1.4'
+version '0.1.5'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'
-apply plugin: "com.github.hierynomus.license"
+apply plugin: 'com.github.hierynomus.license'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'eclipse'
 apply plugin: 'idea'

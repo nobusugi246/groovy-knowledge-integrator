@@ -26,7 +26,7 @@ class ChatBotDefaultService {
      { makeChatRoom(this.message) }],
     ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /deleteChatRoom .+/,
      { deleteChatRoom(this.message) }],
-    ['users', '接続している全ユーザのリストを表示', /users/,
+    ['users', '接続している全ユーザと、有効な WebHookのリストを表示', /users/,
      { displayAllConnectedUsers() }],
     ['info', 'Spring Boot Actuatorの infoを表示', /info/,
      { actuator() }],
@@ -123,13 +123,20 @@ class ChatBotDefaultService {
 
   void displayAllConnectedUsers() {
     def userList = ChatUser.findAllWhere(enabled: true)
+    def whList = WebHook.findAllWhere(enabled: true)
 
     replyMessage message.username,
-                 "${message.username}さん, 接続中のユーザは ${userList.size}名です。"
+                 "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size},です。"
+
     userList.each { user ->
       def chatroom = ChatRoom.get(user.chatroom)
       replyMessage message.username,
                    "${user.username}さんが '${chatroom.name}' にいます。"
+    }
+
+    whList.each { wh ->
+      replyMessage message.username,
+                   "WebHook '${wh.hookname}' (${wh.hookfrom}) が有効です。"
     }
   }
 
@@ -165,65 +172,71 @@ class ChatBotDefaultService {
   void webhook(payload) {
     def url = payload.repository.html_url
 
+    log.info url
+    def wh = WebHook.findByHookfrom(url)
+    if( !wh || !wh.enabled ) return
+    
     def roomList = ChatRoom.findAll()
 
     roomList.each { room ->
       def to = room.id as String
 
       if( payload.pusher ) {
-        replyMessage to, "レポジトリに Pushされました。", true
+        replyMessage to, "レポジトリに Pushされました。", true, wh.hookname
       } else if( payload.issue ) {
         if( payload.action == 'opened' ) {
-          replyMessage to, "レポジトリに Issueが作成されました。", true
+          replyMessage to, "レポジトリに Issueが作成されました。", true, wh.hookname
         } else if( payload.action == 'closed' ) {
-          replyMessage to, "レポジトリの Issueがクローズされました。", true
+          replyMessage to, "レポジトリの Issueがクローズされました。", true, wh.hookname
         } else if( payload.action == 'reopened' ) {
-          replyMessage to, "レポジトリの Issueが再開されました。", true
+          replyMessage to, "レポジトリの Issueが再開されました。", true, wh.hookname
         } else if( payload.action == 'created' && payload.comment ) {
-          replyMessage to, "レポジトリの Issueにコメントが追加されました。", true
+          replyMessage to, "レポジトリの Issueにコメントが追加されました。", true, wh.hookname
         }
       } else if( payload.pull_request ) {
         if( payload.action == 'opened' ) {
-          replyMessage to, "レポジトリに Pull Requestが作成されました。", true
+          replyMessage to, "レポジトリに Pull Requestが作成されました。", true, wh.hookname
         } else if( payload.action == 'closed' ) {
-          replyMessage to, "レポジトリの Pull Requestがクローズされました。", true
+          replyMessage to, "レポジトリの Pull Requestがクローズされました。", true, wh.hookname
         } else if( payload.action == 'reopened' ) {
-          replyMessage to, "レポジトリの Pull Requestが再開されました。", true
+          replyMessage to, "レポジトリの Pull Requestが再開されました。", true, wh.hookname
         }
       }
 
-      replyMessage to, "repository: <a href='${url}'>${url}</a>", true
+      replyMessage to, "repository: <a href='${url}'>${url}</a>", true, wh.hookname
 
       if( payload.pusher ) {
-        replyMessage to, "ref: ${payload.ref}", true
+        replyMessage to, "ref: ${payload.ref}", true, wh.hookname
       }
 
       if( payload.issue ) {
         def issueurl = "${url}/issues/${payload.issue.number}"
-        replyMessage to, "issue: <a href='${issueurl}'>No. ${payload.issue.number}</a>", true
-        replyMessage to, "title: ${payload.issue.title}", true
+        replyMessage to, "issue: <a href='${issueurl}'>No. ${payload.issue.number}</a>", true, wh.hookname
+        replyMessage to, "title: ${payload.issue.title}", true, wh.hookname
       }
 
       if( payload.pull_request ) {
         def prurl = "${url}/pull/${payload.pull_request.number}"
-        replyMessage to, "pull request: <a href='${prurl}'>No. ${payload.pull_request.number}</a>", true
-        replyMessage to, "title: ${payload.pull_request.title}", true
+        replyMessage to, "pull request: <a href='${prurl}'>No. ${payload.pull_request.number}</a>", true, wh.hookname
+        replyMessage to, "title: ${payload.pull_request.title}", true, wh.hookname
       }
 
       if( payload.comment ) {
-        replyMessage to, "comment: ${payload.comment.body}", true
+        replyMessage to, "comment: ${payload.comment.body}", true, wh.hookname
       }
 
       if( payload.sender ) {
-        replyMessage to, "by : ${payload.sender.login}", true
+        replyMessage to, "by : ${payload.sender.login}", true, wh.hookname
       }
     }
   }
 
   
-  void replyMessage(String to, String message, boolean persistence = false) {
+  void replyMessage(String to, String message,
+                    boolean persistence = false,
+                    String replyname = 'gkibot') {
     String replyto = "/topic/${to}"
-    def msg = new ChatMessage(text: message, username: 'gkibot')
+    def msg = new ChatMessage(text: message, username: replyname)
 
     if (persistence) {
       msg.status = 'fixed'

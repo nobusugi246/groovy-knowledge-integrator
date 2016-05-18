@@ -184,7 +184,7 @@ onReceiveChatRoom = (message) ->
     console.log "Chat Message: " + message.body
     msg = JSON.parse(message.body)
 
-    if msg.text.match /^http:\/\/.+/
+    if msg.text.match /^https{0,1}:\/\/.+/
         msg.text = "<a href='#{msg.text}'>#{msg.text}</a>"
 
     if lastUser is msg['username']
