@@ -67,7 +67,6 @@ class ChatBotDefaultService {
                  "このチャットシステムで利用できるコマンドは以下です。"
 
     commandList.each { commandName, desc, trigger, closure ->
-      log.info commandName
       replyMessage username, "&nbsp; &nbsp; ${XmlUtil.escapeXml commandName}: ${XmlUtil.escapeXml desc}"
       Thread.sleep(20)
     }    
@@ -176,7 +175,13 @@ class ChatBotDefaultService {
     def wh = WebHook.findByHookfrom(url)
     if( !wh || !wh.enabled ) return
     
-    def roomList = ChatRoom.findAll()
+    def roomList = wh.chatroom
+
+    if( roomList ) {
+      roomList = ChatRoom.findByName roomList
+    } else {
+      roomList = ChatRoom.findAll()
+    }
 
     roomList.each { room ->
       def to = room.id as String
