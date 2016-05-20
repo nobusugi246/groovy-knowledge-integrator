@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled
 class FeedCrawlerService {
 
   @Scheduled(fixedRate=60000L)
-  def updateCrawlers() {
+  void updateCrawlers() {
     log.info 'update crawler config...'
   }
 }

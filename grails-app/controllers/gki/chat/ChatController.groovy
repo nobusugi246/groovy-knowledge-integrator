@@ -11,6 +11,7 @@ class ChatController {
 
   def chatService
   def chatBotDefaultService
+  def feedCrawlerService
 
   def jsonSlurper = new JsonSlurper()
   
