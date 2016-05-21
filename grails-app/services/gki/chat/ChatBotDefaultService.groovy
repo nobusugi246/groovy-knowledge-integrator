@@ -136,7 +136,7 @@ class ChatBotDefaultService {
 
     whList.each { wh ->
       replyMessage message.username,
-                   "WebHook '${wh.hookname}' (${wh.hookfrom}) が有効です。"
+                   "WebHook '${wh.hookName}' (${wh.hookFrom}) が有効です。"
     }
 
     fcList.each { crawler ->
@@ -178,7 +178,7 @@ class ChatBotDefaultService {
     def url = payload.repository.html_url
 
     log.info url
-    def wh = WebHook.findByHookfrom(url)
+    def wh = WebHook.findByHookFrom(url)
     if( !wh || !wh.enabled ) return
     
     def roomList = wh.chatroom
@@ -193,51 +193,51 @@ class ChatBotDefaultService {
       def to = room.id as String
 
       if( payload.pusher ) {
-        replyMessage to, "レポジトリに Pushされました。", true, wh.hookname
+        replyMessage to, "レポジトリに Pushされました。", true, wh.hookName
       } else if( payload.issue ) {
         if( payload.action == 'opened' ) {
-          replyMessage to, "レポジトリに Issueが作成されました。", true, wh.hookname
+          replyMessage to, "レポジトリに Issueが作成されました。", true, wh.hookName
         } else if( payload.action == 'closed' ) {
-          replyMessage to, "レポジトリの Issueがクローズされました。", true, wh.hookname
+          replyMessage to, "レポジトリの Issueがクローズされました。", true, wh.hookName
         } else if( payload.action == 'reopened' ) {
-          replyMessage to, "レポジトリの Issueが再開されました。", true, wh.hookname
+          replyMessage to, "レポジトリの Issueが再開されました。", true, wh.hookName
         } else if( payload.action == 'created' && payload.comment ) {
-          replyMessage to, "レポジトリの Issueにコメントが追加されました。", true, wh.hookname
+          replyMessage to, "レポジトリの Issueにコメントが追加されました。", true, wh.hookName
         }
       } else if( payload.pull_request ) {
         if( payload.action == 'opened' ) {
-          replyMessage to, "レポジトリに Pull Requestが作成されました。", true, wh.hookname
+          replyMessage to, "レポジトリに Pull Requestが作成されました。", true, wh.hookName
         } else if( payload.action == 'closed' ) {
-          replyMessage to, "レポジトリの Pull Requestがクローズされました。", true, wh.hookname
+          replyMessage to, "レポジトリの Pull Requestがクローズされました。", true, wh.hookName
         } else if( payload.action == 'reopened' ) {
-          replyMessage to, "レポジトリの Pull Requestが再開されました。", true, wh.hookname
+          replyMessage to, "レポジトリの Pull Requestが再開されました。", true, wh.hookName
         }
       }
 
-      replyMessage to, "repository: <a href='${url}'>${url}</a>", true, wh.hookname
+      replyMessage to, "repository: <a href='${url}'>${url}</a>", true, wh.hookName
 
       if( payload.pusher ) {
-        replyMessage to, "ref: ${payload.ref}", true, wh.hookname
+        replyMessage to, "ref: ${payload.ref}", true, wh.hookName
       }
 
       if( payload.issue ) {
         def issueurl = "${url}/issues/${payload.issue.number}"
-        replyMessage to, "issue: <a href='${issueurl}'>No. ${payload.issue.number}</a>", true, wh.hookname
-        replyMessage to, "title: ${payload.issue.title}", true, wh.hookname
+        replyMessage to, "issue: <a href='${issueurl}'>No. ${payload.issue.number}</a>", true, wh.hookName
+        replyMessage to, "title: ${payload.issue.title}", true, wh.hookName
       }
 
       if( payload.pull_request ) {
         def prurl = "${url}/pull/${payload.pull_request.number}"
-        replyMessage to, "pull request: <a href='${prurl}'>No. ${payload.pull_request.number}</a>", true, wh.hookname
-        replyMessage to, "title: ${payload.pull_request.title}", true, wh.hookname
+        replyMessage to, "pull request: <a href='${prurl}'>No. ${payload.pull_request.number}</a>", true, wh.hookName
+        replyMessage to, "title: ${payload.pull_request.title}", true, wh.hookName
       }
 
       if( payload.comment ) {
-        replyMessage to, "comment: ${payload.comment.body}", true, wh.hookname
+        replyMessage to, "comment: ${payload.comment.body}", true, wh.hookName
       }
 
       if( payload.sender ) {
-        replyMessage to, "by : ${payload.sender.login}", true, wh.hookname
+        replyMessage to, "by : ${payload.sender.login}", true, wh.hookName
       }
     }
   }

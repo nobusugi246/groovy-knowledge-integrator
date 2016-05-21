@@ -4,14 +4,14 @@ import groovy.transform.ToString
 
 @ToString(includeNames=true)
 class WebHook {
-  String hookname = ''
-  String hookfrom = ''
+  String hookName = ''
+  String hookFrom = ''
   String chatroom = ''
   boolean enabled = true
 
   static constraints = {
-    hookname blank: false, editable: true
-    hookfrom blank: false, editable: true
+    hookName blank: false, editable: true
+    hookFrom blank: false, editable: true
     chatroom blank: true, editable: true, nullable: true
     enabled editable: true
   }

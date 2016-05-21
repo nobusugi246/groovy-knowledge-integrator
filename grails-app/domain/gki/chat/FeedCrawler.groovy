@@ -8,7 +8,7 @@ class FeedCrawler {
   String url = ''
   String chatroom = ''
   String lastFeed = ''
-  Long cycle = 30  // in min.
+  Long interval = 30  // in min.
   Long countdown = 0
   boolean enabled = true
 
@@ -16,8 +16,8 @@ class FeedCrawler {
     name blank: false, editable: true
     url blank: false, editable: true
     chatroom blank: true, editable: true, nullable: true
-    lastFeed editable: false, maxSize: 102400, blank: true, nullable: true, display: false
-    cycle editable: true
+    lastFeed editable: false, blank: true, nullable: true
+    interval editable: true
     countdown editable: false, display: false
     enabled editable: true
   }
