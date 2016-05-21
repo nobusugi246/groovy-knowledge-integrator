@@ -21,7 +21,7 @@ class ChatUser {
     role inList: ["Admin", "User"]
     chatroom editable: false
     created editable: false
-    heartbeatCount editable: false
+    heartbeatCount editable: false, display: false
     enabled editable: true
   }
 }

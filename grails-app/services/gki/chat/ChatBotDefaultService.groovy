@@ -26,7 +26,7 @@ class ChatBotDefaultService {
      { makeChatRoom(this.message) }],
     ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /deleteChatRoom .+/,
      { deleteChatRoom(this.message) }],
-    ['users', '接続している全ユーザと、有効な WebHookのリストを表示', /users/,
+    ['users', '接続している全ユーザと、有効な WebHook, FeedCrawlerのリストを表示', /users/,
      { displayAllConnectedUsers() }],
     ['info', 'Spring Boot Actuatorの infoを表示', /info/,
      { actuator() }],
@@ -123,19 +123,25 @@ class ChatBotDefaultService {
   void displayAllConnectedUsers() {
     def userList = ChatUser.findAllWhere(enabled: true)
     def whList = WebHook.findAllWhere(enabled: true)
+    def fcList = FeedCrawler.findAllWhere(enabled: true)
 
     replyMessage message.username,
-                 "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size},です。"
+                 "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size}, FeedCrawlerは ${fcList.size} です。"
 
     userList.each { user ->
       def chatroom = ChatRoom.get(user.chatroom)
       replyMessage message.username,
-                   "${user.username}さんが '${chatroom.name}' にいます。"
+                   "${user.username}さんは '${chatroom.name}' にいます。"
     }
 
     whList.each { wh ->
       replyMessage message.username,
                    "WebHook '${wh.hookname}' (${wh.hookfrom}) が有効です。"
+    }
+
+    fcList.each { crawler ->
+      replyMessage message.username,
+                   "FeedCrawler '${crawler.name}' (${crawler.url}) が有効です。"
     }
   }
 
