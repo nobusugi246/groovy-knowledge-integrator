@@ -40,7 +40,7 @@ class ChatRoomControllerSpec extends Specification {
             controller.save(chatRoom)
 
         then:"The create view is rendered again with the correct model"
-            model.chatRoom!= null
+            model.chatRoom != null
             view == 'create'
 
         when:"The save action is executed with a valid instance"

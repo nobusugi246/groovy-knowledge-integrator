@@ -17,6 +17,6 @@ class FeedCrawlerServiceSpec extends Specification {
 
   void "test initialisation"() {
   expect:
-  controller != null
+    service != null
   }
 }
