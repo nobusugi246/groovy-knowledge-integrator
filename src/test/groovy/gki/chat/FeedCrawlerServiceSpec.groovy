@@ -9,14 +9,14 @@ import spock.lang.Specification
 @TestFor(FeedCrawlerService)
 class FeedCrawlerServiceSpec extends Specification {
 
-    def setup() {
-    }
+  def setup() {
+  }
 
-    def cleanup() {
-    }
+  def cleanup() {
+  }
 
-    void "test something"() {
-        expect:"fix me"
-            true == false
-    }
+  void "test initialisation"() {
+  expect:
+  controller != null
+  }
 }
