@@ -17,7 +17,7 @@ This is a Chat Application builded by Grails Ver.3.1.
 
 . Chatbot by groovy language.
 ** Now only embedded one. It will be connected with other microservices of bots.
-** Displays Spring Boot Actuator info/health/metrics of this Chat Server.
+** Displays Spring Boot Actuator info / health / metrics of this Chat Server.
 . Accepts Github webhooks.
 ** Now tested by Gitbucket's webhooks.
 ** Payload URL (ex. http://localhost:8080/chat/webhook/) with
