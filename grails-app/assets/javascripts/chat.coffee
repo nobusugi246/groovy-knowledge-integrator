@@ -262,6 +262,9 @@ connect = () ->
         onConnect(frame)
 
     # WebSocket DisConnected
+    socket.disconnect {}, (frame) ->
+        onDisconnect(frame)
+
     client.disconnect {}, (frame) ->
         onDisconnect(frame)
 
