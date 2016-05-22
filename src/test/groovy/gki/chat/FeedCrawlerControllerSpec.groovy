@@ -10,9 +10,21 @@ class FeedCrawlerControllerSpec extends Specification {
     def populateValidParams(params) {
         assert params != null
 
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-        assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
+        //        String name = ''
+        //        String url = ''
+        //        String chatroom = ''
+        //        String lastFeed = ''
+        //        Long interval = 30  // in min.
+        //        Long countdown = 0
+        //        boolean enabled = true
+
+        params['name'] = 'abc123'
+        params['url'] = 'http://def456.com'
+        params['chatroom'] = 'ghi789'
+        params['lastFeed'] = '2010-10-10T11:22:33Z'
+        params['interval'] = 30
+        params['countdown'] = 3
+        params['enabled'] = true
     }
 
     void "Test the index action returns the correct model"() {

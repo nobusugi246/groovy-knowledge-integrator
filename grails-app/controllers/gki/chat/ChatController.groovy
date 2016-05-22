@@ -52,7 +52,7 @@ class ChatController {
 
   @MessageMapping("/heartbeat")
   protected String heartbeatCount(ChatMessage message) {
-    log.info "heartbeat: ${message}"
+    log.debug "heartbeat: ${message}"
     chatService.heartbeatCount(message)
   }
 

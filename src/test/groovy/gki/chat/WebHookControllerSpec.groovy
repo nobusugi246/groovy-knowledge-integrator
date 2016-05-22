@@ -10,9 +10,15 @@ class WebHookControllerSpec extends Specification {
     def populateValidParams(params) {
         assert params != null
 
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-        assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
+        //        String hookName = ''
+        //        String hookFrom = ''
+        //        String chatroom = ''
+        //        boolean enabled = true
+
+        params['hookName'] = 'abc123'
+        params['hookFrom'] = 'http://def456.com'
+        params['chatroom'] = 'test'
+        params['enabled'] = true
     }
 
     void "Test the index action returns the correct model"() {
