@@ -33,15 +33,15 @@ class FeedCrawlerSpec extends Specification {
         when:
         def feed = new FeedCrawler(name: '√①№〜㈱ⅲ', url: 'http://√①№〜㈱ⅲ',
                                    chatroom: '髙低薫', lastFeed: '2010-10-10T11:22:33Z',
-                                   interval: 3, countdown:)
+                                   interval: 3, countdown: 2, enabled: false)
 
         then:
         feed.name == '√①№〜㈱ⅲ'
         feed.url == 'http://√①№〜㈱ⅲ'
         feed.chatroom == '髙低薫'
         feed.lastFeed == '2010-10-10T11:22:33Z'
-        feed.interval == 30
-        feed.countdown == 0
-        feed.enabled == true
+        feed.interval == 3
+        feed.countdown == 2
+        feed.enabled == false
     }
 }
