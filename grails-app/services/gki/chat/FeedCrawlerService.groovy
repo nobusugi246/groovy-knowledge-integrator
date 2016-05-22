@@ -30,28 +30,38 @@ class FeedCrawlerService {
                                   requestProperties: ['User-Agent': 'groovy Knowledge Integrator'])
 
         def feed = new XmlSlurper().parseText(content)
-        def rss = new XmlSlurper().parseText(content)
 
         def feedTimestamp
         if( feed.updated.text() ) feedTimestamp = feed.updated.text()
-        else if( rss.channel.lastBuildDate.text() ) feedTimestamp = rss.channel.lastBuildDate.text()
+        else if( feed.channel.lastBuildDate.text() ) feedTimestamp = feed.channel.lastBuildDate.text()
+        else if( feed.channel.date.text() ) feedTimestamp = feed.channel.date.text()
 
         if( crawler.lastFeed < feedTimestamp ) {
           if( feed.entry.title.text() ) {
             // atom
             feed.entry.each { fd ->
-              if( crawler.lastFeed < fd.updated.text() ) {
-                def time = fd.updated.text()
+              def time = fd.updated.text()
+              if( crawler.lastFeed < time ) {
                 def reply = "<a href='${fd.link.@href.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
 
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
               }
             }
-          } else if( rss.channel.item.title.text() ) {
+          } else if( feed.channel.item.title.text() ) {
             // rss
-            rss.channel.item.each { fd ->
-              if( crawler.lastFeed < fd.pubDate.text() ) {
-                def time = fd.pubDate.text()
+            feed.channel.item.each { fd ->
+              def time = fd.pubDate.text()
+              if( crawler.lastFeed < time ) {
+                def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
+
+                sendMessageByChatroom crawler.chatroom, reply, crawler.name
+              }
+            }
+          } else if( feed.channel.title.text() ) {
+            // rdf
+            feed.item.each { fd ->
+              def time = fd.date.text()
+              if( crawler.lastFeed < time ) {
                 def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
 
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
