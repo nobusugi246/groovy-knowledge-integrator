@@ -36,36 +36,55 @@ class FeedCrawlerService {
         else if( feed.channel.lastBuildDate.text() ) feedTimestamp = feed.channel.lastBuildDate.text()
         else if( feed.channel.date.text() ) feedTimestamp = feed.channel.date.text()
 
+        if( !crawler.lastFeed ) {
+          sendMessageByChatroom crawler.chatroom,
+                                "新しい Feedが登録されました。 ${crawler.url}",
+                                crawler.name
+          sendMessageByChatroom crawler.chatroom,
+                                "最新のメッセージは以下です。",
+                                crawler.name
+        }
+
         if( crawler.lastFeed < feedTimestamp ) {
+          int index = 0
           if( feed.entry.title.text() ) {
             // atom
             feed.entry.each { fd ->
+              if( !crawler.lastFeed && index != 0 ) return
+
               def time = fd.updated.text()
               if( crawler.lastFeed < time ) {
                 def reply = "<a href='${fd.link.@href.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
 
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
               }
+              index++
             }
           } else if( feed.channel.item.title.text() ) {
             // rss
             feed.channel.item.each { fd ->
+              if( !crawler.lastFeed && index != 0 ) return
+
               def time = fd.pubDate.text()
               if( crawler.lastFeed < time ) {
                 def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
 
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
               }
+              index++
             }
           } else if( feed.channel.title.text() ) {
             // rdf
             feed.item.each { fd ->
+              if( !crawler.lastFeed && index != 0 ) return
+
               def time = fd.date.text()
               if( crawler.lastFeed < time ) {
                 def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
 
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
               }
+              index++
             }
           }
           

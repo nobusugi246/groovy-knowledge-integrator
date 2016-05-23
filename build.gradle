@@ -14,11 +14,11 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
         classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.8.2'
         classpath 'com.bertramlabs.plugins:coffee-asset-pipeline:2.8.2'
-        classpath 'org.grails.plugins:hibernate4:5.0.6'
+        classpath 'org.grails.plugins:hibernate5:5.0.6'
     }
 }
 
-version '0.1.6'
+version '0.1.7'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'

@@ -22,9 +22,9 @@ class ChatBotDefaultService {
   def commandList = [
     ['hello', '利用方法の説明(このメッセージ)', /(こんにちは|今日は|hello|help)/,
      { hello(this.message.username) }],
-    ['makeChatRoom <ChatRoom名>', 'ChatRoomの作成', /makeChatRoom .+/,
+    ['makeChatRoom <ChatRoom名>', 'ChatRoomの作成', /(makeChatRoom .+|mcr .+)/,
      { makeChatRoom(this.message) }],
-    ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /deleteChatRoom .+/,
+    ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /(deleteChatRoom .+|dcr .+)/,
      { deleteChatRoom(this.message) }],
     ['users', '接続している全ユーザと、有効な WebHook, FeedCrawlerのリストを表示', /users/,
      { displayAllConnectedUsers() }],
