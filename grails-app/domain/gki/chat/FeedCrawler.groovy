@@ -14,7 +14,7 @@ class FeedCrawler {
 
   static constraints = {
     name blank: false, editable: true
-    url blank: false, editable: true
+    url blank: false, editable: true, maxSize: 1024
     chatroom blank: true, editable: true, nullable: true
     lastFeed editable: false, blank: true, nullable: true
     interval editable: true

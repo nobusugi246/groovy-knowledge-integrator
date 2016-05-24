@@ -1,6 +1,7 @@
 buildscript {
     ext {
         grailsVersion = project.grailsVersion
+        assetPipelineVersion = project.assetPipelineVersion
     }
     repositories {
         maven { url 'https://repo.grails.org/grails/core' }
@@ -12,9 +13,9 @@ buildscript {
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
 
         classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
-        classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.8.2'
-        classpath 'com.bertramlabs.plugins:coffee-asset-pipeline:2.8.2'
-        classpath 'org.grails.plugins:hibernate5:5.0.6'
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:${assetPipelineVersion}"
+        classpath "com.bertramlabs.plugins:coffee-asset-pipeline:${assetPipelineVersion}"
+        classpath "org.grails.plugins:hibernate5:5.0.7"
     }
 }
 
@@ -103,7 +104,7 @@ dependencies {
 
     profile 'org.grails.profiles:web:3.1.7'
 
-    runtime 'com.bertramlabs.plugins:asset-pipeline-grails:2.8.2'
+    runtime "com.bertramlabs.plugins:asset-pipeline-grails:${assetPipelineVersion}"
     runtime 'com.h2database:h2'
 
     testCompile 'org.grails:grails-plugin-testing'

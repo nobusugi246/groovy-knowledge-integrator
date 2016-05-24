@@ -18,7 +18,7 @@ class ChatMessage {
   static constraints = {
     username editable: true
     chatroom editable: true
-    text editable: true
+    text editable: true, maxSize: 1024
     status editable: true, nullable: true, display: false
     date editable: false
     time editable: false
