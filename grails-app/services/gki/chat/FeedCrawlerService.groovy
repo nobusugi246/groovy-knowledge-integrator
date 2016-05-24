@@ -45,52 +45,52 @@ class FeedCrawlerService {
                                 crawler.name
         }
 
-        if( crawler.lastFeed < feedTimestamp ) {
-          int index = 0
-          if( feed.entry.title.text() ) {
-            // atom
-            feed.entry.each { fd ->
-              if( !crawler.lastFeed && index != 0 ) return
+        def sendFlag = true
+        def nextLastFeed = ''
+        if( feed.entry.title.text() ) {
+          // atom
+          feed.entry.each { fd ->
+            def time = fd.updated.text()
+            if( !nextLastFeed ) nextLastFeed = fd.link.@href.text()
 
-              def time = fd.updated.text()
-              if( crawler.lastFeed < time ) {
-                def reply = "<a href='${fd.link.@href.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
-
-                sendMessageByChatroom crawler.chatroom, reply, crawler.name
-              }
-              index++
+            if( !crawler.lastFeed ) crawler.lastFeed = nextLastFeed
+            else if( crawler.lastFeed == fd.link.@href.text() ) sendFlag = false
+            if (sendFlag) {
+              def reply = "<a href='${fd.link.@href.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
+              sendMessageByChatroom crawler.chatroom, reply, crawler.name
             }
-          } else if( feed.channel.item.title.text() ) {
-            // rss
-            feed.channel.item.each { fd ->
-              if( !crawler.lastFeed && index != 0 ) return
-
-              def time = fd.pubDate.text()
-              if( crawler.lastFeed < time ) {
-                def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
-
-                sendMessageByChatroom crawler.chatroom, reply, crawler.name
-              }
-              index++
-            }
-          } else if( feed.channel.title.text() ) {
-            // rdf
-            feed.item.each { fd ->
-              if( !crawler.lastFeed && index != 0 ) return
-
-              def time = fd.date.text()
-              if( crawler.lastFeed < time ) {
-                def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
-
-                sendMessageByChatroom crawler.chatroom, reply, crawler.name
-              }
-              index++
-            }
+            if( crawler.lastFeed == fd.link.@href.text() ) sendFlag = false
           }
-          
-          crawler.lastFeed = feedTimestamp
-        }
+        } else if( feed.channel.item.title.text() ) {
+          // rss
+          feed.channel.item.each { fd ->
+            def time = fd.pubDate.text()
+            if( !nextLastFeed ) nextLastFeed = fd.link.text()
 
+            if( !crawler.lastFeed ) crawler.lastFeed = nextLastFeed
+            else if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+            if (sendFlag) {
+              def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
+              sendMessageByChatroom crawler.chatroom, reply, crawler.name
+            }
+            if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+          }
+        } else if( feed.channel.title.text() ) {
+          // rdf
+          feed.item.each { fd ->
+            def time = fd.date.text()
+            if( !nextLastFeed ) nextLastFeed = fd.link.text()
+
+            if( !crawler.lastFeed ) crawler.lastFeed = nextLastFeed
+            else if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+            if (sendFlag) {
+              def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
+              sendMessageByChatroom crawler.chatroom, reply, crawler.name
+            }
+            if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+          }
+        }
+        crawler.lastFeed = nextLastFeed
         crawler.countdown = crawler.interval
         crawler.save()
       }
