@@ -69,7 +69,7 @@ Apache License Version 2.0
 
 == ChangLog / 変更履歴
 
-* Ver.0.1.8, . : 2016-05-24
+* Ver.0.1.8, Fix #6, #8. : 2016-05-24
 
 * Ver.0.1.7, View only last one item when feed added. : 2016-05-23
 
