@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-version '0.1.8'
+version '0.1.9'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'

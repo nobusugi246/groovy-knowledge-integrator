@@ -10,7 +10,8 @@ import java.text.SimpleDateFormat
 @Slf4j
 @Transactional
 class FeedCrawlerService {
-
+  static lazyInit = false
+   
   def chatBotDefaultService
 
   def atomDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")

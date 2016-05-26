@@ -9,7 +9,8 @@ import org.springframework.scheduling.annotation.Scheduled
 @Slf4j
 @Transactional
 class ChatService {
-
+  static lazyInit = false
+   
   def chatBotDefaultService
   
   SimpMessagingTemplate brokerMessagingTemplate
