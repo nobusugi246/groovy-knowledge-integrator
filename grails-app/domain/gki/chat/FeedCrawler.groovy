@@ -16,7 +16,7 @@ class FeedCrawler {
     name blank: false, editable: true
     url blank: false, editable: true, maxSize: 1024
     chatroom blank: true, editable: true, nullable: true
-    lastFeed editable: false, blank: true, nullable: true
+    lastFeed editable: false, blank: true, nullable: true, display: false
     interval editable: true
     countdown editable: false, display: false
     enabled editable: true

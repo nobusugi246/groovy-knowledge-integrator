@@ -2,9 +2,10 @@ package gki.chat
 
 import groovy.util.logging.Slf4j
 import groovy.json.JsonSlurper
+import grails.converters.JSON
 
 import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.SendTo
+import org.springframework.web.bind.annotation.RequestMapping
 
 @Slf4j
 class ChatController {
@@ -15,7 +16,7 @@ class ChatController {
 
   def jsonSlurper = new JsonSlurper()
   
-  def index() { }
+  def index() {}
 
   @MessageMapping("/addUser")
   protected void addUser(ChatMessage message) {
@@ -54,6 +55,19 @@ class ChatController {
   protected String heartbeatCount(ChatMessage message) {
     log.debug "heartbeat: ${message}"
     chatService.heartbeatCount(message)
+  }
+
+
+  def export() {
+    def result = new ChatServiceConf()
+
+    response.setContentType("application/octet-stream")
+    response.setHeader("Content-disposition", "filename=ChatService.conf")
+    response.outputStream << result.asMap() as JSON
+    response.outputStream.flush()
+    response.outputStream.close()
+
+    webRequest.renderView = false
   }
 
 

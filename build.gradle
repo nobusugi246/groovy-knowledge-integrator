@@ -111,7 +111,7 @@ dependencies {
     testCompile 'org.grails.plugins:geb'
 
     testRuntime 'org.seleniumhq.selenium:selenium-htmlunit-driver:2.52.0'
-    testRuntime 'net.sourceforge.htmlunit:htmlunit:2.21'
+    testRuntime 'net.sourceforge.htmlunit:htmlunit:2.22'
 }
 
 task wrapper(type: Wrapper) {
