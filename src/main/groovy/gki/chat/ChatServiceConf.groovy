@@ -23,7 +23,16 @@ class ChatServiceConf {
   }
 
   
-  def asMap(){
-    ['Rooms': rooms, 'Feeds': feeds, 'Hooks': hooks]
+  def asConf(){
+    def conf = new ConfigSlurper().parse('''
+        rooms = []
+        feeds = []
+        hooks = []
+    ''')
+
+    conf.rooms = rooms
+    conf.feeds = feeds
+    conf.hooks = hooks
+    return conf
   }
 }

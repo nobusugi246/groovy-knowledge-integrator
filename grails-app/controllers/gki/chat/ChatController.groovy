@@ -59,15 +59,21 @@ class ChatController {
 
 
   def export() {
+    def tempFile = File.createTempFile("ChatService", ".conf");
+    log.info tempFile.getPath()
+    
     def result = new ChatServiceConf()
 
+    tempFile.withWriter { writer ->
+      result.asConf().writeTo(writer)
+    }
+    
     response.setContentType("application/octet-stream")
     response.setHeader("Content-disposition", "filename=ChatService.conf")
-    response.outputStream << result.asMap() as JSON
+    response.outputStream << tempFile.text
     response.outputStream.flush()
-    response.outputStream.close()
 
-    webRequest.renderView = false
+    tempFile.deleteOnExit()
   }
 
 

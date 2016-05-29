@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-version '0.1.9'
+version '0.1.10'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'
@@ -90,7 +90,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-logging'
     compile 'org.springframework.boot:spring-boot-starter-tomcat'
     compile 'org.springframework.boot:spring-boot-starter-websocket'
-    compile 'org.springframework.boot:spring-boot-devtools'
+//    compile 'org.springframework.boot:spring-boot-devtools'
     compile 'org.grails:grails-core'
     compile 'org.grails:grails-dependencies'
     compile 'org.grails:grails-web-boot'
@@ -124,8 +124,8 @@ assets {
     enableSourceMaps = true
 }
 
-grails {
-    agent {
-        enabled = false
-    }
-}
+//grails {
+//    agent {
+//        enabled = false
+//    }
+//}
