@@ -60,7 +60,7 @@ $ java -jar gki-0.1.9.jar --server.port=8081
 Since Grails Ver.3.1.7, at the Service Class which has a method with @Scheduled Annotation,
 lazyInit should be disabled.
 
-.disable lazyInit at @Scheduled class
+.disable lazyInit
 ====
 [source, groovy]
 ----
