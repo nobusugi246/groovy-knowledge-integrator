@@ -9,21 +9,19 @@ buildscript {
     }
     dependencies {
         classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.0'
-        classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.12.1"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
 
         classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:${assetPipelineVersion}"
         classpath "com.bertramlabs.plugins:coffee-asset-pipeline:${assetPipelineVersion}"
-        classpath "org.grails.plugins:hibernate5:5.0.7"
+        classpath "org.grails.plugins:hibernate5:5.0.8"
     }
 }
 
-version '0.1.10'
+version '0.1.11'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'
-apply plugin: 'com.github.hierynomus.license'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -78,12 +76,6 @@ stats {
     ]
 }
 
-license {
-    ignoreFailures true
-    header rootProject.file('LICENSE.txt')
-    excludes(["**/*.txt", "**/*.conf", "**/*.properties"])
-}
-
 dependencies {
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
@@ -102,7 +94,7 @@ dependencies {
 
     console 'org.grails:grails-console'
 
-    profile 'org.grails.profiles:web:3.1.7'
+    profile 'org.grails.profiles:web:3.1.8'
 
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:${assetPipelineVersion}"
     runtime 'com.h2database:h2'
