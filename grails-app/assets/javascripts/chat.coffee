@@ -99,6 +99,7 @@ $('#chatRoomSelected').on 'change', (event) ->
     stompClient.send "/app/updateUser", {}, JSON.stringify(message)
     stompClient.send "/app/log", {}, JSON.stringify(message)
     $('#chatMessage').focus()
+    $("a[title='Go to today']").click()
 
 
 # send chat message
