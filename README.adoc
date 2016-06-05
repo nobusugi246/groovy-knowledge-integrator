@@ -95,7 +95,7 @@ Apache License Version 2.0
 
 == ChangLog / 変更履歴
 
-* Ver.0.1.12, . : 2016-06-
+* Ver.0.1.12, Fix #13, #14, #15. : 2016-06-05
 
 * Ver.0.1.11, Upgrade to Grails 3.1.8, fix #11. : 2016-06-01
 
