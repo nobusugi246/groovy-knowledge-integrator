@@ -28,6 +28,10 @@ class ChatBotDefaultService {
      { deleteChatRoom(this.message) }],
     ['users', '接続している全ユーザと、有効な WebHook, FeedCrawlerのリストを表示', /users/,
      { displayAllConnectedUsers() }],
+    ['addHook <WebHook名> <URL> [<Char Room>]', 'WebHookを追加する', /addHook.*/,
+     { addHook(this.message) }],
+    ['addFeed <Feed名> <URL> [<Char Room> <Interval>]', 'Feedを追加する', /addFeed.*/,
+     { addFeed(this.message) }],
     ['info', 'Spring Boot Actuatorの infoを表示', /info/,
      { actuator() }],
     ['health', 'Spring Boot Actuatorの healthを表示', /health/,
@@ -74,7 +78,6 @@ class ChatBotDefaultService {
 
 
   void makeChatRoom(ChatMessage message) {
-    this.message = message
     def words = message.text.split(' ')
     if ( words.size() != 2) {
       replyMessage message.chatroom,
@@ -97,7 +100,6 @@ class ChatBotDefaultService {
   
   
   void deleteChatRoom(ChatMessage message) {
-    this.message = message
     def words = message.text.split(' ')
     if ( words.size() != 2) {
       replyMessage message.chatroom,
@@ -141,8 +143,58 @@ class ChatBotDefaultService {
 
     fcList.each { crawler ->
       replyMessage message.username,
-                   "FeedCrawler '${crawler.name}' (${crawler.url}) が有効です。"
+                   "Feed '${crawler.name}' (${crawler.url}) が有効です。"
     }
+  }
+
+  
+  void addHook(ChatMessage message) {
+    def words = message.text.split(' ').toList()
+
+    if( words.size() <= 2 ) {
+      replyMessage message.username,
+                   XmlUtil.escapeXml("addHook <WebHook名> <URL> [<Char Room>] と入力してください。")
+      return
+    }
+
+    if( WebHook.findByHookName(words[1]) ) {
+      replyMessage message.username,
+              "すでに ${words[1]} という WebHook は登録されています。"
+      return
+    }
+
+    if( words.size() == 3 ){
+      words << ChatRoom.get(message.chatroom as long).name
+    }
+
+    new WebHook(hookName: words[1], hookFrom: words[2], chatroom: words[3]).save()
+  }
+
+
+  void addFeed(ChatMessage message) {
+    def words = message.text.split(' ').toList()
+
+    if( words.size() <= 2 ) {
+      replyMessage message.username,
+              XmlUtil.escapeXml("addFeed <Feed名> <URL> [<Char Room> <Interval>] と入力してください。")
+      return
+    }
+
+    if( FeedCrawler.findByName(words[1]) ) {
+      replyMessage message.username,
+              "すでに ${words[1]} という Feed は登録されています。"
+      return
+    }
+
+    if( words.size() == 3 ){
+      words << ChatRoom.get(message.chatroom as long).name
+    }
+
+    if( words.size() == 4 ){
+      words << 30
+    }
+
+    new FeedCrawler(name: words[1], url: words[2], chatroom: words[3], interval: words[4]).save()
   }
 
 
@@ -237,8 +289,10 @@ class ChatBotDefaultService {
       }
 
       if( payload.sender ) {
-        replyMessage to, "by : ${payload.sender.login}", true, wh.hookName
+        replyMessage to, "by: ${payload.sender.login}", true, wh.hookName
       }
+
+      replyMessage to, "<hr/>", true, wh.hookName
     }
   }
 
