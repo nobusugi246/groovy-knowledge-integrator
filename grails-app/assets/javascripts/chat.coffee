@@ -227,7 +227,7 @@ onReceiveChatRoom = (message) ->
     
     
 # WebSocket connect eventhandler
-onConnect = (frame) ->
+onConnect = () ->
     subscribeAll()
 
     $('#wsstatus').removeClass 'label-danger'
@@ -245,7 +245,7 @@ onConnect = (frame) ->
         
 
 # WebSocket disconnect eventhandler
-onDisconnect = (frame) ->
+onDisconnect = () ->
     $('#wsstatus').removeClass 'label-info'
     $('#wsstatus').addClass 'label-danger'
     $('#wsstatus').html 'OffLine'
@@ -258,17 +258,12 @@ connect = () ->
     client = Stomp.over socket
 
     # WebSocket Connected
-    client.connect {}, (frame) ->
+    client.connect {}, () ->
         stompClient = client
         stompClient.debug = null
-        onConnect(frame)
-
-    # WebSocket DisConnected
-    socket.disconnect {}, (frame) ->
-        onDisconnect(frame)
-
-    client.disconnect {}, (frame) ->
-        onDisconnect(frame)
+        onConnect()
+    , () ->
+        onDisconnect()
 
     
 # initialize display
