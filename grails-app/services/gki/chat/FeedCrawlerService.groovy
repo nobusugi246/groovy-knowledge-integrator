@@ -99,13 +99,18 @@ class FeedCrawlerService {
             if( crawler.lastFeed == fd.link.text() ) sendFlag = false
           }
         }
-        crawler.lastFeed = nextLastFeed
-        crawler.countdown = crawler.interval
-        crawler.save()
+
+        if( crawler ) {
+          crawler.lastFeed = nextLastFeed
+          crawler.countdown = crawler.interval
+          crawler.save()
+        }
       }
 
-      crawler.countdown--
-      crawler.save()
+      if( crawler ) {
+        crawler.countdown--
+        crawler.save()
+      }
     }
     
     log.info 'update crawlers ... done'
