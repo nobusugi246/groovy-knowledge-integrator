@@ -26,19 +26,11 @@ class FeedCrawlerService {
     fcList.each { crawler ->
       if( !crawler.countdown ) {
         def url = crawler.url.toURL()
-        def content
-        def feed
-        
-        try {
-          content = url.getText(connectTimeout: 10000, readTimeout: 10000,
-                                useCaches: false, allowUserInteraction: false,
-                                requestProperties: ['User-Agent': 'groovy Knowledge Integrator'])
+        def content = url.getText(connectTimeout: 10000, readTimeout: 10000,
+                                  useCaches: false, allowUserInteraction: false,
+                                  requestProperties: ['User-Agent': 'groovy Knowledge Integrator'])
 
-          feed = new XmlSlurper().parseText(content)
-        } catch (e) {
-          println e.stackTrace
-          crawler = null
-        }
+        def feed = new XmlSlurper().parseText(content)
 
         def feedTimestamp
         if( feed.updated.text() ) feedTimestamp = feed.updated.text()
@@ -99,18 +91,13 @@ class FeedCrawlerService {
             if( crawler.lastFeed == fd.link.text() ) sendFlag = false
           }
         }
-
-        if( crawler ) {
-          crawler.lastFeed = nextLastFeed
-          crawler.countdown = crawler.interval
-          crawler.save()
-        }
-      }
-
-      if( crawler ) {
-        crawler.countdown--
+        crawler.lastFeed = nextLastFeed
+        crawler.countdown = crawler.interval
         crawler.save()
       }
+
+      crawler.countdown--
+      crawler.save()
     }
     
     log.info 'update crawlers ... done'
