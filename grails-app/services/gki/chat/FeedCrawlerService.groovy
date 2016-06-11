@@ -92,7 +92,7 @@ class FeedCrawlerService {
           }
         }
         crawler.lastFeed = nextLastFeed
-        crawler.countdown = crawler.interval
+        crawler.countdown = (int)(Math.random() * crawler.interval) + 1
         crawler.save()
       }
 
