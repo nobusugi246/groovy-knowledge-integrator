@@ -1,10 +1,15 @@
 package gki.chat
 
 import grails.converters.JSON
-import groovy.util.logging.Slf4j
 import grails.transaction.Transactional
-import org.springframework.messaging.simp.SimpMessagingTemplate
+import groovy.util.logging.Slf4j
 import groovy.xml.XmlUtil
+import org.apache.commons.codec.binary.Base64
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpMethod
+import org.springframework.messaging.simp.SimpMessagingTemplate
+import org.springframework.web.client.RestTemplate
 
 @Slf4j
 @Transactional
@@ -20,24 +25,34 @@ class ChatBotDefaultService {
   ChatMessage message
   
   def commandList = [
-    ['hello', '利用方法の説明(このメッセージ)', /(こんにちは|今日は|hello|help)/,
+    ['hello', '利用方法の説明(このメッセージ)', /(こんにちは|今日は|hello|help|usage)/,
      { hello(this.message.username) }],
     ['makeChatRoom <ChatRoom名>', 'ChatRoomの作成', /(makeChatRoom .+|mcr .+)/,
      { makeChatRoom(this.message) }],
     ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /(deleteChatRoom .+|dcr .+)/,
      { deleteChatRoom(this.message) }],
-    ['users', '接続している全ユーザと、有効な WebHook, FeedCrawlerのリストを表示', /users/,
+    ['users', '接続している全ユーザと、有効な WebHook, FeedCrawler, Jenkins Jobのリストを表示', /users/,
      { displayAllConnectedUsers() }],
     ['addHook <WebHook名> <URL> [<Char Room>]', 'WebHookを追加する', /addHook.*/,
      { addHook(this.message) }],
+    ['deleteHook <WebHook名>', 'WebHookを削除する', /deleteHook.*/,
+     { deleteHook(this.message) }],
     ['addFeed <Feed名> <URL> [<Char Room> <Interval>]', 'Feedを追加する', /addFeed.*/,
      { addFeed(this.message) }],
+    ['deleteFeed <Feed名>', 'Feedを削除する', /deleteFeed.*/,
+     { deleteFeed(this.message) }],
     ['info', 'Spring Boot Actuatorの infoを表示', /info/,
      { actuator() }],
     ['health', 'Spring Boot Actuatorの healthを表示', /health/,
      { actuator() }],
     ['metrics', 'Spring Boot Actuatorの metricsを表示', /metrics/,
-     { actuator() }]
+     { actuator() }],
+    ['addJenkins <Jenkins Job名> <URL> [<Username> <Password>]', 'Jenkins Jobを追加する', /addJenkins.*/,
+     { addJenkins(this.message) }],
+    ['deleteJenkins <Jenkins Job名>', 'Jenkins Jobを削除する', /deleteJenkins.*/,
+     { deleteJenkins(this.message) }],
+    ['build <Jenkins Job名>', 'Jenkins Jobのビルドを依頼する', /build.*/,
+     { buildByJenkins(this.message) }]
   ]
 
   
@@ -78,16 +93,14 @@ class ChatBotDefaultService {
 
 
   void makeChatRoom(ChatMessage message) {
-    def words = message.text.split(' ')
+    def words = message.text.split(/[ \t]+/).toList()
     if ( words.size() != 2) {
       replyMessage message.chatroom,
-                   "${message.username}さん, ChatRoomの指定が正しくありません。",
-                   true
+                   "${message.username}さん, ChatRoomの指定が正しくありません。"
     } else {
       if (ChatRoom.findByName(words[1])) {
         replyMessage message.chatroom,
-                     "${message.username}さん, ChatRoom '${words[1]}'は既にあります。",
-                     true
+                     "${message.username}さん, ChatRoom '${words[1]}'は既にあります。"
       } else {
         new ChatRoom(name: words[1]).save()
         replyMessage message.chatroom,
@@ -100,11 +113,10 @@ class ChatBotDefaultService {
   
   
   void deleteChatRoom(ChatMessage message) {
-    def words = message.text.split(' ')
+    def words = message.text.split(/[ \t]+/).toList()
     if ( words.size() != 2) {
       replyMessage message.chatroom,
-                   "${message.username}さん, ChatRoomの指定が正しくありません。",
-                   true
+                   "${message.username}さん, ChatRoomの指定が正しくありません。"
     } else {
       def target = ChatRoom.findByName(words[1])
       if (target) {
@@ -115,8 +127,7 @@ class ChatBotDefaultService {
         chatService.sendUserList()
       } else {
         replyMessage message.chatroom,
-                     "${message.username}さん, ChatRoom '${words[1]}'は有りません。",
-                     true
+                     "${message.username}さん, ChatRoom '${words[1]}'は有りません。"
       }
     }
   }
@@ -126,9 +137,10 @@ class ChatBotDefaultService {
     def userList = ChatUser.findAllWhere(enabled: true)
     def whList = WebHook.findAllWhere(enabled: true)
     def fcList = FeedCrawler.findAllWhere(enabled: true)
+    def jsList = Jenkins.findAllWhere(enabled: true)
 
     replyMessage message.username,
-                 "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size}, FeedCrawlerは ${fcList.size} です。"
+                 "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size}, FeedCrawlerは ${fcList.size}, Jenkins Jobは ${jsList.size} です。"
 
     userList.each { user ->
       def chatroom = ChatRoom.get(user.chatroom)
@@ -145,11 +157,16 @@ class ChatBotDefaultService {
       replyMessage message.username,
                    "Feed '${crawler.name}' (${crawler.url}) が有効です。"
     }
+
+    jsList.each { jenkins ->
+      replyMessage message.username,
+                   "Jenkins Job '${jenkins.name}' (${jenkins.url}) が有効です。"
+    }
   }
 
   
   void addHook(ChatMessage message) {
-    def words = message.text.split(' ').toList()
+    def words = message.text.split(/[ \t]+/).toList()
 
     if( words.size() <= 2 ) {
       replyMessage message.username,
@@ -159,7 +176,7 @@ class ChatBotDefaultService {
 
     if( WebHook.findByHookName(words[1]) ) {
       replyMessage message.username,
-              "すでに ${words[1]} という WebHook は登録されています。"
+              "すでに '${words[1]}' という WebHook は登録されています。"
       return
     }
 
@@ -168,11 +185,36 @@ class ChatBotDefaultService {
     }
 
     new WebHook(hookName: words[1], hookFrom: words[2], chatroom: words[3]).save()
+
+    if( WebHook.findByHookName(words[1]) ){
+      replyMessage message.chatroom,
+                   XmlUtil.escapeXml("WebHook '${words[1]}' を追加しました。"),
+                   true
+    }
+  }
+
+
+  void deleteHook(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+
+    if( words.size() != 2 ) {
+      replyMessage message.username,
+                   XmlUtil.escapeXml("deleteHook <WebHook名> と入力してください。")
+      return
+    }
+
+    WebHook.findByHookName(words[1]).delete()
+
+    if( !WebHook.findByHookName(words[1]) ){
+      replyMessage message.chatroom,
+                   XmlUtil.escapeXml("WebHook '${words[1]}' を削除しました。"),
+                   true
+    }
   }
 
 
   void addFeed(ChatMessage message) {
-    def words = message.text.split(' ').toList()
+    def words = message.text.split(/[ \t]+/).toList()
 
     if( words.size() <= 2 ) {
       replyMessage message.username,
@@ -182,7 +224,7 @@ class ChatBotDefaultService {
 
     if( FeedCrawler.findByName(words[1]) ) {
       replyMessage message.username,
-              "すでに ${words[1]} という Feed は登録されています。"
+              "すでに '${words[1]}' という Feed は登録されています。"
       return
     }
 
@@ -195,6 +237,31 @@ class ChatBotDefaultService {
     }
 
     new FeedCrawler(name: words[1], url: words[2], chatroom: words[3], interval: words[4]).save()
+
+    if( FeedCrawler.findByName(words[1]) ){
+      replyMessage message.chatroom,
+                   XmlUtil.escapeXml("Feed '${words[1]}' を追加しました。"),
+                   true
+    }
+  }
+
+
+  void deleteFeed(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+
+    if( words.size() != 2 ) {
+      replyMessage message.username,
+              XmlUtil.escapeXml("deleteFeed <Feed名> と入力してください。")
+      return
+    }
+
+    FeedCrawler.findByName(words[1]).delete()
+
+    if( !FeedCrawler.findByName(words[1]) ){
+      replyMessage message.chatroom,
+                   XmlUtil.escapeXml("Feed '${words[1]}' を削除しました。"),
+                   true
+    }
   }
 
 
@@ -223,6 +290,99 @@ class ChatBotDefaultService {
       replyMessage message.username, "${key} : ${value}"
       Thread.sleep(20)
     }
+  }
+
+  
+  void addJenkins(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+
+    if( words.size() != 3 && words.size() != 5 ) {
+      replyMessage message.username,
+                   XmlUtil.escapeXml("addJenkins <Jenkins Job名> <URL> [<Username> <Password>] と入力してください。")
+      return
+    }
+
+    if( Jenkins.findByName(words[1]) ) {
+      replyMessage message.username,
+              "すでに '${words[1]}' という Jenkins Jobは登録されています。"
+      return
+    }
+
+    if( words.size() == 3 ) {
+      words << '' << ''
+    }
+
+    new Jenkins(name: words[1], url: words[2], username: words[3], password: words[4]).save()
+
+    if( Jenkins.findByName(words[1]) ){
+      replyMessage message.chatroom,
+                   XmlUtil.escapeXml("Jenkins Job '${words[1]}' を追加しました。"),
+                   true
+    }
+  }
+
+
+  void deleteJenkins(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+
+    if( words.size() != 2 ) {
+      replyMessage message.username,
+                   XmlUtil.escapeXml("deleteJenkins <Jenkins Job名> と入力してください。")
+      return
+    }
+
+    Jenkins.findByName(words[1]).delete()
+
+    if( !Jenkins.findByName(words[1]) ){
+      replyMessage message.chatroom,
+                   XmlUtil.escapeXml("Jenkins Job '${words[1]}' を削除しました。"),
+                   true
+    }
+  }
+
+
+  void buildByJenkins(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+
+    if( words.size() != 2 ) {
+      replyMessage message.username,
+              XmlUtil.escapeXml("build <Jenkins Job名> と入力してください。")
+      return
+    }
+
+    def target = Jenkins.findByName(words[1])
+
+    if( !target ) {
+      replyMessage message.username,
+              XmlUtil.escapeXml("Jenkins Job '${words[1]}' は有りません。")
+      return
+    }
+
+    def jenkins = new RestTemplate()
+    String url = "${target.url}/build"
+
+    String plainCreds = "${target.username}:${target.password}"
+    byte[] plainCredsBytes = plainCreds.getBytes()
+    byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes)
+    String base64Creds = new String(base64CredsBytes)
+    
+    def headers = new HttpHeaders()
+    headers.add('Authorization', "Basic ${base64Creds}")
+    def request = new HttpEntity<String>(headers)
+
+    try {
+      jenkins.exchange(url, HttpMethod.POST, request, String)
+      //      jenkins.postForObject(url, request, String)
+    } catch (e) {
+      log.error "Exception: ${e.message}"
+      //      replyMessage message.username,
+      //              XmlUtil.escapeXml("Jenkins Job '${url}' の実行に失敗しました: ${e.message}")
+      return
+    }
+
+    replyMessage message.chatroom,
+                 XmlUtil.escapeXml("Jenkins Job '${words[1]}' のビルドを依頼しました。"),
+                 true
   }
   
 

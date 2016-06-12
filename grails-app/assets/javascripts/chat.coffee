@@ -1,7 +1,7 @@
 # WebSocket Stomp Client
 stompClient = {}
 lastUser = {}
-
+lastMessage = ''
 
 # display DateTimePicker inline
 $('#datetimepickerInline').datetimepicker({
@@ -105,7 +105,10 @@ $('#chatRoomSelected').on 'change', (event) ->
 
 # send chat message
 $('#chatMessage').on 'keyup', (event) ->
-    if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
+    console.log event
+    if event.keyCode is 89 and event.ctrlKey is true  # Ctrl + y
+        $('#chatMessage').val lastMessage
+    else if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
         message = {}
         message.text = _.escape($.trim($('#chatMessage').val()))
         message.status = 'fixed'
@@ -115,6 +118,7 @@ $('#chatMessage').on 'keyup', (event) ->
         stompClient.send "/app/message", {}, JSON.stringify(message)
         $('#chatMessage').val ''
         $('#chatMessage').focus()
+        lastMessage = message.text
 
 
 # heartbeat user

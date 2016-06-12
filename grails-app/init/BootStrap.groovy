@@ -1,6 +1,7 @@
 import gki.chat.ChatRoom
 import gki.chat.FeedCrawler
 import gki.chat.WebHook
+import gki.chat.Jenkins
 import groovy.util.logging.Slf4j
 
 @Slf4j
@@ -31,6 +32,14 @@ class BootStrap {
         if( !WebHook.findByHookFrom(hook[1]) ){
           new WebHook(hookName: hook[0], hookFrom: hook[1],
                       chatroom: hook[2], enabled: hook[3]).save()
+        }
+      }
+
+      conf.jenkins.each { jenkins ->
+        if( !Jenkins.findByName(jenkins[0]) ){
+          new Jenkins(name: jenkins[0], url: jenkins[1],
+                      username: jenkins[2], password: jenkins[3],
+                      created: jenkins[4], enabled: jenkins[5]).save()
         }
       }
     } catch (e) {

@@ -3,9 +3,9 @@ package gki.chat
 import grails.test.mixin.*
 import spock.lang.*
 
-@TestFor(ChatRoomController)
-@Mock(ChatRoom)
-class ChatRoomControllerSpec extends Specification {
+@TestFor(JenkinsController)
+@Mock(Jenkins)
+class JenkinsControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
@@ -21,8 +21,8 @@ class ChatRoomControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.chatRoomList
-            model.chatRoomCount == 0
+            !model.jenkinsList
+            model.jenkinsCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -30,7 +30,7 @@ class ChatRoomControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.chatRoom!= null
+            model.jenkins!= null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -38,25 +38,25 @@ class ChatRoomControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
-            def chatRoom = new ChatRoom()
-            chatRoom.validate()
-            controller.save(chatRoom)
+            def jenkins = new Jenkins()
+            jenkins.validate()
+            controller.save(jenkins)
 
         then:"The create view is rendered again with the correct model"
-            model.chatRoom!= null
+            model.jenkins!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            chatRoom = new ChatRoom(params)
+            jenkins = new Jenkins(params)
 
-            controller.save(chatRoom)
+            controller.save(jenkins)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/chatRoom/show/1'
+            response.redirectedUrl == '/jenkins/show/1'
             controller.flash.message != null
-            ChatRoom.count() == 1
+            Jenkins.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -68,11 +68,11 @@ class ChatRoomControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def chatRoom = new ChatRoom(params)
-            controller.show(chatRoom)
+            def jenkins = new Jenkins(params)
+            controller.show(jenkins)
 
         then:"A model is populated containing the domain instance"
-            model.chatRoom == chatRoom
+            model.jenkins == jenkins
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -84,11 +84,11 @@ class ChatRoomControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def chatRoom = new ChatRoom(params)
-            controller.edit(chatRoom)
+            def jenkins = new Jenkins(params)
+            controller.edit(jenkins)
 
         then:"A model is populated containing the domain instance"
-            model.chatRoom == chatRoom
+            model.jenkins == jenkins
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -98,28 +98,28 @@ class ChatRoomControllerSpec extends Specification {
             controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/chatRoom/index'
+            response.redirectedUrl == '/jenkins/index'
             flash.message != null
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def chatRoom = new ChatRoom()
-            chatRoom.validate()
-            controller.update(chatRoom)
+            def jenkins = new Jenkins()
+            jenkins.validate()
+            controller.update(jenkins)
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.chatRoom == chatRoom
+            model.jenkins == jenkins
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            chatRoom = new ChatRoom(params).save(flush: true)
-            controller.update(chatRoom)
+            jenkins = new Jenkins(params).save(flush: true)
+            controller.update(jenkins)
 
         then:"A redirect is issued to the show action"
-            chatRoom != null
-            response.redirectedUrl == "/chatRoom/show/$chatRoom.id"
+            jenkins != null
+            response.redirectedUrl == "/jenkins/show/$jenkins.id"
             flash.message != null
     }
 
@@ -130,23 +130,23 @@ class ChatRoomControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/chatRoom/index'
+            response.redirectedUrl == '/jenkins/index'
             flash.message != null
 
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def chatRoom = new ChatRoom(params).save(flush: true)
+            def jenkins = new Jenkins(params).save(flush: true)
 
         then:"It exists"
-            ChatRoom.count() == 1
+            Jenkins.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(chatRoom)
+            controller.delete(jenkins)
 
         then:"The instance is deleted"
-            ChatRoom.count() == 0
-            response.redirectedUrl == '/chatRoom/index'
+            Jenkins.count() == 0
+            response.redirectedUrl == '/jenkins/index'
             flash.message != null
     }
 }

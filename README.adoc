@@ -89,13 +89,16 @@ Apache License Version 2.0
 * Many thanks to Grails and it's ecosystem.
 ** https://grails.org/
 
+* Very good testing samples for Grails.
+** https://github.com/jeffbrown/testingdemo
+
 * Many thanks to Jdenticon.
 ** https://github.com/dmester/jdenticon
 
 
 == ChangLog / 変更履歴
 
-* Ver.0.1.13, Fix #17, protect from errors while Feed Crawling. : 2016-06-08
+* Ver.0.1.13, Fix #17. : 2016-06-08
 
 * Ver.0.1.12, Fix #13, #14, #15. : 2016-06-05
 

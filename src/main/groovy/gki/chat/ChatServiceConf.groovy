@@ -7,6 +7,7 @@ class ChatServiceConf {
   def rooms = []
   def feeds = []
   def hooks = []
+  def jenkins = []
 
   def ChatServiceConf() {
     this.rooms = ChatRoom.list().collect { room ->
@@ -20,6 +21,11 @@ class ChatServiceConf {
     this.hooks = WebHook.list().collect { hook ->
       [hook.hookName, hook.hookFrom, hook.chatroom, hook.enabled]
     }
+
+    this.jenkins = Jenkins.list().collect { jenkins ->
+      [jenkins.name, jenkins.url, jenkins.username, jenkins.password,
+       jenkins.created, jenkins.enabled]
+    }
   }
 
   
@@ -28,11 +34,14 @@ class ChatServiceConf {
         rooms = []
         feeds = []
         hooks = []
+        jenkins = []
     ''')
 
     conf.rooms = rooms
     conf.feeds = feeds
     conf.hooks = hooks
+    conf.jenkins = jenkins
+
     return conf
   }
 }

@@ -49,6 +49,7 @@ class FeedCrawlerService {
         def sendFlag = true
         def nextLastFeed = ''
         if( feed.entry.title.text() ) {
+          log.info "${crawler.name} as atom"
           // atom
           feed.entry.each { fd ->
             def time = fd.updated.text()
@@ -63,6 +64,7 @@ class FeedCrawlerService {
             if( crawler.lastFeed == fd.link.@href.text() ) sendFlag = false
           }
         } else if( feed.channel.item.title.text() ) {
+          log.info "${crawler.name} as rss"
           // rss
           feed.channel.item.each { fd ->
             def time = fd.pubDate.text()
@@ -77,6 +79,7 @@ class FeedCrawlerService {
             if( crawler.lastFeed == fd.link.text() ) sendFlag = false
           }
         } else if( feed.channel.title.text() ) {
+          log.info "${crawler.name} as rdf"
           // rdf
           feed.item.each { fd ->
             def time = fd.date.text()
