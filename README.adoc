@@ -23,6 +23,7 @@ This is a Chat Application builded by Grails Ver.3.1.
 ** Payload URL (ex. http://localhost:8080/chat/webhook/) with
    Content type "application/x-www-form-urlencoded".
 . Crawls Feeds of Atom / RSS / RDF. If updated, sends them to selected Chat Room.
+. Calls Jenkins to build job.
 . User Icon (Identicon) by Jdenticon.
 . Chat Rooms.
 . Chat log display by selecting a day on Calendar.
@@ -30,14 +31,14 @@ This is a Chat Application builded by Grails Ver.3.1.
 
 == How to run / 実行方法
 
-Download `gki-0.1.13.jar` from
+Download `gki-0.1.14.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run this application
 ====
 ----
-$ java -jar gki-0.1.13.jar
+$ java -jar gki-0.1.14.jar
 ----
 ====
 
@@ -48,7 +49,7 @@ If you want to change port number(ex. 8081), then
 .How to change port number
 ====
 ----
-$ java -jar gki-0.1.13.jar --server.port=8081
+$ java -jar gki-0.1.14.jar --server.port=8081
 ----
 ====
 
@@ -97,6 +98,8 @@ Apache License Version 2.0
 
 
 == ChangLog / 変更履歴
+
+* Ver.0.1.14, Fix #4, #20. : 2016-06-12
 
 * Ver.0.1.13, Fix #17. : 2016-06-08
 
