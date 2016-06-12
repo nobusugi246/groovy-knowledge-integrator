@@ -33,11 +33,11 @@ class ChatBotDefaultService {
      { deleteChatRoom(this.message) }],
     ['users', '接続している全ユーザと、有効な WebHook, FeedCrawler, Jenkins Jobのリストを表示', /users/,
      { displayAllConnectedUsers() }],
-    ['addHook <WebHook名> <URL> [<Char Room>]', 'WebHookを追加する', /addHook.*/,
+    ['addHook <WebHook名> <URL> [<Char Room>]', 'WebHookを登録する', /addHook.*/,
      { addHook(this.message) }],
     ['deleteHook <WebHook名>', 'WebHookを削除する', /deleteHook.*/,
      { deleteHook(this.message) }],
-    ['addFeed <Feed名> <URL> [<Char Room> <Interval>]', 'Feedを追加する', /addFeed.*/,
+    ['addFeed <Feed名> <URL> [<Char Room> <Interval>]', 'Feedを登録する', /addFeed.*/,
      { addFeed(this.message) }],
     ['deleteFeed <Feed名>', 'Feedを削除する', /deleteFeed.*/,
      { deleteFeed(this.message) }],
@@ -47,7 +47,7 @@ class ChatBotDefaultService {
      { actuator() }],
     ['metrics', 'Spring Boot Actuatorの metricsを表示', /metrics/,
      { actuator() }],
-    ['addJenkins <Jenkins Job名> <URL> [<Username> <Password>]', 'Jenkins Jobを追加する', /addJenkins.*/,
+    ['addJenkins <Jenkins Job名> <URL> [<Username> <Password>]', 'Jenkins Jobを登録する', /addJenkins.*/,
      { addJenkins(this.message) }],
     ['deleteJenkins <Jenkins Job名>', 'Jenkins Jobを削除する', /deleteJenkins.*/,
      { deleteJenkins(this.message) }],
@@ -188,7 +188,7 @@ class ChatBotDefaultService {
 
     if( WebHook.findByHookName(words[1]) ){
       replyMessage message.chatroom,
-                   XmlUtil.escapeXml("WebHook '${words[1]}' を追加しました。"),
+                   XmlUtil.escapeXml("WebHook '${words[1]}' を登録しました。"),
                    true
     }
   }
@@ -240,7 +240,7 @@ class ChatBotDefaultService {
 
     if( FeedCrawler.findByName(words[1]) ){
       replyMessage message.chatroom,
-                   XmlUtil.escapeXml("Feed '${words[1]}' を追加しました。"),
+                   XmlUtil.escapeXml("Feed '${words[1]}' を登録しました。"),
                    true
     }
   }
@@ -316,7 +316,7 @@ class ChatBotDefaultService {
 
     if( Jenkins.findByName(words[1]) ){
       replyMessage message.chatroom,
-                   XmlUtil.escapeXml("Jenkins Job '${words[1]}' を追加しました。"),
+                   XmlUtil.escapeXml("Jenkins Job '${words[1]}' を登録しました。"),
                    true
     }
   }
