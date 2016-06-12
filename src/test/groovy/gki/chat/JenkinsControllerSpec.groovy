@@ -10,9 +10,12 @@ class JenkinsControllerSpec extends Specification {
     def populateValidParams(params) {
         assert params != null
 
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-        assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
+        params['name'] = 'abc123'
+        params['url'] = 'http://def456.com'
+        params['username'] = 'ghi789'
+        params['password'] = 'jkl'
+        params['create'] = '2010-10-10'
+        params['enabled'] = true
     }
 
     void "Test the index action returns the correct model"() {
