@@ -1,6 +1,5 @@
 = groovy Knowledge Integrator
 :example-caption: List
-:gki-version: 0.1.15
 
 An application for Knowledge Integration by grails/groovy.
 Now only a Chat Microservice with groovy chatbot system.
@@ -32,14 +31,14 @@ This is a Chat Application builded by Grails Ver.3.1.
 
 == How to run / 実行方法
 
-Download `gki-{gki-version}.jar` from
+Download `gki-0.1.15.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run this application
 ====
 ----
-$ java -jar gki-{gki-version}.jar
+$ java -jar gki-0.1.15.jar
 ----
 ====
 
@@ -50,7 +49,7 @@ If you want to change port number(ex. 8081), then
 .How to change port number
 ====
 ----
-$ java -jar gki-{gki-version}.jar --server.port=8081
+$ java -jar gki-0.1.15.jar --server.port=8081
 ----
 ====
 

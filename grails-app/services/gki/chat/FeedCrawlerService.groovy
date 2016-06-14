@@ -19,7 +19,7 @@ class FeedCrawlerService {
 
   @Scheduled(fixedRate=60000L)
   void updateCrawlers() {
-    log.info 'update crawlers ...'
+    log.info 'update Feeds ...'
 
     def fcList = FeedCrawler.findAllWhere(enabled: true)
 
@@ -104,7 +104,7 @@ class FeedCrawlerService {
       crawler.save()
     }
     
-    log.info 'update crawlers ... done'
+    log.info 'update Feeds ... done'
   }
 
 

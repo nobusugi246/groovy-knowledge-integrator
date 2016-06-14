@@ -105,8 +105,7 @@ $('#chatRoomSelected').on 'change', (event) ->
 
 # send chat message
 $('#chatMessage').on 'keyup', (event) ->
-    console.log event
-    if event.keyCode is 89 and event.ctrlKey is true  # Ctrl + y
+    if event.keyCode is 73 and event.ctrlKey is true  # Ctrl + i
         $('#chatMessage').val lastMessage
     else if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
         message = {}
