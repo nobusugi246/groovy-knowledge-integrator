@@ -67,12 +67,10 @@ lazyInit should be disabled.
 ----
 class xxxx {
   static lazyInit = false
-
 ...
 
   @Scheduled(fixedRate=10000L)
   void yyyy() {
-  
 ...
   }
 }
