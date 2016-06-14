@@ -25,6 +25,7 @@ class FeedCrawlerService {
 
     fcList.each { crawler ->
       if( !crawler.countdown ) {
+        log.info "Feed: ${crawler.name} ..."
         def url = crawler.url.toURL()
         def content = url.getText(connectTimeout: 10000, readTimeout: 10000,
                                   useCaches: false, allowUserInteraction: false,

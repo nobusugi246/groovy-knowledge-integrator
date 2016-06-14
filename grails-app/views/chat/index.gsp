@@ -64,7 +64,7 @@
         <div class="row">
           <div class="col-sm-12">
             <input type="text" id="chatMessage" class="form-control" 
-                   placeholder="  Input chat message..." autofocus>
+                   placeholder="" autofocus>
             </input>
           </div>
         </div>
