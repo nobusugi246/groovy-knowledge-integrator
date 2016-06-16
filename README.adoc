@@ -32,6 +32,16 @@ This is a Chat Application builded by Grails Ver.3.1.
 .Outline
 image::images/about.png[]
 
+この図の矢印は情報の流れを示している。
+
+(1) いわゆるチャットによるコミュニケーション。必要に応じて ChatRoomの作成、削除を行なえる。
+
+(2) プロジェクトで使用しているレポジトリへの変更が、WebHookによりチャットとして表示される。
+
+(3) Jenkinsに定義された Pipelineの実行を、チャットにより指示できる。
+
+(4) 社内に乱立している Redmineプロジェクトの活動状況や、世界中の Blogや NEWSの情報が、
+変化した内容を随時チャットとして表示する。
 
 
 == How to run / 実行方法
