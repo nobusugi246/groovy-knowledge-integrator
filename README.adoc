@@ -29,6 +29,11 @@ This is a Chat Application builded by Grails Ver.3.1.
 . Chat log display by selecting a day on Calendar.
 
 
+.Outline
+image::images/about.png[]
+
+
+
 == How to run / 実行方法
 
 Download `gki-0.1.15.jar` from
