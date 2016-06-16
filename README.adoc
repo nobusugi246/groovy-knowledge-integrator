@@ -23,7 +23,7 @@ This is a Chat Application builded by Grails Ver.3.1.
 ** Payload URL (ex. http://localhost:8080/chat/webhook/) with
    Content type "application/x-www-form-urlencoded".
 . Crawls Feeds of Atom / RSS / RDF. If updated, sends them to selected Chat Room.
-. Calls Jenkins to build job.
+. Calls Jenkins to build Pipeline.
 . User Icon (Identicon) by Jdenticon.
 . Chat Rooms.
 . Chat log display by selecting a day on Calendar.
