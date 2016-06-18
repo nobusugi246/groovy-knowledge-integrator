@@ -13,7 +13,7 @@ class JenkinsControllerSpec extends Specification {
         params['name'] = 'abc123'
         params['url'] = 'http://def456.com'
         params['username'] = 'ghi789'
-        params['password'] = 'jkl'
+        params['password'] = 'jklmno'
         params['created'] = '2010-10-10'
         params['enabled'] = true
     }

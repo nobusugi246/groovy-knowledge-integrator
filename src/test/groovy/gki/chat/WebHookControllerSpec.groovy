@@ -10,11 +10,6 @@ class WebHookControllerSpec extends Specification {
     def populateValidParams(params) {
         assert params != null
 
-        //        String hookName = ''
-        //        String hookFrom = ''
-        //        String chatroom = ''
-        //        boolean enabled = true
-
         params['hookName'] = 'abc123'
         params['hookFrom'] = 'http://def456.com'
         params['chatroom'] = 'test'

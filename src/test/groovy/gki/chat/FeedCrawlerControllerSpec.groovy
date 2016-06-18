@@ -10,14 +10,6 @@ class FeedCrawlerControllerSpec extends Specification {
     def populateValidParams(params) {
         assert params != null
 
-        //        String name = ''
-        //        String url = ''
-        //        String chatroom = ''
-        //        String lastFeed = ''
-        //        Long interval = 30  // in min.
-        //        Long countdown = 0
-        //        boolean enabled = true
-
         params['name'] = 'abc123'
         params['url'] = 'http://def456.com'
         params['chatroom'] = 'ghi789'

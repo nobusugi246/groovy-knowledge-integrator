@@ -375,8 +375,8 @@ class ChatBotDefaultService {
       //      jenkins.postForObject(url, request, String)
     } catch (e) {
       log.error "Exception: ${e.message}"
-      //      replyMessage message.username,
-      //              XmlUtil.escapeXml("Jenkins Job '${url}' の実行に失敗しました: ${e.message}")
+      replyMessage message.username,
+                   XmlUtil.escapeXml("Jenkins Job '${words[1]}' のビルドの依頼に失敗しました: ${e.message}")
       return
     }
 

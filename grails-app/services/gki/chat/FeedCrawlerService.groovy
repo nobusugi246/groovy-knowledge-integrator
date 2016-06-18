@@ -54,45 +54,48 @@ class FeedCrawlerService {
           // atom
           feed.entry.each { fd ->
             def time = fd.updated.text()
-            if( !nextLastFeed ) nextLastFeed = fd.link.@href.text()
+            if( !nextLastFeed ) nextLastFeed = fd.title.text()
 
             if( !crawler.lastFeed ) crawler.lastFeed = nextLastFeed
-            else if( crawler.lastFeed == fd.link.@href.text() ) sendFlag = false
+            else if( crawler.lastFeed == fd.title.text() ) sendFlag = false
+
             if (sendFlag) {
               def reply = "<a href='${fd.link.@href.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
               sendMessageByChatroom crawler.chatroom, reply, crawler.name
             }
-            if( crawler.lastFeed == fd.link.@href.text() ) sendFlag = false
+            if( crawler.lastFeed == fd.title.text() ) sendFlag = false
           }
         } else if( feed.channel.item.title.text() ) {
           log.info "${crawler.name} as rss"
           // rss
           feed.channel.item.each { fd ->
             def time = fd.pubDate.text()
-            if( !nextLastFeed ) nextLastFeed = fd.link.text()
+            if( !nextLastFeed ) nextLastFeed = fd.title.text()
 
             if( !crawler.lastFeed ) crawler.lastFeed = nextLastFeed
-            else if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+            else if( crawler.lastFeed == fd.title.text() ) sendFlag = false
+
             if (sendFlag) {
               def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
               sendMessageByChatroom crawler.chatroom, reply, crawler.name
             }
-            if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+            if( crawler.lastFeed == fd.title.text() ) sendFlag = false
           }
         } else if( feed.channel.title.text() ) {
           log.info "${crawler.name} as rdf"
           // rdf
           feed.item.each { fd ->
             def time = fd.date.text()
-            if( !nextLastFeed ) nextLastFeed = fd.link.text()
+            if( !nextLastFeed ) nextLastFeed = fd.title.text()
 
             if( !crawler.lastFeed ) crawler.lastFeed = nextLastFeed
-            else if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+            else if( crawler.lastFeed == fd.title.text() ) sendFlag = false
+
             if (sendFlag) {
               def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
               sendMessageByChatroom crawler.chatroom, reply, crawler.name
             }
-            if( crawler.lastFeed == fd.link.text() ) sendFlag = false
+            if( crawler.lastFeed == fd.title.text() ) sendFlag = false
           }
         }
         crawler.lastFeed = nextLastFeed
