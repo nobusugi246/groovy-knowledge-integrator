@@ -9,6 +9,7 @@ $('#datetimepickerInline').datetimepicker({
     locale: 'ja'
     showTodayButton: true
     format: 'yyyy-MM-dd'
+    # dayViewHeaderFormat: 'M月 YYYY年'
 })
 
 

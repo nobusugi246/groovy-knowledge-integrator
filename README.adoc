@@ -30,23 +30,23 @@ This is a Chat Application builded by Grails Ver.3.1.
 
 
 .Outline
-image::images/about.png[width=800]
+image::images/about.png[width=750]
 
-この図の矢印は、情報の流れを示している。
+この図の矢印は、情報の流れを示しています。
 
-(1) いわゆるチャットによるコミュニケーション。必要に応じて ChatRoomの作成、削除を行なえる。
+(1) いわゆるチャットによるコミュニケーション。必要に応じて ChatRoomの作成、削除を行なえます。
 
 (2) プロジェクトで使用しているレポジトリ(GitHub, GitLab, GitBucket)の変更や、
-Pull Requestの通知、Issueの追加 / 削除などが、WebHookによりチャットとして表示される。
+Pull Requestの通知、Issueの追加 / 削除などが、WebHookによりチャットとして表示されます。
 
-(3) Jenkinsに定義された Pipelineの実行を、チャットにより指示できる。
+(3) Jenkinsに定義された Pipelineの実行を、チャットにより指示できます。
 
 (4) 社内に乱立している Redmineプロジェクトの活動状況や、世界中の Blogや NEWSの情報、
-GitHubでの開発者の Activity、Jenkinsによるビルド状況などについて、
-変化が随時チャットとして時系列で表示される。
+GitHubでの開発者の Public Activity、Jenkinsによるビルド状況などについて、
+変化が随時チャットとして時系列で表示されます。
 
 これらの活動が、発生順に、時系列に並べられてチャットとして表示される。
-適宜、ChatRoomを作成して振り分けることで、分類し、見通しを良く出来る。
+適宜、ChatRoomを作成して振り分けることで、分類し、見通しを良くできます。
 
 
 == How to run / 実行方法
@@ -72,6 +72,228 @@ If you want to change port number(ex. 8081), then
 $ java -jar gki-0.1.15.jar --server.port=8081
 ----
 ====
+
+
+== How to use / 利用方法
+
+=== 初期表示
+
+ブラウザで http://localhost:8080/chat/index にアクセスします。
+最初のアクセスであれば、以下の様に表示されます。
+
+.初期表示
+image::images/index00.png[]
+
+まず「Your Name」フィールドに名前を記入してください。
+それから Tabキーまたはマウスにより、
+「Chat Message」フィールドにフォーカスを移動してください。
+これにより、次の様にメッセージが表示されます。
+(このメッセージは、新規のユーザが接続したときか、
+`hello` コマンドを送信したときに表示されます。
+そのユーザにのみ表示され、他のユーザには見えません。
+メッセージの永続化(詳細は後述)もされません。)
+
+.名前設定後の表示
+image::images/index01.png[width=800]
+
+「gkibot」は、組み込みの Chatbotです。このチャットシステムを利用するための案内役です。
+表示されるコマンドは、その時点で利用できるものが表示されます。
+
+チャットのメッセージは、以下の様に「Identicon」、「ユーザ名」、「タイムスタンプ」に
+続いて表示されます。同じユーザのメッセージが続く場合は、これらは表示されません。
+
+.Identicon
+image::images/index01a.png[]
+
+「Identicon」は、ユーザを視覚的に判別するためのアイコンです。
+「ユーザ名」の文字列から生成されるため、
+同じユーザ名であれば同じ Identiconが表示されます。
+
+「Your Name」フィールドに記入した名前は、
+「Users in this Chat Room」テーブルに表示されます。
+
+.Chat Roomのユーザ一覧表示
+image::images/index01b.png[]
+
+このテーブルには、この Chat Roomにいるユーザの一覧が表示されます。
+このチャットサーバに接続しているすべてのユーザを知りたい場合は、
+`users` コマンドを実行してください。
+
+「OnLine」表示は、サーバとの接続が切れると、以下の様に「OffLine」と表示されます。
+
+.OffLine表示
+image::images/index02.png[]
+
+一時的に通信が切れただけであれば、ブラウザによるページのリロードにより
+「OnLine」に戻る場合があります。
+それでも「OffLine」のままであれば、サーバの管理者に連絡してください。
+
+
+=== メッセージの送受信、コマンドの実行
+
+「Chat Message」フィールドに文言を入力し、Returnキーを押すことで、
+今いる Chat Roomにメッセージを送信します。
+そのメッセージは、その Chat Roomにいるユーザに送信されます。
+
+メッセージの内容がコマンドの形式に一致した場合、
+コマンドとして実行されます。
+
+メッセージは基本的に永続化(データベースに記録)されます。
+ただし、以下の場合は永続化されません。
+
+. コマンドの応答メッセージで、そのユーザにのみ意味がある場合。
+`hello` / `users` / `info` / `health` / `metrics` など、
+それを実行したときのユーザにのみ意味がある応答メッセージは、
+永続化されません。
+他のユーザにも表示されません。
+. コマンドの実行がエラーにより失敗した場合のエラー返信メッセージ。
+そのコマンドを実行したユーザにはエラーメッセージが返信されますが、
+そのエラーの返信メッセージは永続化されません。
+他のユーザにも表示されません。
+
+また、メッセージの内容が URL(http:// または https:// ではじまる文字列)に一致した場合、
+それはリンクとして表示されます。
+
+==== コマンドの実行例
+
+===== Chat Roomの作成
+
+`makeChatRoom` コマンドを使用します。
+コマンドに続いて、作成したい Chat Roomの名前を記載します。
+その名前にスペースを含めることはできません。
+
+.Chat Roomの作成例(1/2)
+image::images/index04a.png[]
+
+コマンドの実行が成功すれば、
+以下のようにコンボボックスに Chat Roomが追加された一覧として表示されます。
+
+.Chat Roomの作成例(2/2)
+image::images/index04b.png[]
+
+このコンボボックスで Chat Roomを選択することで、
+利用する Chat Roomを変更できます。
+
+
+===== WebHookの登録
+
+基本的な手順は以下です。
+
+. WebHookを表示する Chat Roomを作成します。
+. 作成した Chat Roomに移動し、利用する WebHookを登録します。
+. GibHub / GitLab / GitBucket等で、WebHookの設定を行ないます。
+
+ここでは作成した Chat Roomに移動後の手順を説明します。
+
+`addHook` コマンドを使用します。
+使用方法は、 `hello` コマンドか、 `addHook` とのみ入力することで表示されます。
+`[]` 内の入力は必須ではありません。
+
+.WebHookの登録例(1/4)
+image::images/index04z.png[]
+
+ここでは localhostの GitBucketでの設定を例に説明します。
+以下のように `addHook` コマンドを実行することで、
+この Chat Roomに WebHookのメッセージが表示されるようになります。
+
+.WebHookの登録例(2/4)
+image::images/index04w.png[]
+
+次に、GitBucket側の設定を行ないます。
+以下のように、「Setting」メニューの「Service Hooks」タブを選択します。
+新規の登録であれば、右下の「Add webhook」ボタンを押下します。
+
+.WebHookの登録例(3/4)
+image::images/index04y.png[width=750]
+
+以下のように、それぞれの項目に記入し、「Add webhook」ボタンを押下します。
+
+.WebHookの登録例(4/4)
+image::images/index04x.png[width=750]
+
+
+
+
+
+===== Feedの登録
+
+基本的な手順は以下です。
+
+. Feedを表示する Chat Roomを作成します。
+. 作成した Chat Roomに移動し、利用する Feedを登録します。
+
+ここでは作成した Chat Roomに移動後の手順を説明します。
+
+`addFeed` コマンドを使用します。
+使用方法は、 `hello` コマンドか、 `addFeed` とのみ入力することで表示されます。
+`[]` 内の入力は必須ではありません。
+
+.Feedの登録例(1/3)
+image::images/index04c.png[]
+
+ここでは、Springの Blogを登録します。
+`addFeed` コマンドの記述に問題なければ、gkibotから登録したとの応答があります。
+URLが適切であれば、1分以内に、最初の Feedの表示が登録した Feed名によりされます。
+
+.Feedの登録例(2/3)
+image::images/index04d.png[]
+
+最新の Feedが 1件表示されます。
+タイムスタンプは、Feedに付加されていたものです。
+以後は、これよりも新しい Feedが追加されたときに、追加分がチャットとして表示されます。
+この追加の確認は、一定間隔で実行されます。その間隔はデフォルトでは 30分です。
+
+この間隔を変更する場合は、以下のようにコマンドを実行します。
+
+.Feedの登録例(3/3)
+====
+----
+addFeed SpringBlog https://spring.io/blog.atom FeedsTimeline 120
+----
+====
+
+間隔時間(Interval)の単位は分です。
+
+
+====== Redmine
+
+Redmineのプロジェクトを対象とする場合は、以下のように、「活動」タブを選択します。
+
+.Redmineの「活動」タブを選択
+image::images/index04e.png[]
+
+次に、右側に表示される、Feedに含める項目を選択し、「適用」ボタンを押します。
+
+.確認したい「活動」タブの変更内容を選択
+image::images/index04f.png[]
+
+次に、右下の「Atom」のリンクを右マウスボタンにより URLをコピーします。
+
+.Feedの URLをコピー
+image::images/index04g.png[]
+
+最後に、同様に登録を行ないます。
+
+.Redmineプロジェクトの登録
+image::images/index04h.png[]
+
+
+====== Jenkins Pipelineビルド実行結果
+
+Jenkinsの Pipelineビルド実行結果を Feedとして登録する場合は、
+以下の「RSS全ビルド」の URLを右マウスボタンによりコピーし、同様に登録します。
+
+.Jenkins Pipelineビルド実行結果の登録
+image::images/index04i.png[]
+
+
+====== GitHubの開発者の Public Activity
+
+GitHubのレポジトリは直接 Feedとしてあつかえない。
+開発者であれば、その「Public Activity」タブの Feedを登録すればよい。
+
+.GitHubの開発者の Public Activity
+image::images/index04j.png[]
 
 
 == Grails Tips
