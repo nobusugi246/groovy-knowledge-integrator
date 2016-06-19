@@ -8,7 +8,7 @@ Now only a Chat Microservice with groovy chatbot system.
 == ScreenShot
 
 .ScreenShot of this Chat Application
-image::https://raw.githubusercontent.com/nobusugi246/groovy-knowledge-integrator/master/images/chatIndex.png[width=800]
+image::images/chatIndex.png[width=800]
 
 
 == Features
@@ -30,7 +30,7 @@ This is a Chat Application builded by Grails Ver.3.1.
 
 
 .Outline
-image::images/about.png[]
+image::images/about.png[width=800]
 
 この図の矢印は、情報の流れを示している。
 
@@ -42,7 +42,8 @@ Pull Requestの通知、Issueの追加 / 削除などが、WebHookによりチ�
 (3) Jenkinsに定義された Pipelineの実行を、チャットにより指示できる。
 
 (4) 社内に乱立している Redmineプロジェクトの活動状況や、世界中の Blogや NEWSの情報、
-Jenkinsによるビルド状況などについて、変化が随時チャットとして表示される。
+GitHubでの開発者の Activity、Jenkinsによるビルド状況などについて、
+変化が随時チャットとして時系列で表示される。
 
 これらの活動が、発生順に、時系列に並べられてチャットとして表示される。
 適宜、ChatRoomを作成して振り分けることで、分類し、見通しを良く出来る。
