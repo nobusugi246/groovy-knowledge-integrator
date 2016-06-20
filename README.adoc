@@ -1,4 +1,6 @@
 = groovy Knowledge Integrator
+:toc:
+:toclevels: 5
 :example-caption: List
 
 An application for Knowledge Integration by grails/groovy.
@@ -84,9 +86,9 @@ $ java -jar gki-0.1.16.jar --server.port=8081
 .初期表示
 image::images/index00.png[]
 
-まず「Your Name」フィールドに名前を記入してください。
+まず「Your Name」フィールドに名前を記入します。
 それから Tabキーまたはマウスにより、
-「Chat Message」フィールドにフォーカスを移動してください。
+「Chat Message」フィールドにフォーカスを移動します。
 これにより、次の様にメッセージが表示されます。
 (このメッセージは、新規のユーザが接続したときか、
 `hello` コマンドを送信したときに表示されます。
@@ -189,31 +191,31 @@ image::images/index04b.png[]
 使用方法は、 `hello` コマンドか、 `addHook` とのみ入力することで表示されます。
 `[]` 内の入力は必須ではありません。
 
-.WebHookの登録例(1/5)
+.addHookコマンドの入力形式
 image::images/index04z.png[]
 
 ここでは localhostの GitBucketサーバと連携するための設定を例に説明します。
 以下のように `addHook` コマンドを実行することで、
 この Chat Roomに WebHookのメッセージが表示されるようになります。
 
-.WebHookの登録例(2/5)
+.WebHookの登録例(1/4)
 image::images/index04w.png[]
 
 次に、GitBucket側の設定を行ないます。
 以下のように、「Setting」メニューの「Service Hooks」タブを選択します。
 新規の登録であれば、右下の「Add webhook」ボタンを押下します。
 
-.WebHookの登録例(3/5)
+.WebHookの登録例(2/4)
 image::images/index04y.png[width=750]
 
 以下のように、それぞれの項目に記入し、「Add webhook」ボタンを押下します。
 
-.WebHookの登録例(4/5)
+.WebHookの登録例(3/4)
 image::images/index04x.png[width=750]
 
 GitBucketのレポジトリに Pushされた場合には、以下のように表示されます。
 
-.WebHookの登録例(5/5)
+.WebHookの登録例(4/4)
 image::images/index04v.png[]
 
 
@@ -230,14 +232,14 @@ image::images/index04v.png[]
 使用方法は、 `hello` コマンドか、 `addFeed` とのみ入力することで表示されます。
 `[]` 内の入力は必須ではありません。
 
-.Feedの登録例(1/3)
+.addFeedコマンドの入力形式
 image::images/index04c.png[]
 
 ここでは、Springの Blogを登録します。
 `addFeed` コマンドの記述に問題なければ、gkibotから登録したとの応答があります。
 URLが適切であれば、1分以内に、最初の Feedの表示が登録した Feed名によりされます。
 
-.Feedの登録例(2/3)
+.Feedの登録例(1/2)
 image::images/index04d.png[]
 
 最新の Feedが 1件表示されます。
@@ -247,7 +249,7 @@ image::images/index04d.png[]
 
 この間隔を変更する場合は、以下のようにコマンドを実行します。
 
-.Feedの登録例(3/3)
+.Feedの登録例(2/2)
 ====
 ----
 addFeed SpringBlog https://spring.io/blog.atom FeedsTimeline 120
@@ -257,7 +259,7 @@ addFeed SpringBlog https://spring.io/blog.atom FeedsTimeline 120
 間隔時間(Interval)の単位は分です。
 
 
-====== Redmine
+====== Redmineプロジェクト
 
 Redmineのプロジェクトを対象とする場合は、以下のように、「活動」タブを選択します。
 
@@ -280,15 +282,6 @@ image::images/index04g.png[]
 image::images/index04h.png[]
 
 
-====== Jenkins ビルド実行結果
-
-Jenkinsの ビルド実行結果を Feedとして登録する場合は、
-以下の「RSS全ビルド」の URLを右マウスボタンによりコピーし、同様に登録します。
-
-.Jenkins ビルド実行結果の登録
-image::images/index04i.png[]
-
-
 ====== GitHubの開発者の Public Activity
 
 GitHubのレポジトリは直接 Feedとしてあつかえません。
@@ -297,6 +290,67 @@ GitHubのレポジトリは直接 Feedとしてあつかえません。
 
 .GitHubの開発者の Public Activity
 image::images/index04j.png[]
+
+
+=== Jenkin Jobとの連携
+
+Jenkin Jobとの連携は以下ができます。
+
+. Jenkins Jobにビルドの実行を依頼する。
+. ビルドの結果を Feedとして(指定した) Chat Roomに表示する。
+
+この連携のための設定は以下の手順になります。
+
+. Feedを表示する Chat Roomを作成します(必要に応じて)。
+. Feedを表示する Chat Roomに移動し、Jenkins Jobのビルド実行結果を Feedとして登録します。
+. Jenkins Jobを登録します。
+
+ここでは作成した Chat Roomに移動後の手順を説明します。
+
+Jenkins Jobのビルド実行結果を Feedとして登録する場合は、
+以下の「RSS全ビルド」の URLを右マウスボタンによりコピーし、
+`addFeed` コマンドにより、他の Feedと同様に登録します。
+
+.Jenkins ビルド実行結果の登録
+image::images/index04i.png[]
+
+Jenkins Jobの登録には、 `addJenkins` コマンドを利用します。
+
+使用方法は、 `hello` コマンドか、 `addJenkins` とのみ入力することで表示されます。
+`[]` 内の入力は必須ではありません。
+
+.addJenkinsコマンドの入力形式
+image::images/index04u.png[]
+
+Jenkinsの Web画面で、
+それぞれの Jenkins Jobの状況が表示される URLを以下のように登録します。
+
+.Jenkins Jobの登録
+image::images/index04t.png[]
+
+ビルドの実行の依頼では、この URLに buildが付加された以下の URLが使用されます。
+
+----
+http://localhost:8180/job/gki/build
+----
+
+実際に設定とビルドを実行した例を以下に示します。
+
+まず、Jenkins Jobのビルド実行結果の Feedの登録を行ないます。
+Feedの確認間隔をデフォルトの 30分より短い 10分として設定しています。
+
+.Jenkins Jobの Feedの登録
+image::images/index04s1.png[]
+
+次に Jenkins Jobを登録します。
+Jenkinsの設定により認証が必要となっているため、
+ユーザ名とパスワードも設定しています。
+
+続いて `build` コマンドにより Jobの実行を依頼し、
+その結果が Feedとして表示されます。
+
+.Jenkins Jobの登録と実行、結果の表示
+image::images/index04s2.png[]
 
 
 == Grails Tips
