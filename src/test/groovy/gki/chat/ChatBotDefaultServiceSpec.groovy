@@ -18,5 +18,6 @@ class ChatBotDefaultServiceSpec extends Specification {
   void "test initialization"() {
   expect:
     service != null
+    service.commandList != null
   }
 }
