@@ -364,7 +364,7 @@ image::images/index04s2.png[]
 
 以下の URLにアクセスしてください。
 
-.Export用 URL
+.設定Export用 URL
 ====
 ----
 http://localhost:8080/chat/export
