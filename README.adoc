@@ -365,9 +365,11 @@ image::images/index04s2.png[]
 以下の URLにアクセスしてください。
 
 .Export用 URL
+====
 ----
 http://localhost:8080/chat/export
 ----
+====
 
 ブラウザでアクセスした場合、
 「ChatService.conf」というファイル名で保存されます。
