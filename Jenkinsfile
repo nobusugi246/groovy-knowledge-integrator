@@ -1,5 +1,5 @@
 node {
-  stage 'checkout'
+  stage 'Checkout'
   git url: 'http://localhost:8280/git/nobusugi246/groovy-knowledge-integrator.git'
 
   stage 'Build'
