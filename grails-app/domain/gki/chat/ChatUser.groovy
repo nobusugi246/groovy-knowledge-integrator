@@ -11,9 +11,10 @@ class ChatUser {
   String password = ''
   String role = ''
   String created = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-  boolean enabled = true
   long chatroom = 0
   long heartbeatCount = 0
+  byte[] iconImage
+  boolean enabled = true
   
   static constraints = {
     username blank: false, editable: true
@@ -22,6 +23,7 @@ class ChatUser {
     chatroom editable: false
     created editable: false
     heartbeatCount editable: false, display: false
+    iconImage maxSize: 1024000, nullable: true, editable: false, blank: true, display: false
     enabled editable: true
   }
 }

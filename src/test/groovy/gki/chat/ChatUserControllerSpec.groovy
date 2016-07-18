@@ -16,6 +16,7 @@ class ChatUserControllerSpec extends Specification {
         params["created"] = '2001-01-01'
         params["enabled"] = false
         params["chatroom"] = 0
+        params["iconImage"] = null
         params["heartbeatCount"] = 0
     }
 
