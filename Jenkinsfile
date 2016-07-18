@@ -2,12 +2,15 @@ node {
   stage 'Checkout'
   git url: 'http://localhost:8280/git/nobusugi246/groovy-knowledge-integrator.git'
 
-  stage 'Build'
+  stage 'Assemble'
   sh './gradlew clean assemble'
+
+  stage 'Static Code Check'
+  sh './gradlew codenarcMain'
 
   stage 'Test'
   try {
-    sh './gradlew --continue codenarcMain test integrationTest'
+    sh './gradlew --continue test integrationTest'
   } catch (e) {
     println e
   }
