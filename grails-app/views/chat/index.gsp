@@ -24,9 +24,12 @@
         <div class="row">&nbsp;</div>
 
         <!-- -->
+        <!-- -->
         <div class="row">
           <div class="col-sm-5">
-            <span class="glyphicon glyphicon-user"></span>
+            <button type="button" class="btn btn-default btn-xs">
+              <span class="glyphicon glyphicon-user"></span>
+            </button>
             Your Name
           </div>
           <div class="col-sm-7">
@@ -55,7 +58,7 @@
         <!-- -->
         <div class="row">
           <div class="col-sm-12">
-            <span class="glyphicon glyphicon-edit"></span>
+            <span class="glyphicon glyphicon-pencil"></span>
             Chat Message
           </div>
         </div>
@@ -69,7 +72,7 @@
           </div>
         </div>
         <div class="row">&nbsp;</div>
-
+        
         <!-- -->
         <div class="row">
           <div class="col-sm-12">
