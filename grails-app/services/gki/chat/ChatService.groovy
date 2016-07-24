@@ -96,6 +96,15 @@ class ChatService {
       brokerMessagingTemplate.convertAndSend to, msgCRL
     }
   }
+
+
+  void setUserIconImage(String username, byte[] image) {
+    log.info "username: ${username}"
+
+    def user = ChatUser.findByUsername(username)
+    user.setIconImage image
+    user.save()
+  }
   
 
   @Scheduled(fixedRate=10000L)

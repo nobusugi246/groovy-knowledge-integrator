@@ -5,7 +5,6 @@ import groovy.json.JsonSlurper
 import grails.converters.JSON
 
 import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.web.bind.annotation.RequestMapping
 
 @Slf4j
 class ChatController {
@@ -14,6 +13,8 @@ class ChatController {
   def chatBotDefaultService
   def feedCrawlerService
 
+  String thisUserName = ''
+  
   def jsonSlurper = new JsonSlurper()
   
   def index() {}
@@ -21,6 +22,7 @@ class ChatController {
   @MessageMapping("/addUser")
   protected void addUser(ChatMessage message) {
     log.info "addUser: ${message}"
+    thisUserName = message.username
     chatService.addUser(message.username, message.chatroom)
 
     chatService.sendLog(message)
@@ -31,6 +33,7 @@ class ChatController {
   @MessageMapping("/updateUser")
   protected void updateUser(ChatMessage message) {
     log.info "updateUser: ${message}"
+    thisUserName = message.username
     chatService.addUser(message.username, message.chatroom)
 
     chatService.sendUserList()
@@ -87,5 +90,29 @@ class ChatController {
     }
 
     render ''
+  }
+
+
+  def uploadFile() {
+    log.info 'file uploaded.'
+
+    def file = request.getFile('uploadFile')
+    log.info "file.originalFilename: ${file.originalFilename}"
+    if ( file.originalFilename ) {
+      chatService.setUserIconImage(thisUserName, file.getBytes())
+      render view: 'index'
+    } else {
+      render 'Upload file was not selected.'
+    }
+  }
+
+  
+  def icon() {
+    log.info "param: ${param}"
+    //    def iconImage = 
+    
+    response.setContentType("application/octet-stream")
+    //    response.outputStream << tempFile.text
+    response.outputStream.flush()
   }
 }

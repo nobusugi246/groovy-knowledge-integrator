@@ -272,6 +272,7 @@ connect = () ->
     
 # initialize display
 $(document).ready ->
+    $('#iconImageUploadPopover').popover()
     # Display username from localStorage if exists.
     if localStorage['userName']? and $('#userName').val()?
         $('#userName').val localStorage['userName']

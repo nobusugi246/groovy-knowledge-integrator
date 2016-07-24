@@ -24,10 +24,13 @@
         <div class="row">&nbsp;</div>
 
         <!-- -->
-        <!-- -->
         <div class="row">
           <div class="col-sm-5">
-            <button type="button" class="btn btn-default btn-xs">
+            <button type="button" class="btn btn-default btn-xs"
+                    id="iconImageUploadPopover" data-toggle="collapse"
+                    data-target="#fileUploadCollapse" aria-expanded="false"
+                    aria-controls="fileUploadCollapse"
+                    >
               <span class="glyphicon glyphicon-user"></span>
             </button>
             Your Name
@@ -36,6 +39,18 @@
             <input type="text" id="userName" class="form-control" 
                    placeholder="Set your name here..." required>
             </input>
+          </div>
+        </div>
+
+        <!-- -->
+        <div class="collapse" id="fileUploadCollapse">
+          <div class="well well-sm">
+            <span class="glyphicon glyphicon-file"></span>
+            Icon Image File Upload
+            <g:uploadForm controller="chat" action="uploadFile">
+              <input type="file" name="uploadFile" style="width:100%;"/>
+              <g:submitButton name="upload" value="upload" />
+            </g:uploadForm>
           </div>
         </div>
 
