@@ -23,7 +23,7 @@ class ChatUser {
     chatroom editable: false
     created editable: false
     heartbeatCount editable: false, display: false
-    iconImage maxSize: 1024000, nullable: true, editable: false, blank: true, display: false
+    iconImage maxSize: 1024000, nullable: true, editable: true, blank: true
     enabled editable: true
   }
 }
