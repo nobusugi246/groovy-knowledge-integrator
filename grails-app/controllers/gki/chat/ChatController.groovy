@@ -97,9 +97,13 @@ class ChatController {
     log.info 'file uploaded.'
 
     def file = request.getFile('uploadFile')
+    def fileSep = (file.originalFilename).split(/\./)
+    log.info "fileSep: ${fileSep}"
+    def fileExt = fileSep.length > 0 ? fileSep[-1] : fileSep
     log.info "file.originalFilename: ${file.originalFilename}"
+    log.info "fileExt: ${fileExt}"
     if ( file.originalFilename ) {
-      chatService.setUserIconImage(thisUserName, file.getBytes())
+      chatService.setUserIconImage(thisUserName, file.getBytes(), fileExt)
       render view: 'index'
     } else {
       render 'Upload file was not selected.'
@@ -108,11 +112,13 @@ class ChatController {
 
   
   def icon() {
-    log.info "param: ${param}"
-    //    def iconImage = 
-    
+    log.info "params: ${params}"
+
+    def user = ChatUser.findByUsername(params.name)
+
     response.setContentType("application/octet-stream")
-    //    response.outputStream << tempFile.text
+    response.setHeader("Content-disposition", "filename=${user.username}.${user.iconImageType}")
+    response.outputStream << user.iconImage
     response.outputStream.flush()
   }
 }

@@ -14,6 +14,7 @@ class ChatUser {
   long chatroom = 0
   long heartbeatCount = 0
   byte[] iconImage
+  String iconImageType
   boolean enabled = true
   
   static constraints = {
@@ -24,6 +25,7 @@ class ChatUser {
     created editable: false
     heartbeatCount editable: false, display: false
     iconImage maxSize: 1024000, nullable: true, editable: true, blank: true
+    iconImageType nullable: true, editable: true, blank: true
     enabled editable: true
   }
 }

@@ -98,11 +98,12 @@ class ChatService {
   }
 
 
-  void setUserIconImage(String username, byte[] image) {
+  void setUserIconImage(String username, byte[] image, String type) {
     log.info "username: ${username}"
 
     def user = ChatUser.findByUsername(username)
     user.setIconImage image
+    user.setIconImageType type
     user.save()
   }
   

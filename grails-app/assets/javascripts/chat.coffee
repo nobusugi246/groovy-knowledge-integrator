@@ -278,3 +278,6 @@ $(document).ready ->
         $('#userName').val localStorage['userName']
 
         connect()
+
+    stylesheet = document.styleSheets.item(0)
+    stylesheet.insertRule(".userIconImage { background: url('/chat/icon?name=#{$('#userName').val()}'); background-size: cover; }", stylesheet.cssRules.length)
