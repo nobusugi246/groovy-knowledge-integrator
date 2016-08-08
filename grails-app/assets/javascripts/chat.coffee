@@ -207,8 +207,8 @@ onReceiveChatRoom = (message) ->
     else
         $('#area00').append """
         <div class="row">
-        <div class="col-sm-1" align="center">
-            <svg width="40" height="40" id="identicon#{msg['id']}"></svg>
+        <div class="col-sm-1" align="center" name="icon#{sha1(msg['username'])}">
+            <svg width="40" height="40" id="identicon#{sha1(msg['username'])}"></svg>
         </div>
         <div class="col-sm-11">
             <div class="row">
@@ -221,7 +221,14 @@ onReceiveChatRoom = (message) ->
         </div>
         </div>
         """
-        jdenticon.update("#identicon#{msg['id']}", sha1(msg['username']))
+        $.ajax( "/chat/icon?name=#{msg['username']}" )
+            .done (data) ->
+                if data is 'null'
+                    jdenticon.update("#identicon#{sha1(msg['username'])}", sha1(msg['username']))
+                else
+                    $("div[name='icon#{sha1(msg['username'])}']").html "<img src='/chat/icon?name=#{msg['username']}'  style='width: 40px; height: 40px;'>"
+            .fail () ->
+                jdenticon.update("#identicon#{sha1(msg['username'])}", sha1(msg['username']))
 
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
     lastUser = msg['username']
@@ -279,5 +286,6 @@ $(document).ready ->
 
         connect()
 
-    stylesheet = document.styleSheets.item(0)
-    stylesheet.insertRule(".userIconImage { background: url('/chat/icon?name=#{$('#userName').val()}'); background-size: cover; }", stylesheet.cssRules.length)
+#    if $('#userName').val()?
+#        $('#userIconImage').html "<img src='/chat/icon?name=#{$('#userName').val()}'  style='width: 40px; height: 40px;'>"
+

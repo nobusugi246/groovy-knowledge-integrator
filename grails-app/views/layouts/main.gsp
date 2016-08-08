@@ -32,7 +32,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <g:pageProperty name="page.nav" />
-            <li><div class="userIconImage" style="width: 40px; height: 40px;"></div></li>
+            <li><div id="userIconImage" style="width: 40px; height: 40px;"></div></li>
           </ul>
         </div>
       </div>

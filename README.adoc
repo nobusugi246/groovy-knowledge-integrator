@@ -58,14 +58,14 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-0.1.17.jar` from
+Download `gki-1.0.0-RC1.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run this application
 ====
 ----
-$ java -jar gki-0.1.17.jar
+$ java -jar gki-1.0.0-RC1.jar
 ----
 ====
 
@@ -76,7 +76,7 @@ If you want to change port number(ex. 8081), then
 .How to change port number
 ====
 ----
-$ java -jar gki-0.1.17.jar --server.port=8081
+$ java -jar gki-1.0.0-RC1.jar --server.port=8081
 ----
 ====
 
@@ -426,6 +426,8 @@ Apache License Version 2.0
 
 
 == ChangLog / 変更履歴
+
+* Ver.1.0.0-RC1, Update Grails to Ver.3.1.10, close #5. : 2016-08-09
 
 * Ver.0.1.17, Update Grails to Ver.3.1.9 and Gorm to Ver.5.0.10, close #21. : 2016-07-03
 
