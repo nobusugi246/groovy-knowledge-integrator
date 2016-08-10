@@ -223,10 +223,10 @@ onReceiveChatRoom = (message) ->
         """
         $.ajax( "/chat/icon?name=#{msg['username']}" )
             .done (data) ->
-                if data is 'null'
+                if data is '' or data is 'null'
                     jdenticon.update("#identicon#{sha1(msg['username'])}", sha1(msg['username']))
                 else
-                    $("div[name='icon#{sha1(msg['username'])}']").html "<img src='/chat/icon?name=#{msg['username']}'  style='width: 40px; height: 40px;'>"
+                    $("div[name='icon#{sha1(msg['username'])}']").html "<img src='/chat/icon?name=#{msg['username']}'  style='height: 40px;'>"
             .fail () ->
                 jdenticon.update("#identicon#{sha1(msg['username'])}", sha1(msg['username']))
 

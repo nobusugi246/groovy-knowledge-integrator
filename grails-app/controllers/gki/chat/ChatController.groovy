@@ -116,9 +116,13 @@ class ChatController {
 
     def user = ChatUser.findByUsername(params.name)
 
-    response.setContentType("application/octet-stream")
-    response.setHeader("Content-disposition", "filename=${user.username}.${user.iconImageType}")
-    response.outputStream << user.iconImage
-    response.outputStream.flush()
+    if (!user) {
+      render ''
+    } else {
+      response.setContentType("application/octet-stream")
+      response.setHeader("Content-disposition", "filename=${user.username}.${user.iconImageType}")
+      response.outputStream << user.iconImage
+      response.outputStream.flush()
+    }
   }
 }
