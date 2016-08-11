@@ -112,8 +112,7 @@ class ChatController {
 
   
   def icon() {
-    log.info "params: ${params}"
-
+    //    log.info "params: ${params}"
     def user = ChatUser.findByUsername(params.name)
 
     if (!user) {
