@@ -61,7 +61,7 @@ class ChatService {
     }.each {
       String msg = it as JSON
       brokerMessagingTemplate.convertAndSend to, msg
-      Thread.sleep(20)
+      Thread.sleep(30)
     }
 
     if (message.text != message.date) {

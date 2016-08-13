@@ -16,7 +16,6 @@
 //= require sockjs
 //= require sha1
 //= require jdenticon-1.3.2
-//= require_tree .
 //= require_self
 
 if (typeof jQuery !== 'undefined') {

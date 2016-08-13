@@ -112,8 +112,11 @@ $('#chatRoomSelected').on 'change', (event) ->
     unsubscribeAll()
     subscribeAll()
 
+    selectedDate = $('#datetimepickerInline').data('DateTimePicker').date().format('YYYY-MM-DD')
+
     message = {}
-    message.text = moment().format('YYYY-MM-DD')
+#    message.text = moment().format('YYYY-MM-DD')
+    message.text = selectedDate
     message.status = ''
     message.chatroom = $('#chatRoomSelected').val()
     message.username = $('#userName').val()
@@ -121,7 +124,7 @@ $('#chatRoomSelected').on 'change', (event) ->
     stompClient.send "/app/updateUser", {}, JSON.stringify(message)
     stompClient.send "/app/log", {}, JSON.stringify(message)
     $('#chatMessage').focus()
-    $("a[title='Go to today']").click()
+#    $("a[title='Go to today']").click()
 
 
 # send chat message
