@@ -2,6 +2,7 @@
 stompClient = {}
 lastUser = {}
 lastMessage = ''
+tempMessages = {}
 
 $('#temporaryInput').on 'click', (event) ->
     $('#chatMessage').popover('toggle')
@@ -51,6 +52,18 @@ $('#datetimepickerInline').on 'dp.change', (event)->
 setInterval ->
         $('#currentTime').text moment().format('MM/DD HH:mm')
     , 1000
+
+
+# update temporary input
+setInterval ->
+        message = {}
+        message.text = _.escape($.trim($('#chatMessage').val()))
+        message.status = 'temp'
+        message.chatroom = $('#chatRoomSelected').val()
+        message.username = $('#userName').val()
+
+        stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
+    , 700
 
 
 # store userName into localStorage
@@ -115,14 +128,6 @@ $('#chatRoomSelected').on 'change', (event) ->
 $('#chatMessage').on 'keyup', (event) ->
     if event.keyCode is 73 and event.ctrlKey is true  # Ctrl + i
         $('#chatMessage').val lastMessage
-    else if event.keyCode isnt 13
-        message = {}
-        message.text = _.escape($.trim($('#chatMessage').val()))
-        message.status = 'temp'
-        message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val()
-
-        stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
     else if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
         message = {}
         message.text = _.escape($.trim($('#chatMessage').val()))
@@ -183,6 +188,9 @@ onReceiveByUser = (message) ->
           </table>"""
 
         $('#connectedUsersTable').html tableDef
+
+        users = _.map msg.userList, (user) -> user.username
+        tempMessages = _.pick tempMessages, users
     else if msg.status is 'closeTime'
         selectedDate = $('#datetimepickerInline').data('DateTimePicker').date().format('YYYY-MM-DD')
         $('#area00').append """
@@ -204,10 +212,15 @@ onReceiveByUser = (message) ->
 onReceiveTemporaryChatRoom = (message) ->
     console.log "Chat Message Temporary: " + message.body
     msg = JSON.parse(message.body)
+
+    tempMessages[msg.username] = msg.text
+
     if msg.text is ''
-        $('#temporaryInputPopover').html ""
-    else
-        $('#temporaryInputPopover').html "<u><strong>#{msg.username}</strong></u> #{msg.text}"
+        tempMessages = _.omit(tempMessages, msg.username)
+    html = ''
+    _.each _.pairs(tempMessages), (pair) ->
+        html += "<u><strong>#{pair[0]}</strong></u> #{pair[1]}<hr/>"
+    $('#temporaryInputPopover').html "#{html}"
 
 
 # WebSocket chat message receive eventhandler
@@ -215,7 +228,7 @@ onReceiveChatRoom = (message) ->
     console.log "Chat Message: " + message.body
     msg = JSON.parse(message.body)
 
-    $('#temporaryInputPopover').html ''
+    tempMessages = _.omit(tempMessages, msg.username)
     
     if msg.text.match /^https{0,1}:\/\/.+/
         msg.text = "<a href='#{msg.text}'>#{msg.text}</a>"
