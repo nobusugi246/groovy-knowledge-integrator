@@ -49,7 +49,7 @@
             Icon Image File Upload
             <g:uploadForm controller="chat" action="uploadFile">
               <input type="file" name="uploadFile" style="width:100%;"/>
-              <g:submitButton name="upload" value="upload" />
+              <g:submitButton name="upload" value="" id="uploadButton" />
             </g:uploadForm>
           </div>
         </div>

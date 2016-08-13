@@ -100,6 +100,8 @@ class ChatController {
 
 
   def uploadFile() {
+    def userName = params.upload[16..-1]
+    log.info "params.upload: _${userName}_"
     log.info 'file upload...'
 
     def file = request.getFile('uploadFile')
@@ -109,10 +111,10 @@ class ChatController {
     log.info "file.originalFilename: ${file.originalFilename}"
     log.info "fileExt: ${fileExt}"
     if ( file.originalFilename ) {
-      chatService.setUserIconImage(thisUserName, file.getBytes(), fileExt)
+      chatService.setUserIconImage(userName, file.getBytes(), fileExt)
       render view: 'index'
     } else {
-      chatService.deleteUserIconImage(thisUserName)
+      chatService.deleteUserIconImage(userName)
       render view: 'index'
     }
   }

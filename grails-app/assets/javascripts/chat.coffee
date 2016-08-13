@@ -62,7 +62,8 @@ setInterval ->
         message.chatroom = $('#chatRoomSelected').val()
         message.username = $('#userName').val()
 
-        stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
+        if message.text isnt ''
+            stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
     , 700
 
 
@@ -92,6 +93,7 @@ unsubscribeAll = () ->
 # update userName
 $('#userName').focusout ->
     if $('#userName').val() isnt ''
+        $('#uploadButton').val "upload image of #{$('#userName').val()}"
         unsubscribeAll()
         subscribeAll()
 
@@ -131,6 +133,14 @@ $('#chatRoomSelected').on 'change', (event) ->
 $('#chatMessage').on 'keyup', (event) ->
     if event.keyCode is 73 and event.ctrlKey is true  # Ctrl + i
         $('#chatMessage').val lastMessage
+    else if $('#chatMessage').val() is ''
+        message = {}
+        message.text = ''
+        message.status = 'temp'
+        message.chatroom = $('#chatRoomSelected').val()
+        message.username = $('#userName').val()
+
+        stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
     else if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
         message = {}
         message.text = _.escape($.trim($('#chatMessage').val()))
@@ -194,6 +204,7 @@ onReceiveByUser = (message) ->
 
         users = _.map msg.userList, (user) -> user.username
         tempMessages = _.pick tempMessages, users
+        displayTempMessages()
     else if msg.status is 'closeTime'
         selectedDate = $('#datetimepickerInline').data('DateTimePicker').date().format('YYYY-MM-DD')
         $('#area00').append """
@@ -220,10 +231,15 @@ onReceiveTemporaryChatRoom = (message) ->
 
     if msg.text is ''
         tempMessages = _.omit(tempMessages, msg.username)
+    displayTempMessages()
+
+
+# display temporary messages
+displayTempMessages = () ->
     html = ''
     _.each _.pairs(tempMessages), (pair) ->
         html += "<u><strong>#{pair[0]}</strong></u> #{pair[1]}<hr/>"
-    $('#temporaryInputPopover').html "#{html}"
+    $('#temporaryInputPopover').html html
 
 
 # WebSocket chat message receive eventhandler
@@ -232,6 +248,7 @@ onReceiveChatRoom = (message) ->
     msg = JSON.parse(message.body)
 
     tempMessages = _.omit(tempMessages, msg.username)
+    displayTempMessages()
     
     if msg.text.match /^https{0,1}:\/\/.+/
         msg.text = "<a href='#{msg.text}'>#{msg.text}</a>"
@@ -330,6 +347,7 @@ $(document).ready ->
 
         connect()
 
-#    if $('#userName').val()?
+    if $('#userName').val()?
+        $('#uploadButton').val "upload image of #{$('#userName').val()}"
 #        $('#userIconImage').html "<img src='/chat/icon?name=#{$('#userName').val()}'  style='width: 40px; height: 40px;'>"
 
