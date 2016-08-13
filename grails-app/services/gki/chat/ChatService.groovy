@@ -116,6 +116,16 @@ class ChatService {
   }
   
 
+  void deleteUserIconImage(String username) {
+    log.info "username: ${username}"
+
+    def user = ChatUser.findByUsername(username)
+    user.setIconImage null
+    user.setIconImageType ''
+    user.save()
+  }
+  
+
   @Scheduled(fixedRate=10000L)
   void updateUserConnection() {
     log.info 'update UserList'

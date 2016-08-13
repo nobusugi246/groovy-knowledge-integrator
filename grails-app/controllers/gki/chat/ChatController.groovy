@@ -56,7 +56,6 @@ class ChatController {
 
   @MessageMapping("/tempMessage")
   protected String receiveTempMessage(ChatMessage message) {
-    //    log.info "temporary message: ${message}"
     chatService.receiveTempMessage(message)
   }
   
@@ -101,7 +100,7 @@ class ChatController {
 
 
   def uploadFile() {
-    log.info 'file uploaded.'
+    log.info 'file upload...'
 
     def file = request.getFile('uploadFile')
     def fileSep = (file.originalFilename).split(/\./)
@@ -113,7 +112,8 @@ class ChatController {
       chatService.setUserIconImage(thisUserName, file.getBytes(), fileExt)
       render view: 'index'
     } else {
-      render 'Upload file was not selected.'
+      chatService.deleteUserIconImage(thisUserName)
+      render view: 'index'
     }
   }
 
