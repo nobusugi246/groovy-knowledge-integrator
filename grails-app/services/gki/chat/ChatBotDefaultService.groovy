@@ -69,6 +69,7 @@ class ChatBotDefaultService {
   void hello(String username){
     replyMessage username,
                  "こんにちは、${username}さん"
+    Thread.sleep(20)
 
     def messageList = ChatMessage.findAllByUsername(username, [sort: 'id'])
     if( messageList.size >= 2 ){
@@ -76,21 +77,27 @@ class ChatBotDefaultService {
             
       replyMessage username,
                    "あなたの最新のメッセージは"
+      Thread.sleep(20)
       replyMessage username,
                    "${lastMessage.date} ${lastMessage.time} '${lastMessage.text}'"
+      Thread.sleep(20)
       replyMessage username,
                    "です。"
+      Thread.sleep(20)
     }
 
     replyMessage username,
                  "左の <span class='glyphicon glyphicon-user'></span> をクリックすることで、ユーザアイコンのイメージファイルをアップロードできます。"
 
+    Thread.sleep(20)
     replyMessage username,
                  "チャットメッセージを入力するテキストフィールドをクリックすることで、入力途中表示の有無を切り替えることができます。"
 
+    Thread.sleep(20)
     replyMessage username,
                  "このチャットシステムで利用できるコマンドは以下です。"
 
+    Thread.sleep(20)
     commandList.each { commandName, desc, trigger, closure ->
       replyMessage username, "&nbsp; &nbsp; ${XmlUtil.escapeXml commandName}: ${XmlUtil.escapeXml desc}"
       Thread.sleep(20)
