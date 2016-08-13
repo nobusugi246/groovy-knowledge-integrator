@@ -28,6 +28,14 @@ class ChatService {
   }
 
 
+  void receiveTempMessage(ChatMessage message) {
+    String to = "/topic/temp/${message.chatroom}"
+    String msg = message as JSON
+    
+    brokerMessagingTemplate.convertAndSend to, msg
+  }
+
+
   void addUser(String name, String chatroom) {
     def user = ChatUser.findByUsername(name)
     if( user ) {

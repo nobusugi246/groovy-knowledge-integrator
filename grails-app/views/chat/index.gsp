@@ -54,22 +54,6 @@
           </div>
         </div>
 
-        <!--
-        <div class="row">
-          <div class="col-sm-5">
-            <span class="glyphicon glyphicon-share"></span>
-            Send To
-          </div>
-          <div class="col-sm-7" id="sendTo">
-            <select class="form-control">
-              <g:each in="${gki.chat.ChatRoom.list()}" var="room">
-                <option value="${room.id}">${room.name}</option>
-              </g:each>
-            </select>
-          </div>
-        </div>
-        -->
-
         <!-- -->
         <div class="row">
           <div class="col-sm-12">
@@ -81,9 +65,11 @@
         <!-- -->
         <div class="row">
           <div class="col-sm-12">
-            <input type="text" id="chatMessage" class="form-control" 
+            <input type="text" id="chatMessage" class="form-control"
+                   data-toggle="popover" data-placement="bottom"
+                   data-html="true"
+                   data-content="<div id='temporaryInputPopover'>入力途中表示...</div>"
                    placeholder="" autofocus>
-            </input>
           </div>
         </div>
         <div class="row">&nbsp;</div>

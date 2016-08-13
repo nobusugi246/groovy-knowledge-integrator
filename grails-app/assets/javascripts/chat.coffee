@@ -3,6 +3,10 @@ stompClient = {}
 lastUser = {}
 lastMessage = ''
 
+$('#temporaryInput').on 'click', (event) ->
+    $('#chatMessage').popover('toggle')
+
+
 # display DateTimePicker inline
 $('#datetimepickerInline').datetimepicker({
     inline: true
@@ -62,6 +66,9 @@ subscribeAll = () ->
     stompClient.subscribe "/topic/#{$('#chatRoomSelected').val()}", (message) ->
         onReceiveChatRoom(message)
 
+    stompClient.subscribe "/topic/temp/#{$('#chatRoomSelected').val()}", (message) ->
+        onReceiveTemporaryChatRoom(message)
+
 
 # unsubscribe all subscriptions
 unsubscribeAll = () ->
@@ -108,6 +115,14 @@ $('#chatRoomSelected').on 'change', (event) ->
 $('#chatMessage').on 'keyup', (event) ->
     if event.keyCode is 73 and event.ctrlKey is true  # Ctrl + i
         $('#chatMessage').val lastMessage
+    else if event.keyCode isnt 13
+        message = {}
+        message.text = _.escape($.trim($('#chatMessage').val()))
+        message.status = 'temp'
+        message.chatroom = $('#chatRoomSelected').val()
+        message.username = $('#userName').val()
+
+        stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
     else if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
         message = {}
         message.text = _.escape($.trim($('#chatMessage').val()))
@@ -186,10 +201,22 @@ onReceiveByUser = (message) ->
 
 
 # WebSocket chat message receive eventhandler
+onReceiveTemporaryChatRoom = (message) ->
+    console.log "Chat Message Temporary: " + message.body
+    msg = JSON.parse(message.body)
+    if msg.text is ''
+        $('#temporaryInputPopover').html ""
+    else
+        $('#temporaryInputPopover').html "<u><strong>#{msg.username}</strong></u> #{msg.text}"
+
+
+# WebSocket chat message receive eventhandler
 onReceiveChatRoom = (message) ->
     console.log "Chat Message: " + message.body
     msg = JSON.parse(message.body)
 
+    $('#temporaryInputPopover').html ''
+    
     if msg.text.match /^https{0,1}:\/\/.+/
         msg.text = "<a href='#{msg.text}'>#{msg.text}</a>"
 
@@ -280,6 +307,7 @@ connect = () ->
 # initialize display
 $(document).ready ->
     $('#iconImageUploadPopover').popover()
+    $('#chatMessage').popover()
     # Display username from localStorage if exists.
     if localStorage['userName']? and $('#userName').val()?
         $('#userName').val localStorage['userName']

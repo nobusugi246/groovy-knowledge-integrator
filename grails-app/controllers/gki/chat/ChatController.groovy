@@ -54,6 +54,13 @@ class ChatController {
   }
   
 
+  @MessageMapping("/tempMessage")
+  protected String receiveTempMessage(ChatMessage message) {
+    //    log.info "temporary message: ${message}"
+    chatService.receiveTempMessage(message)
+  }
+  
+
   @MessageMapping("/heartbeat")
   protected String heartbeatCount(ChatMessage message) {
     log.debug "heartbeat: ${message}"
