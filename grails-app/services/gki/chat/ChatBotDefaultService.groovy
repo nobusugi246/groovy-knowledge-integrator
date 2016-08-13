@@ -83,6 +83,12 @@ class ChatBotDefaultService {
     }
 
     replyMessage username,
+                 "左の <span class='glyphicon glyphicon-user'></span> をクリックすることで、ユーザアイコンのイメージファイルをアップロードできます。"
+
+    replyMessage username,
+                 "チャットメッセージを入力するテキストフィールドをクリックすることで、入力途中表示の有無を切り替えることができます。"
+
+    replyMessage username,
                  "このチャットシステムで利用できるコマンドは以下です。"
 
     commandList.each { commandName, desc, trigger, closure ->
