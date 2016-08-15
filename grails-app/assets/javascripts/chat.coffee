@@ -285,8 +285,8 @@ onReceiveChatRoom = (message) ->
         """
 
         $("#image#{iconIndex}").on 'error', (error) ->
-            $("#icon#{iconIndex}").html "<svg width='40' height='40' id='identicon#{iconIndex}'></svg>"
-            jdenticon.update("#identicon#{iconIndex}", sha1(msg['username']))
+            error.currentTarget.parentNode.innerHTML = "<svg width='40' height='40' id='identicon#{('' + error.timeStamp).replace(/\./, '_')}'></svg>"
+            jdenticon.update("#identicon#{('' + error.timeStamp).replace(/\./, '_')}", sha1(msg['username']))
 
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
     lastUser = msg['username']
