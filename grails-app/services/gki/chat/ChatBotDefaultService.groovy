@@ -91,7 +91,7 @@ class ChatBotDefaultService {
 
     Thread.sleep(20)
     replyMessage username,
-                 "チャットメッセージを入力するテキストフィールドをクリックすることで、入力途中表示の有無を切り替えることができます。"
+                 "<span class='glyphicon glyphicon-pencil'></span> チャットメッセージを入力するテキストフィールドをクリックすることで、入力途中表示の有無を切り替えることができます。"
 
     Thread.sleep(20)
     replyMessage username,

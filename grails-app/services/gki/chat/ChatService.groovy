@@ -73,7 +73,7 @@ class ChatService {
   
   void heartbeatCount(ChatMessage message) {
     def user = ChatUser.findByUsername(message.username)
-    if(user) {
+    if (user) {
       user.enabled = true
       user.heartbeatCount++
       user.save()

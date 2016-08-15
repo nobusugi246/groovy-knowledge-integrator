@@ -3,6 +3,7 @@ stompClient = {}
 lastUser = {}
 lastMessage = ''
 tempMessages = {}
+iconIndex = 0
 
 $('#temporaryInput').on 'click', (event) ->
     $('#chatMessage').popover('toggle')
@@ -265,10 +266,11 @@ onReceiveChatRoom = (message) ->
         </div>
         """
     else
+        iconIndex++
         $('#area00').append """
         <div class="row">
-        <div class="col-sm-1" align="center" name="icon#{sha1(msg['username'])}">
-            <svg width="40" height="40" id="identicon#{sha1(msg['username'])}"></svg>
+        <div class="col-sm-1" align="center" id="icon#{iconIndex}">
+            <img id='image#{iconIndex}' src='/chat/icon?name=#{msg['username']}' style='height: 40px;'/>
         </div>
         <div class="col-sm-11">
             <div class="row">
@@ -281,14 +283,10 @@ onReceiveChatRoom = (message) ->
         </div>
         </div>
         """
-        $.ajax( "/chat/icon?name=#{msg['username']}" )
-            .done (data) ->
-                if data is '' or data is 'null'
-                    jdenticon.update("#identicon#{sha1(msg['username'])}", sha1(msg['username']))
-                else
-                    $("div[name='icon#{sha1(msg['username'])}']").html "<img src='/chat/icon?name=#{msg['username']}'  style='height: 40px;'>"
-            .fail () ->
-                jdenticon.update("#identicon#{sha1(msg['username'])}", sha1(msg['username']))
+
+        $("#image#{iconIndex}").on 'error', (error) ->
+            $("#icon#{iconIndex}").html "<svg width='40' height='40' id='identicon#{iconIndex}'></svg>"
+            jdenticon.update("#identicon#{iconIndex}", sha1(msg['username']))
 
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
     lastUser = msg['username']
