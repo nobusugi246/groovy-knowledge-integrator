@@ -4,8 +4,8 @@ buildscript {
         assetPipelineVersion = project.assetPipelineVersion
     }
     repositories {
-        maven { url 'https://repo.grails.org/grails/core' }
         jcenter()
+        maven { url 'https://repo.grails.org/grails/core' }
     }
     dependencies {
         classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.0'
@@ -38,8 +38,8 @@ ext {
 }
 
 repositories {
-    maven { url 'https://repo.grails.org/grails/core' }
     jcenter()
+    maven { url 'https://repo.grails.org/grails/core' }
 }
 
 dependencyManagement {
