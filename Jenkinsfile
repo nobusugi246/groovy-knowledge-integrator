@@ -25,4 +25,5 @@ node {
     junit allowEmptyResults: true, testResults: 'build/test-results/*.xml'
     step([$class: 'JacocoPublisher'])
     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/codenarc', reportFiles: 'main.html', reportName: 'Codenarc Report'])
+  }
 }
