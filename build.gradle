@@ -60,6 +60,16 @@ jacocoTestReport {
     executionData integrationTest, test
 }
 
+tasks.withType(Test) {
+  jacoco.excludes = ['**/*$*_closure*']
+}
+
+tasks.withType(JacocoReport) {
+  doFirst {
+    classDirectories = classDirectories.collect { fileTree(it) { exclude '**/*$*_closure*' } }.sum()
+  }
+}
+
 stats {
     formats = ['xml', 'html', 'txt']
     paths = [
