@@ -30,7 +30,7 @@ node {
       }
     }
   }, modeling: {
-    dir('model'){
+    dir('modeling'){
       stage('Assemble'){
         sh './gradlew clean assemble'
       }
