@@ -49,7 +49,7 @@ codenarc {
 }
 
 jacocoTestReport {
-    executionData integrationTest, test
+  executionData integrationTest, test
 }
 
 tasks.withType(Test) {
