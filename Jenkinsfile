@@ -50,9 +50,9 @@ node {
       stage('ResultArchiver'){
         archiveArtifacts 'build/libs/*.jar'
 
-        junit allowEmptyResults: true, testResults: 'build/test-results/*.xml'
-        step([$class: 'JacocoPublisher'])
-        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/codenarc', reportFiles: 'main.html', reportName: 'Codenarc Report'])
+        //        junit allowEmptyResults: true, testResults: 'build/test-results/*.xml'
+        //        step([$class: 'JacocoPublisher'])
+        //        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/codenarc', reportFiles: 'main.html', reportName: 'Codenarc Report'])
       }
     }
   }, failFast: false
