@@ -101,7 +101,7 @@ image::images/index00.png[]
 メッセージの永続化(詳細は後述)もされません。)
 
 .名前設定後の表示
-image::images/about.png[width=800]
+image::images/chatIndex.png[width=800]
 
 「gkibot」は、組み込みの Chatbotです。このチャットシステムを利用するための案内役です。
 表示されるコマンドは、その時点で利用できるものが表示されます。
