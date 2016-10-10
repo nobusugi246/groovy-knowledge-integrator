@@ -104,7 +104,7 @@ dependencies {
 
     console 'org.grails:grails-console'
 
-    profile "org.grails.profiles:web:${grailsVersion}"
+    profile "org.grails.profiles:web:${grailsProfileVersion}"
 
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:${assetPipelineVersion}"
     runtime 'com.h2database:h2'
