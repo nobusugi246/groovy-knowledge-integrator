@@ -1,0 +1,54 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "org.kordamp.gradle:stats-gradle-plugin:${statsGradlePluginVersion}"
+    classpath "com.github.ben-manes:gradle-versions-plugin:${gradleVersionsPluginVersion}"
+
+    classpath "com.bertramlabs.plugins:asset-pipeline-gradle:${assetPipelineVersion}"
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+  }
+}
+
+apply plugin: 'org.kordamp.gradle.stats'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'asset-pipeline'
+
+jar {
+  baseName = 'modeling'
+  version = '0.0.1-SNAPSHOT'
+}
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  compile localGroovy()
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'org.springframework.boot:spring-boot-starter-data-rest'
+  compile 'org.springframework.boot:spring-boot-starter-web'
+  compile 'org.springframework.boot:spring-boot-actuator-docs'
+  compile 'org.springframework.boot:spring-boot-devtools'
+
+  runtime 'com.h2database:h2'
+
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'org.springframework.restdocs:spring-restdocs-restassured'
+  testCompile 'org.spockframework:spock-spring'
+}
+
+assets {
+  minifyJs = true
+  minifyCss = true
+  enableSourceMaps = true
+}
+
+bootRepackage {
+  excludeDevtools = true
+}
