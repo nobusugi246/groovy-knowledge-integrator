@@ -35,6 +35,11 @@ dependencies {
   compile 'org.springframework.boot:spring-boot-starter-actuator'
   compile 'org.springframework.boot:spring-boot-devtools'
 
+  compile "org.webjars.bower:d3:${d3Version}"
+  compile "org.webjars:bootstrap:${bootstrapVersion}"
+  compile "org.webjars.bower:bacon:${baconVersion}"
+  compile "org.webjars:jquery:${jqueryVersion}"
+  
   runtime 'com.h2database:h2'
 
   testCompile 'org.springframework.boot:spring-boot-starter-test'
@@ -46,6 +51,8 @@ assets {
   minifyJs = true
   minifyCss = true
   enableSourceMaps = true
+
+  excludes = ['webjars/**']
 }
 
 bootRepackage {
