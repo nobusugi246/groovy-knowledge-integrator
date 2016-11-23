@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version '1.0.3'
+version '1.0.4'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'
@@ -43,7 +43,7 @@ dependencyManagement {
 }
 
 codenarc {
-    toolVersion = '0.25.2'
+    toolVersion = '0.26.0'
     ignoreFailures = true
     configFile = file('../config/codenarc/codenarc.groovy')
     sourceSets = [project.sourceSets.main]
