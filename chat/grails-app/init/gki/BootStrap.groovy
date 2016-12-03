@@ -1,3 +1,5 @@
+package gki
+
 import gki.chat.ChatRoom
 import gki.chat.FeedCrawler
 import gki.chat.WebHook
