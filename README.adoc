@@ -58,14 +58,14 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.0.4.jar` from
+Download `gki-chat-1.0.5.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run this application
 ====
 ----
-$ java -jar gki-chat-1.0.4.jar
+$ java -jar gki-chat-1.0.5.jar
 ----
 ====
 
@@ -76,7 +76,7 @@ If you want to change port number(ex. 8081), then
 .How to change port number
 ====
 ----
-$ java -jar gki-chat-1.0.4.jar --server.port=8081
+$ java -jar gki-chat-1.0.5.jar --server.port=8081
 ----
 ====
 
@@ -388,7 +388,8 @@ curl等でアクセスした場合も、このファイル名で保存してく�
 
 === @Scheduled Annotation
 
-Since Grails Ver.3.1.7, at the Service Class which has a method with @Scheduled Annotation,
+Since Grails Ver.3.1.7,
+at the Service Class which has a method with @Scheduled Annotation,
 `lazyInit` should be disabled.
 
 .disable lazyInit
@@ -406,6 +407,12 @@ class xxxx {
 }
 ----
 ====
+
+
+=== BootStrap.groovy
+
+Since Grails Ver.3.2,
+BootStrap.groovy should be placed at same package of Application.groovy.
 
 
 == License / ライセンス
@@ -426,6 +433,8 @@ Apache License Version 2.0
 
 
 == ChangLog / 変更履歴
+
+* Ver.1.0.5, Update Grails to Ver.3.2.3 with fix #32. : 2016-12-03
 
 * Ver.1.0.4, Downgrade Grails to Ver.3.1.14 because of #32. : 2016-12-03
 
