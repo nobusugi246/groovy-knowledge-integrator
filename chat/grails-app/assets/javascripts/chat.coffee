@@ -4,6 +4,8 @@ lastUser = {}
 lastMessage = ''
 tempMessages = {}
 iconIndex = 0
+notificationTimeout = 5000
+
 
 $('#temporaryInput').on 'click', (event) ->
     $('#chatMessage').popover('toggle')
@@ -299,7 +301,7 @@ onReceiveChatRoom = (message) ->
         icon: "/chat/icon?name=#{msg['username']}"
 
     tmpNoti = new Notification("gki chat / #{msg['username']}", optionsNoti)
-    setTimeout(tmpNoti.close.bind(tmpNoti), 3000)
+    setTimeout(tmpNoti.close.bind(tmpNoti), notificationTimeout)
 
     
 # WebSocket connect eventhandler
