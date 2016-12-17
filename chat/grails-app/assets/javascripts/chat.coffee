@@ -293,11 +293,19 @@ onReceiveChatRoom = (message) ->
 
     if msg['id']?
         $("#message#{msg['id']}").tooltip()
-    
+
+    optionsNoti =
+        body: msg['text']
+        icon: "/chat/icon?name=#{msg['username']}"
+
+    tmpNoti = new Notification("gki chat / #{msg['username']}", optionsNoti)
+    setTimeout(tmpNoti.close.bind(tmpNoti), 3000)
+
     
 # WebSocket connect eventhandler
 onConnect = () ->
     subscribeAll()
+    configNotification()
 
     $('#wsstatus').removeClass 'label-danger'
     $('#wsstatus').addClass 'label-info'
@@ -348,4 +356,15 @@ $(document).ready ->
     if $('#userName').val()?
         $('#uploadButton').val "upload image of #{$('#userName').val()}"
 #        $('#userIconImage').html "<img src='/chat/icon?name=#{$('#userName').val()}'  style='width: 40px; height: 40px;'>"
+
+
+configNotification = () ->
+    if Notification.permission is "granted"
+        notification = new Notification("Web Notification is Active.")
+        setTimeout(notification.close.bind(notification), 3000)
+    else if Notification.permission isnt "denied"
+        Notification.requestPermission (permission) ->
+            if permission is "granted"
+                notification = new Notification("Thank you.")
+                setTimeout(notification.close.bind(notification), 3000)
 
