@@ -300,7 +300,7 @@ onReceiveChatRoom = (message) ->
         body: msg['text']
         icon: "/chat/icon?name=#{msg['username']}"
 
-    tmpNoti = new Notification("gki chat / #{msg['username']}", optionsNoti)
+    tmpNoti = new Notification("#{msg['username']} / gki chat", optionsNoti)
     setTimeout(tmpNoti.close.bind(tmpNoti), notificationTimeout)
 
     
