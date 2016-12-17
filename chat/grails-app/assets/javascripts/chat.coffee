@@ -300,7 +300,7 @@ onReceiveChatRoom = (message) ->
         body: msg['text']
         icon: "/chat/icon?name=#{msg['username']}"
 
-    tmpNoti = new Notification("#{msg['username']} / gki chat", optionsNoti)
+    tmpNoti = new Notification("#{msg['username']} / gki Chat", optionsNoti)
     setTimeout(tmpNoti.close.bind(tmpNoti), notificationTimeout)
 
     
@@ -363,11 +363,11 @@ $(document).ready ->
 
 configNotification = () ->
     if Notification.permission is "granted"
-        notification = new Notification("Web Notification is Active.")
+        notification = new Notification("Web Notification is Active. / gki Chat")
         setTimeout(notification.close.bind(notification), 3000)
     else if Notification.permission isnt "denied"
         Notification.requestPermission (permission) ->
             if permission is "granted"
-                notification = new Notification("Thank you.")
+                notification = new Notification("Thank you. / gki Chat")
                 setTimeout(notification.close.bind(notification), 3000)
 
