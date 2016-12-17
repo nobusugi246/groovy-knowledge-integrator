@@ -105,7 +105,9 @@
               <span id="wsstatus" class="label label-danger">OffLine</span>
               &nbsp;
               <a class="btn btn-warning btn-xs" id="refresh"
-                 href="javascript: window.location.reload(true);">
+                 href="javascript: window.location.reload(true);"
+                 data-toggle="tooltip" data-placement="top"
+                 title="Refresh this page">
                 <span class="glyphicon glyphicon-refresh"></span>
               </a>
             </div>

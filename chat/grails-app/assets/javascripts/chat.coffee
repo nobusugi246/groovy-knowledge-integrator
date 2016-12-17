@@ -347,6 +347,7 @@ connect = () ->
     
 # initialize display
 $(document).ready ->
+    $("#refresh").tooltip()
     $('#iconImageUploadPopover').popover()
     $('#chatMessage').popover()
     # Display username from localStorage if exists.
