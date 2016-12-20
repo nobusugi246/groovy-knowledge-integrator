@@ -5,6 +5,9 @@ lastMessage = ''
 tempMessages = {}
 iconIndex = 0
 notificationTimeout = 5000
+canNotify = typeof window.Notification isnt 'undefined'
+mom = moment()
+startTime = mom.format("YYYY-MM-DD HH:mm:ss")
 
 
 $('#temporaryInput').on 'click', (event) ->
@@ -300,18 +303,20 @@ onReceiveChatRoom = (message) ->
         body: msg['text']
         icon: "/chat/icon?name=#{msg['username']}"
 
-    tmpNoti = new Notification("#{msg['username']} / gki Chat", optionsNoti)
-    setTimeout(tmpNoti.close.bind(tmpNoti), notificationTimeout)
+    if canNotify and "#{msg['date']} #{msg['time']}" > startTime and $('#userName').val() isnt msg['username']
+        tmpNoti = new Notification("#{msg['username']} / gki Chat", optionsNoti)
+        setTimeout(tmpNoti.close.bind(tmpNoti), notificationTimeout)
 
     
 # WebSocket connect eventhandler
 onConnect = () ->
     subscribeAll()
-    configNotification()
+    if canNotify then configNotification()
 
     $('#wsstatus').removeClass 'label-danger'
     $('#wsstatus').addClass 'label-info'
     $('#wsstatus').html 'OnLine'
+    $('#wsstatus').tooltip({'placement': 'top', 'title': startTime})
 
     if $('#userName').val() isnt ''
         message = {}
@@ -328,6 +333,10 @@ onDisconnect = () ->
     $('#wsstatus').removeClass 'label-info'
     $('#wsstatus').addClass 'label-danger'
     $('#wsstatus').html 'OffLine'
+    $('#wsstatus').tooltip('destroy')
+    OffLineTime = mom.format("YYYY-MM-DD HH:mm:ss")
+    $('#wsstatus').tooltip('show')
+    $('#wsstatus').tooltip({'placement': 'bottom', 'title': OffLineTime})
 
 
 # connect to WebSocket Server
