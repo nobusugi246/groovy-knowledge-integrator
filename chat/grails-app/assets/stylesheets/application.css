@@ -15,3 +15,12 @@
 *= require_self
 */
 
+.label-relative {
+    position: relative;
+}
+
+.label.top-right {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}

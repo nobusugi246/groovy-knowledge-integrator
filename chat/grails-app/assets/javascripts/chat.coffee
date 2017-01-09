@@ -25,7 +25,11 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
-$('#datetimepickerInline').on 'click', ()->
+$('div').on 'click', (event)->
+    updateMessageNumberBadges()
+
+
+$('span').on 'click', (event)->
     updateMessageNumberBadges()
 
 
@@ -99,6 +103,7 @@ updateMessageNumberBadgeOnDay = (targetDay) ->
             $("[data-day='#{msg.day}']").html "#{dn}"
         else
             $("[data-day='#{msg.day}']").html "<div style='line-height:90%;'>#{dn}<br/><div class='label label-info' style='font-size:9.5px;'>.#{msg.count}</div><div>"
+#            $("[data-day='#{msg.day}']").html "#{dn}<br/><div class='label label-info top-right' style='font-size:9.5px;'>.#{msg.count}</div>"
 #            $("[data-day='#{msg.day}']").html "#{dn}<a style='font-size:9px; color:#000000;'>_#{msg.count}</a>"
 
 
@@ -260,7 +265,6 @@ onReceiveByUser = (message) ->
 
 # WebSocket chat message receive eventhandler
 onReceiveTemporaryChatRoom = (message) ->
-    updateMessageNumberBadgeOnDay(today)
     console.log "Chat Message Temporary: " + message.body
     msg = JSON.parse(message.body)
 
@@ -273,6 +277,7 @@ onReceiveTemporaryChatRoom = (message) ->
 
 # display temporary messages
 displayTempMessages = () ->
+    updateMessageNumberBadgeOnDay(today)
     html = ''
     _.each _.pairs(tempMessages), (pair) ->
         html += "<u><strong>#{pair[0]}</strong></u> #{pair[1]}<hr/>"
