@@ -67,6 +67,19 @@ class ChatController {
   }
 
 
+  def countMessages() {
+    def day = params.day.replace('/', '-')
+    def counted = ChatMessage.countByChatroomAndDate(params.room, day)
+    log.info "room: ${params.room}, day: ${day}, count: ${counted}"
+
+    def result = [:]
+    result << ['count': counted]
+    result << ['day': params.day]
+    
+    render result as JSON
+  }
+  
+
   def export() {
     def tempFile = File.createTempFile("ChatService", ".conf");
     log.info tempFile.getPath()

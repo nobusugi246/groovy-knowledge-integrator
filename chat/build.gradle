@@ -92,8 +92,8 @@ dependencies {
     compile 'org.grails.plugins:cache'
     compile 'org.grails.plugins:scaffolding'
     compile "org.grails.plugins:hibernate5"
-    compile "org.hibernate:hibernate-core:5.1.2.Final"
-    compile "org.hibernate:hibernate-ehcache:5.1.2.Final"
+    compile "org.hibernate:hibernate-core:5.1.3.Final"
+    compile "org.hibernate:hibernate-ehcache:5.1.3.Final"
     compile 'org.grails.plugins:grails-spring-websocket:2.3.0'
     console 'org.grails:grails-console'
 
@@ -101,7 +101,7 @@ dependencies {
     provided "org.codehaus.groovy:groovy-ant"
 
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:${assetPipelineVersion}"
-    runtime 'com.h2database:h2'
+    runtime "com.h2database:h2:${H2Version}"
 
     testCompile 'org.grails:grails-plugin-testing'
     testCompile 'org.grails.plugins:geb'

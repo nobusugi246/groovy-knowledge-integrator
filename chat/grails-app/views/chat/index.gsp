@@ -107,7 +107,7 @@
               <a class="btn btn-warning btn-xs" id="refresh"
                  href="javascript: window.location.reload(true);"
                  data-toggle="tooltip" data-placement="top"
-                 title="Refresh this page">
+                 title="Refresh the Chat">
                 <span class="glyphicon glyphicon-refresh"></span>
               </a>
             </div>

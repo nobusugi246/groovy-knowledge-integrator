@@ -8,6 +8,7 @@ notificationTimeout = 5000
 canNotify = typeof window.Notification isnt 'undefined'
 mom = moment()
 startTime = mom.format("YYYY-MM-DD HH:mm:ss")
+today = mom.format("YYYY/MM/DD")
 
 
 $('#temporaryInput').on 'click', (event) ->
@@ -24,8 +25,13 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
+$('#datetimepickerInline').on 'click', ()->
+    updateMessageNumberBadges()
+
+
 # DateTimePicker changed eventhandler
 $('#datetimepickerInline').on 'dp.change', (event)->
+    updateMessageNumberBadges()
     selectedDate = moment(event.date).format('YYYY-MM-DD')
 
     if selectedDate > moment().format('YYYY-MM-DD')
@@ -33,7 +39,7 @@ $('#datetimepickerInline').on 'dp.change', (event)->
 
     $('#area00').append """
     <hr/>
-    <div class="row" style="background-color: lightgreen;">
+    <div class="row" style="background-color: lightgray;">
     <div class="col-sm-11 col-sm-offset-1">
         <div class="row">
             <i>#{selectedDate}</i>
@@ -71,6 +77,29 @@ setInterval ->
         if message.text isnt ''
             stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
     , 700
+
+
+# update message number badge on datepicker
+updateMessageNumberBadges = () ->
+    $('.day').each (index, day) ->
+        targetDay = day.getAttribute('data-day')
+        if targetDay <= today
+            updateMessageNumberBadgeOnDay targetDay
+
+
+updateMessageNumberBadgeOnDay = (targetDay) ->
+    $.ajax {
+      url: "countMessages"
+      data: { room: $('#chatRoomSelected').val(), day: targetDay }
+    }
+    .done ( msg ) ->
+        dn = msg.day.split('/')[2]
+        if dn[0] is '0' then dn = dn[1]
+        if msg.count is 0
+            $("[data-day='#{msg.day}']").html "#{dn}"
+        else
+            $("[data-day='#{msg.day}']").html "<div style='line-height:90%;'>#{dn}<br/><div class='label label-info' style='font-size:9.5px;'>.#{msg.count}</div><div>"
+#            $("[data-day='#{msg.day}']").html "#{dn}<a style='font-size:9px; color:#000000;'>_#{msg.count}</a>"
 
 
 # store userName into localStorage
@@ -114,6 +143,7 @@ $('#userName').focusout ->
 
 # update ChatRoomSelected
 $('#chatRoomSelected').on 'change', (event) ->
+    updateMessageNumberBadges()
     $('#area00').html ''
     lastUser = ''
 
@@ -214,7 +244,7 @@ onReceiveByUser = (message) ->
     else if msg.status is 'closeTime'
         selectedDate = $('#datetimepickerInline').data('DateTimePicker').date().format('YYYY-MM-DD')
         $('#area00').append """
-        <div class="row" style="background-color: lightgreen;">
+        <div class="row" style="background-color: lightgray;">
         <div class="col-sm-11 col-sm-offset-1">
             <div class="row">
                 <i>#{selectedDate}</i>
@@ -230,6 +260,7 @@ onReceiveByUser = (message) ->
 
 # WebSocket chat message receive eventhandler
 onReceiveTemporaryChatRoom = (message) ->
+    updateMessageNumberBadgeOnDay(today)
     console.log "Chat Message Temporary: " + message.body
     msg = JSON.parse(message.body)
 
@@ -251,6 +282,7 @@ displayTempMessages = () ->
 # WebSocket chat message receive eventhandler
 onReceiveChatRoom = (message) ->
     console.log "Chat Message: " + message.body
+    updateMessageNumberBadgeOnDay(today)
     msg = JSON.parse(message.body)
 
     tempMessages = _.omit(tempMessages, msg.username)
@@ -369,6 +401,8 @@ $(document).ready ->
         $('#uploadButton').val "upload image of #{$('#userName').val()}"
 #        $('#userIconImage').html "<img src='/chat/icon?name=#{$('#userName').val()}'  style='width: 40px; height: 40px;'>"
 
+    updateMessageNumberBadges()
+    
 
 configNotification = () ->
     if Notification.permission is "granted"
