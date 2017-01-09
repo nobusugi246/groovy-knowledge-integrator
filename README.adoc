@@ -58,14 +58,14 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.0.7.jar` from
+Download `gki-chat-1.0.8.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run this application
 ====
 ----
-$ java -jar gki-chat-1.0.7.jar
+$ java -jar gki-chat-1.0.8.jar
 ----
 ====
 
@@ -76,7 +76,7 @@ If you want to change port number(ex. 8081), then
 .How to change port number
 ====
 ----
-$ java -jar gki-chat-1.0.7.jar --server.port=8081
+$ java -jar gki-chat-1.0.8.jar --server.port=8081
 ----
 ====
 
@@ -433,6 +433,8 @@ Apache License Version 2.0
 
 
 == ChangLog / 変更履歴
+
+* Ver.1.0.8, First support of MessageNumberBadge on each day. : 2016-01-10
 
 * Ver.1.0.7, Not to notify by self and old messages. : 2016-12-21
 
