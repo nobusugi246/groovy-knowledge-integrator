@@ -434,7 +434,7 @@ Apache License Version 2.0
 
 == ChangLog / 変更履歴
 
-* Ver.1.0.9, update support of MessageNumberBadge on each day and reply selection. : 2016-01-12
+* Ver.1.0.9, update support of MessageNumberBadge on each day, add reply selection. : 2016-01-12
 
 * Ver.1.0.8, First support of MessageNumberBadge on each day. : 2016-01-10
 
