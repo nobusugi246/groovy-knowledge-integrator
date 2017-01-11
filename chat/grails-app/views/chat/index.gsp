@@ -78,7 +78,7 @@
         <div class="row">
           <div class="col-sm-12">
             <span class="glyphicon glyphicon-th-list"></span>
-            Users in this Chat Room
+            Users List
           </div>
         </div>
 

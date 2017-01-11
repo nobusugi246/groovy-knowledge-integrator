@@ -92,10 +92,8 @@ class ChatService {
     userListActive.each { user ->
       String to = "/topic/${user.username}"
 
-      def userListByChatRoom = userListActive.findAll {
-        user.chatroom == it.chatroom
-      }.collect {
-        ['id': it.id, 'username': it.username]
+      def userListByChatRoom = userListActive.collect {
+        ['id': it.id, 'username': it.username, 'chatroom': ChatRoom.findById(user.chatroom).name ]
       }
       String msgUL = [userList: userListByChatRoom] as JSON
       String msgCRL = [chatRoomList: chatRooms, selected: user.chatroom] as JSON

@@ -25,8 +25,12 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
-# $('div').on 'click', (event)->
-
+$('div').on 'click', (event)->
+    if event.target.id.substring(0,7) is 'message'
+        msg = event.target.textContent.trim()
+        $('#chatMessage').val "> #{msg}"
+        $('#chatMessage').focus()
+    
 
 $('#datetimepickerInline').on 'dp.clicked', (event)->
     updateMessageNumberBadges()
@@ -225,16 +229,16 @@ onReceiveByUser = (message) ->
         tableDef = """<table class="table table-striped">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>User Name</th>
+                <th>Chatroom</th>
               </tr>
             </thead>
             <tbody>"""
 
         _.each msg.userList, (it) ->
             tableDef += """<tr>
-                  <td style="width: 4em;">#{it.id}</td>
-                  <td>#{it.username}</td>
+                  <td style="width: 9em;">#{it.username}</td>
+                  <td>#{it.chatroom}</td>
                 </tr>"""
 
         tableDef += """</tbody>
