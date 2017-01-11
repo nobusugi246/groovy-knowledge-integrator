@@ -25,11 +25,10 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
-$('div').on 'click', (event)->
-    updateMessageNumberBadges()
+# $('div').on 'click', (event)->
 
 
-$('span').on 'click', (event)->
+$('#datetimepickerInline').on 'dp.clicked', (event)->
     updateMessageNumberBadges()
 
 
