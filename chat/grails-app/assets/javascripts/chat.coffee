@@ -25,19 +25,19 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
-$('div').on 'click', (event)->
+$('div').on 'click', (event) ->
     if event.target.id.substring(0,7) is 'message'
         msg = event.target.textContent.trim()
         $('#chatMessage').val "> #{msg}"
         $('#chatMessage').focus()
     
 
-$('#datetimepickerInline').on 'dp.clicked', (event)->
+$('#datetimepickerInline').on 'dp.clicked', (event) ->
     updateMessageNumberBadges()
 
 
 # DateTimePicker changed eventhandler
-$('#datetimepickerInline').on 'dp.change', (event)->
+$('#datetimepickerInline').on 'dp.change', (event) ->
     updateMessageNumberBadges()
     selectedDate = moment(event.date).format('YYYY-MM-DD')
 
@@ -95,19 +95,31 @@ updateMessageNumberBadges = () ->
 
 
 updateMessageNumberBadgeOnDay = (targetDay) ->
-    $.ajax {
-      url: "countMessages"
-      data: { room: $('#chatRoomSelected').val(), day: targetDay }
-    }
-    .done ( msg ) ->
-        dn = msg.day.split('/')[2]
-        if dn[0] is '0' then dn = dn[1]
-        if msg.count is 0
-            $("[data-day='#{msg.day}']").html "#{dn}"
-        else
-            $("[data-day='#{msg.day}']").html "<div style='line-height:90%;'>#{dn}<br/><div class='label label-info' style='font-size:9.5px;'>.#{msg.count}</div><div>"
-#            $("[data-day='#{msg.day}']").html "#{dn}<br/><div class='label label-info top-right' style='font-size:9.5px;'>.#{msg.count}</div>"
-#            $("[data-day='#{msg.day}']").html "#{dn}<a style='font-size:9px; color:#000000;'>_#{msg.count}</a>"
+    crs = $('#chatRoomSelected').val()
+    count = sessionStorage.getItem(crs + '_' + targetDay)
+    if count?
+        setMessageNumberBadgeOnDay(targetDay, count)
+    else if targetDay <= today
+        $.ajax {
+            url: "countMessages"
+            data: { room: $('#chatRoomSelected').val(), day: targetDay }
+        }
+        .done ( msg ) ->
+            setMessageNumberBadgeOnDay(msg.day, msg.count)
+            if targetDay < today
+                crs = $('#chatRoomSelected').val()
+                sessionStorage.setItem(crs + '_' + msg.day, msg.count)
+
+                
+setMessageNumberBadgeOnDay = (day, count) ->
+    dn = day.split('/')[2]
+    if dn[0] is '0' then dn = dn[1]
+    if '' + count is '0'
+        $("[data-day='#{day}']").html "#{dn}"
+    else
+        $("[data-day='#{day}']").html "<div style='line-height:90%;'>#{dn}<br/><div class='label label-info' style='font-size:9.5px;'>.#{count}</div><div>"
+        # $("[data-day='#{day}']").html "#{dn}<br/><div class='label label-info top-right' style='font-size:9.5px;'>.#{count}</div>"
+        # $("[data-day='#{day}']").html "#{dn}<a style='font-size:9px; color:#000000;'>_#{count}</a>"
 
 
 # store userName into localStorage
