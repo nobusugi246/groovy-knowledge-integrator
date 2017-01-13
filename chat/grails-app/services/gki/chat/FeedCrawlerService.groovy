@@ -71,7 +71,7 @@ class FeedCrawlerService {
               else if( crawler.lastFeed == fd.link.@href.text() ) sendFlag = false
 
               if (sendFlag) {
-                def reply = "<a href='${fd.link.@href.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
+                def reply = "<a href='${fd.link.@href.text()}' target='_blank'>${fd.title.text()}</a> &nbsp; ${time}"
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
               }
               if( crawler.lastFeed == fd.link.@href.text() ) sendFlag = false
@@ -87,7 +87,7 @@ class FeedCrawlerService {
               else if( crawler.lastFeed == fd.link.text() ) sendFlag = false
 
               if (sendFlag) {
-                def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
+                def reply = "<a href='${fd.link.text()}' target='_blank'>${fd.title.text()}</a> &nbsp; ${time}"
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
               }
               if( crawler.lastFeed == fd.link.text() ) sendFlag = false
@@ -103,7 +103,7 @@ class FeedCrawlerService {
               else if( crawler.lastFeed == fd.link.text() ) sendFlag = false
 
               if (sendFlag) {
-                def reply = "<a href='${fd.link.text()}'>${fd.title.text()}</a> &nbsp; ${time}"
+                def reply = "<a href='${fd.link.text()}' target='_blank'>${fd.title.text()}</a> &nbsp; ${time}"
                 sendMessageByChatroom crawler.chatroom, reply, crawler.name
               }
               if( crawler.lastFeed == fd.link.text() ) sendFlag = false
