@@ -9,6 +9,7 @@ canNotify = typeof window.Notification isnt 'undefined'
 mom = moment()
 startTime = mom.format("YYYY-MM-DD HH:mm:ss")
 today = mom.format("YYYY/MM/DD")
+lastNotified = startTime
 
 
 $('#temporaryInput').on 'click', (event) ->
@@ -21,7 +22,7 @@ $('#datetimepickerInline').datetimepicker({
     locale: 'ja'
     showTodayButton: true
     format: 'yyyy-MM-dd'
-    # dayViewHeaderFormat: 'M月 YYYY年'
+    dayViewHeaderFormat: 'M月 YYYY年'
 })
 
 
@@ -164,6 +165,9 @@ $('#userName').focusout ->
 # update ChatRoomSelected
 $('#chatRoomSelected').on 'change', (event) ->
     updateMessageNumberBadges()
+    mom = moment()
+    lastNotified = mom.format("YYYY-MM-DD HH:mm:ss")
+
     $('#area00').html ''
     lastUser = ''
 
@@ -350,14 +354,18 @@ onReceiveChatRoom = (message) ->
 
     if msg['id']?
         $("#message#{msg['id']}").tooltip()
+        textNoti = $("#message#{msg['id']}").text().trim()
+    else
+        textNoti = msg['text']
 
     optionsNoti =
-        body: msg['text']
+        body: textNoti
         icon: "/chat/icon?name=#{msg['username']}"
 
-    if canNotify and "#{msg['date']} #{msg['time']}" > startTime and $('#userName').val() isnt msg['username']
+    if canNotify and "#{msg['date']} #{msg['time']}" > lastNotified and $('#userName').val() isnt msg['username']
         tmpNoti = new Notification("#{msg['username']} / gki Chat", optionsNoti)
         setTimeout(tmpNoti.close.bind(tmpNoti), notificationTimeout)
+        lastNotified = "#{msg['date']} #{msg['time']}"
 
     
 # WebSocket connect eventhandler
