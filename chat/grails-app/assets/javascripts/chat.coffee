@@ -142,7 +142,7 @@ setMessageNumberBadgeOnDay = (day, count) ->
     if '' + count is '0'
         $("[data-day='#{day}']").html "#{dn}"
     else
-        $("[data-day='#{day}']").html "<div style='line-height:90%;'>#{dn}<br/><div style='display:none;'>.</div><div class='label label-info' style='font-size:9.5px;'>#{count}</div><div>"
+        $("[data-day='#{day}']").html "<div style='line-height:90%;'>#{dn}<br/><div class='label label-info' style='font-size:9.5px;'>.#{count}</div><div>"
         # $("[data-day='#{day}']").html "#{dn}<br/><div class='label label-info top-right' style='font-size:9.5px;'>.#{count}</div>"
         # $("[data-day='#{day}']").html "#{dn}<a style='font-size:9px; color:#000000;'>_#{count}</a>"
 
