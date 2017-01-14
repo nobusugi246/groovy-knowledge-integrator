@@ -122,8 +122,8 @@
                    data-parent="#accordion" href="#collapseLog"
                    aria-expanded="false" aria-controls="collapseLog">
                   Past Messages
-                  <span id="logNumberBadge" class="label label-info">0</span>
                 </a>
+                <span id="logNumberBadge" class="label label-info">0</span>
               </h4>
             </div>
             <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
