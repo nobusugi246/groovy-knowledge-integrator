@@ -121,7 +121,7 @@
                 <a role="button" data-toggle="collapse"
                    data-parent="#accordion" href="#collapseLog"
                    aria-expanded="false" aria-controls="collapseLog">
-                  Log Messages
+                  Past Messages
                   <span id="logNumberBadge" class="label label-info">0</span>
                 </a>
               </h4>

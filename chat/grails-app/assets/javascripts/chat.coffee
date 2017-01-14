@@ -63,10 +63,11 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     updateMessageNumberBadges()
     selectedDate = moment(event.date).format('YYYY-MM-DD')
 
-    if selectedDate >= moment().format('YYYY-MM-DD')
-        return
+    if selectedDate >= moment().format('YYYY-MM-DD') then return
 
-    # $('#area00').html ''
+    crs = $('#chatRoomSelected').val()
+    count = sessionStorage.getItem(crs + '_' + targetDay)
+    if count is 0 then return
 
     $('#area_log').append """
     <hr/>
@@ -87,8 +88,8 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     message.username = $('#userName').val().trim()
 
     stompClient.send "/app/log", {}, JSON.stringify(message)
-    $('#chatMessage').focus()
     $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+    $('#chatMessage').focus()
 
 
 # update Date, Time
@@ -141,7 +142,7 @@ setMessageNumberBadgeOnDay = (day, count) ->
     if '' + count is '0'
         $("[data-day='#{day}']").html "#{dn}"
     else
-        $("[data-day='#{day}']").html "<div style='line-height:90%;'>#{dn}<br/><div class='label label-info' style='font-size:9.5px;'>.#{count}</div><div>"
+        $("[data-day='#{day}']").html "<div style='line-height:90%;'>#{dn}<br/><div style='display:none;'>.</div><div class='label label-info' style='font-size:9.5px;'>#{count}</div><div>"
         # $("[data-day='#{day}']").html "#{dn}<br/><div class='label label-info top-right' style='font-size:9.5px;'>.#{count}</div>"
         # $("[data-day='#{day}']").html "#{dn}<a style='font-size:9px; color:#000000;'>_#{count}</a>"
 
@@ -187,9 +188,11 @@ $('#userName').focusout ->
 
 # update ChatRoomSelected
 $('#chatRoomSelected').on 'change', (event) ->
+    $("a[title='Go to today']").click()
     updateMessageNumberBadges()
     lastNotified = moment().format("YYYY-MM-DD HH:mm:ss")
 
+    $('#collapseLog').collapse 'hide'
     $('#logNumberBadge').text 0
 
     $('#area_log').html ''
@@ -212,7 +215,6 @@ $('#chatRoomSelected').on 'change', (event) ->
     stompClient.send "/app/updateUser", {}, JSON.stringify(message)
     stompClient.send "/app/log", {}, JSON.stringify(message)
     $('#chatMessage').focus()
-#    $("a[title='Go to today']").click()
 
 
 # send chat message
