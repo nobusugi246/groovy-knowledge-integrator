@@ -66,8 +66,8 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     if selectedDate >= moment().format('YYYY-MM-DD') then return
 
     crs = $('#chatRoomSelected').val()
-    count = sessionStorage.getItem(crs + '_' + targetDay)
-    if count is 0 then return
+    count = sessionStorage.getItem(crs + '_' + selectedDate)
+    if count? is 0 then return
 
     $('#area_log').append """
     <hr/>
