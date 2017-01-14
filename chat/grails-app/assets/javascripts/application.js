@@ -9,7 +9,7 @@
 //= require moment-with-locales
 //= require bootstrap
 //= require bootstrap-datetimepicker
-//= require underscore
+//= require lodash
 //= require chat
 //= require spring-websocket
 //= require stomp

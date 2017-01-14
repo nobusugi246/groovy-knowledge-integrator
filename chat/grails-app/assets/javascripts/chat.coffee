@@ -66,7 +66,10 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     if selectedDate >= moment().format('YYYY-MM-DD') then return
 
     crs = $('#chatRoomSelected').val()
-    count = sessionStorage.getItem(crs + '_' + selectedDate.replace('-', '/'))
+    targetDay = _.replace(selectedDate, /-/g, '/')
+    count = sessionStorage.getItem(crs + '_' + targetDay)
+    console.log 'targetDay: ' + targetDay
+    console.log 'count: ' + count
     if '' + count is '0' then return
 
     $('#area_log').append """
@@ -166,7 +169,7 @@ subscribeAll = () ->
 
 # unsubscribe all subscriptions
 unsubscribeAll = () ->
-    _.each _.allKeys(stompClient.subscriptions), (it) ->
+    _.each _.keys(stompClient.subscriptions), (it) ->
         stompClient.unsubscribe it
 
 
@@ -321,7 +324,7 @@ onReceiveTemporaryChatRoom = (message) ->
 displayTempMessages = () ->
     updateMessageNumberBadgeOnDay(today)
     html = ''
-    _.each _.pairs(tempMessages), (pair) ->
+    _.each _.toPairs(tempMessages), (pair) ->
         html += "<u><strong>#{pair[0]}</strong></u> #{pair[1]}<hr/>"
     $('#temporaryInputPopover').html html
 
