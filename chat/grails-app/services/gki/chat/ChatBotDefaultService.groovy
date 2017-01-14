@@ -439,7 +439,7 @@ class ChatBotDefaultService {
         }
       }
 
-      replyMessage to, "repository: <a href='${url}'>${url}</a>", true, wh.hookName
+      replyMessage to, "repository: <a href='${url}' target='_blank'>${url}</a>", true, wh.hookName
 
       if( payload.pusher ) {
         replyMessage to, "ref: ${payload.ref}", true, wh.hookName
@@ -447,13 +447,13 @@ class ChatBotDefaultService {
 
       if( payload.issue ) {
         def issueurl = "${url}/issues/${payload.issue.number}"
-        replyMessage to, "issue: <a href='${issueurl}'>No. ${payload.issue.number}</a>", true, wh.hookName
+        replyMessage to, "issue: <a href='${issueurl}' target='_blank'>No. ${payload.issue.number}</a>", true, wh.hookName
         replyMessage to, "title: ${payload.issue.title}", true, wh.hookName
       }
 
       if( payload.pull_request ) {
         def prurl = "${url}/pull/${payload.pull_request.number}"
-        replyMessage to, "pull request: <a href='${prurl}'>No. ${payload.pull_request.number}</a>", true, wh.hookName
+        replyMessage to, "pull request: <a href='${prurl}' target='_blank'>No. ${payload.pull_request.number}</a>", true, wh.hookName
         replyMessage to, "title: ${payload.pull_request.title}", true, wh.hookName
       }
 

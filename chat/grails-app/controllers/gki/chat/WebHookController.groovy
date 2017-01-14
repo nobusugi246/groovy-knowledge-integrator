@@ -77,7 +77,6 @@ class WebHookController {
 
     @Transactional
     def delete(WebHook webHook) {
-
         if (webHook == null) {
             transactionStatus.setRollbackOnly()
             notFound()
