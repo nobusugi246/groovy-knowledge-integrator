@@ -10,6 +10,7 @@ canNotify = typeof window.Notification isnt 'undefined'
 startTime = moment().format("YYYY-MM-DD HH:mm:ss")
 today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
+windowHeight = $(window).height() - 50 - 34 - 43
 
 
 $('#temporaryInput').on 'click', (event) ->
@@ -26,6 +27,18 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
+$('#fast-backward').on 'click', (event) ->
+    $('#area_log').scrollTop(0)
+    $('#chatMessage').focus()
+    event.stopPropagation()
+
+
+$('#fast-forward').on 'click', (event) ->
+    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+    $('#chatMessage').focus()
+    event.stopPropagation()
+
+    
 $('#headingOne').on 'click', () ->
     $('#collapseLog').removeClass 'collapse-hidden'
     $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))

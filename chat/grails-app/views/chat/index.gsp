@@ -119,12 +119,21 @@
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingOne">
               <h4 class="panel-title">
-                <a role="button" data-toggle="collapse"
+                <span role="button" data-toggle="collapse"
                    data-parent="#accordion" href="#collapseLog"
                    aria-expanded="false" aria-controls="collapseLog">
                   Past Messages
-                </a>
+                </span>
                 <span id="logNumberBadge" class="label label-info">0</span>
+                &nbsp; &nbsp;
+                <button class="btn btn-primary btn-xs" id="fast-backward"
+                        type="submit">
+                  <span class="glyphicon glyphicon-fast-backward"></span>
+                </button>
+                <button class="btn btn-primary btn-xs" id="fast-forward"
+                        type="submit">
+                  <span class="glyphicon glyphicon-fast-forward"></span>
+                </button>
               </h4>
             </div>
             <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
