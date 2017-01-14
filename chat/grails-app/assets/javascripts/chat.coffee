@@ -11,6 +11,8 @@ startTime = moment().format("YYYY-MM-DD HH:mm:ss")
 today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
 windowHeight = $(window).height() - 50 - 34 - 43
+areaTimelineShort = windowHeight - 285
+areaTimelineLong  = windowHeight - 60
 
 
 $('#temporaryInput').on 'click', (event) ->
@@ -28,12 +30,14 @@ $('#datetimepickerInline').datetimepicker({
 
 
 $('#fast-backward').on 'click', (event) ->
+    $('#collapseLog').collapse 'show'
     $('#area_log').scrollTop(0)
     $('#chatMessage').focus()
     event.stopPropagation()
 
 
 $('#fast-forward').on 'click', (event) ->
+    $('#collapseLog').collapse 'show'
     $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
     $('#chatMessage').focus()
     event.stopPropagation()
@@ -46,14 +50,12 @@ $('#headingOne').on 'click', () ->
 
 
 $('#collapseLog').on 'hidden.bs.collapse', (event) ->
-    $('#area00').removeClass 'area-short'
-    $('#area00').addClass 'area-long'
+    $('.area-timeline').css 'height', "#{areaTimelineLong}"
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
 
 
 $('#collapseLog').on 'show.bs.collapse', (event) ->
-    $('#area00').removeClass 'area-long'
-    $('#area00').addClass 'area-short'
+    $('.area-timeline').css 'height', "#{areaTimelineShort}"
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
 
 
@@ -479,7 +481,7 @@ connect = () ->
     
 # initialize display
 $(document).ready ->
-    $('#collapseLog').collapse('hide')
+    $('#collapseLog').collapse 'hide'
     $('#refresh').tooltip()
     $('#iconImageUploadPopover').popover()
     $('#chatMessage').popover()

@@ -33,12 +33,11 @@
     display: none;
 }
 
-.area-short {
-    height: 480px;
+.area-timeline {
     overflow: scroll;
 }
 
-.area-long {
-    height: 710px;
-    overflow: scroll;
+.footer {
+    background: 0;
+    padding: 0;
 }

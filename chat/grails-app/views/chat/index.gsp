@@ -118,12 +118,10 @@
         <div class="row">
           <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="headingOne">
-              <h4 class="panel-title">
-                <span role="button" data-toggle="collapse"
+              <div class="panel-title" role="button" data-toggle="collapse"
                    data-parent="#accordion" href="#collapseLog"
                    aria-expanded="false" aria-controls="collapseLog">
-                  Past Messages
-                </span>
+                Past Messages
                 <span id="logNumberBadge" class="label label-info">0</span>
                 &nbsp; &nbsp;
                 <button class="btn btn-primary btn-xs" id="fast-backward"
@@ -134,7 +132,7 @@
                         type="submit">
                   <span class="glyphicon glyphicon-fast-forward"></span>
                 </button>
-              </h4>
+              </div>
             </div>
             <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
                  role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
@@ -144,10 +142,10 @@
               </div>
             </div>
           </div>
-          
         </div>
+
         <div class="row">
-          <div id="area00" class="area-long">
+          <div id="area00" class="area-timeline">
           </div>
         </div>
       </div>
