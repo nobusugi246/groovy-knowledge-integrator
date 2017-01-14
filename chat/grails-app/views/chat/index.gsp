@@ -137,7 +137,7 @@
           
         </div>
         <div class="row">
-          <div id="area00" style="height: 480px; overflow: scroll;">
+          <div id="area00" class="area-long">
           </div>
         </div>
       </div>

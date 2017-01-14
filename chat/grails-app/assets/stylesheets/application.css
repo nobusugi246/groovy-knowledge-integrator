@@ -32,3 +32,13 @@
 .collapse-hidden {
     display: none;
 }
+
+.area-short {
+    height: 480px;
+    overflow: scroll;
+}
+
+.area-long {
+    height: 710px;
+    overflow: scroll;
+}

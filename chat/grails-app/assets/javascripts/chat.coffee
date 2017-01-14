@@ -32,6 +32,18 @@ $('#headingOne').on 'click', () ->
     $('#chatMessage').focus()
 
 
+$('#collapseLog').on 'hidden.bs.collapse', (event) ->
+    $('#area00').removeClass 'area-short'
+    $('#area00').addClass 'area-long'
+    $('#area00').scrollTop(($("#area00")[0].scrollHeight))
+
+
+$('#collapseLog').on 'show.bs.collapse', (event) ->
+    $('#area00').removeClass 'area-long'
+    $('#area00').addClass 'area-short'
+    $('#area00').scrollTop(($("#area00")[0].scrollHeight))
+
+
 $('div').on 'click', (event) ->
     if event.target.id.substring(0,7) is 'message'
         msg = event.target.textContent.trim()
