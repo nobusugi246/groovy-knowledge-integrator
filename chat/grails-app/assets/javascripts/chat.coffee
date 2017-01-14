@@ -61,13 +61,13 @@ $('#datetimepickerInline').on 'dp.clicked', (event) ->
 # DateTimePicker changed eventhandler
 $('#datetimepickerInline').on 'dp.change', (event) ->
     updateMessageNumberBadges()
-    selectedDate = moment(event.date).format('YYYY-MM-DD')
+    selectedDate = moment(event.date).format('YYYY/MM/DD')
 
-    if selectedDate >= moment().format('YYYY-MM-DD') then return
+    if selectedDate >= moment().format('YYYY/MM/DD') then return
 
     crs = $('#chatRoomSelected').val()
     count = sessionStorage.getItem(crs + '_' + selectedDate)
-    if count? is 0 then return
+    if '' + count is '0' then return
 
     $('#area_log').append """
     <hr/>
@@ -171,23 +171,18 @@ unsubscribeAll = () ->
 
 
 # update userName
-$('#userName').focusout ->
+$('#userName').focusout (event) ->
     if $('#userName').val().trim() isnt ''
         $('#uploadButton').val "upload image of #{$('#userName').val().trim()}"
-        unsubscribeAll()
-        subscribeAll()
-
-        message = {}
-        message.text = ''
-        message.status = ''
-        message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val().trim()
-
-        stompClient.send "/app/updateUser", {}, JSON.stringify(message)
+        resetPage event
 
 
 # update ChatRoomSelected
 $('#chatRoomSelected').on 'change', (event) ->
+    resetPage event
+    
+
+resetPage = (event) ->
     $("a[title='Go to today']").click()
     updateMessageNumberBadges()
     lastNotified = moment().format("YYYY-MM-DD HH:mm:ss")
@@ -426,7 +421,7 @@ onConnect = () ->
     if canNotify then configNotification()
 
     $('#wsstatus').removeClass 'label-danger'
-    $('#wsstatus').addClass 'label-info'
+    $('#wsstatus').addClass 'label-success'
     $('#wsstatus').html 'OnLine'
     $('#wsstatus').tooltip({'placement': 'top', 'title': startTime})
 
