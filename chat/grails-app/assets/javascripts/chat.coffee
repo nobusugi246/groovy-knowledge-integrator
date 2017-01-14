@@ -61,12 +61,12 @@ $('#datetimepickerInline').on 'dp.clicked', (event) ->
 # DateTimePicker changed eventhandler
 $('#datetimepickerInline').on 'dp.change', (event) ->
     updateMessageNumberBadges()
-    selectedDate = moment(event.date).format('YYYY/MM/DD')
+    selectedDate = moment(event.date).format('YYYY-MM-DD')
 
-    if selectedDate >= moment().format('YYYY/MM/DD') then return
+    if selectedDate >= moment().format('YYYY-MM-DD') then return
 
     crs = $('#chatRoomSelected').val()
-    count = sessionStorage.getItem(crs + '_' + selectedDate)
+    count = sessionStorage.getItem(crs + '_' + selectedDate.replace('-', '/'))
     if '' + count is '0' then return
 
     $('#area_log').append """
