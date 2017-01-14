@@ -1,14 +1,14 @@
 # WebSocket Stomp Client
 stompClient = {}
-lastUser = {}
+lastUser = ''
+lastUserLog = ''
 lastMessage = ''
 tempMessages = {}
 iconIndex = 0
 notificationTimeout = 5000
 canNotify = typeof window.Notification isnt 'undefined'
-mom = moment()
-startTime = mom.format("YYYY-MM-DD HH:mm:ss")
-today = mom.format("YYYY/MM/DD")
+startTime = moment().format("YYYY-MM-DD HH:mm:ss")
+today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
 
 
@@ -26,10 +26,19 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
+$('#headingOne').on 'click', () ->
+    $('#collapseLog').removeClass 'collapse-hidden'
+    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+    $('#chatMessage').focus()
+
+
 $('div').on 'click', (event) ->
     if event.target.id.substring(0,7) is 'message'
         msg = event.target.textContent.trim()
-        $('#chatMessage').val "> #{msg}"
+        username = event.target.dataset.username
+        date = event.target.dataset.date
+        time = event.target.dataset.time
+        $('#chatMessage').val "> #{msg} (@#{username} #{date} #{time})"
         $('#chatMessage').focus()
     
 
@@ -42,10 +51,12 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     updateMessageNumberBadges()
     selectedDate = moment(event.date).format('YYYY-MM-DD')
 
-    if selectedDate > moment().format('YYYY-MM-DD')
+    if selectedDate >= moment().format('YYYY-MM-DD')
         return
 
-    $('#area00').append """
+    # $('#area00').html ''
+
+    $('#area_log').append """
     <hr/>
     <div class="row" style="background-color: lightgray;">
     <div class="col-sm-11 col-sm-offset-1">
@@ -56,16 +67,16 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     </div>
     """
 
-    lastUser = {}
+    lastUserLog = ''
     message = {}
     message.text = selectedDate
     message.status = ''
     message.chatroom = $('#chatRoomSelected').val()
-    message.username = $('#userName').val()
+    message.username = $('#userName').val().trim()
 
     stompClient.send "/app/log", {}, JSON.stringify(message)
     $('#chatMessage').focus()
-    $('#area00').scrollTop(($("#area00")[0].scrollHeight))
+    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
 
 
 # update Date, Time
@@ -80,7 +91,7 @@ setInterval ->
         message.text = _.escape($.trim($('#chatMessage').val()))
         message.status = 'temp'
         message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val()
+        message.username = $('#userName').val().trim()
 
         if message.text isnt ''
             stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
@@ -148,8 +159,8 @@ unsubscribeAll = () ->
 
 # update userName
 $('#userName').focusout ->
-    if $('#userName').val() isnt ''
-        $('#uploadButton').val "upload image of #{$('#userName').val()}"
+    if $('#userName').val().trim() isnt ''
+        $('#uploadButton').val "upload image of #{$('#userName').val().trim()}"
         unsubscribeAll()
         subscribeAll()
 
@@ -157,7 +168,7 @@ $('#userName').focusout ->
         message.text = ''
         message.status = ''
         message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val()
+        message.username = $('#userName').val().trim()
 
         stompClient.send "/app/updateUser", {}, JSON.stringify(message)
 
@@ -165,11 +176,14 @@ $('#userName').focusout ->
 # update ChatRoomSelected
 $('#chatRoomSelected').on 'change', (event) ->
     updateMessageNumberBadges()
-    mom = moment()
-    lastNotified = mom.format("YYYY-MM-DD HH:mm:ss")
+    lastNotified = moment().format("YYYY-MM-DD HH:mm:ss")
 
+    $('#logNumberBadge').text 0
+
+    $('#area_log').html ''
     $('#area00').html ''
     lastUser = ''
+    lastUserLog = ''
 
     unsubscribeAll()
     subscribeAll()
@@ -181,7 +195,7 @@ $('#chatRoomSelected').on 'change', (event) ->
     message.text = selectedDate
     message.status = ''
     message.chatroom = $('#chatRoomSelected').val()
-    message.username = $('#userName').val()
+    message.username = $('#userName').val().trim()
 
     stompClient.send "/app/updateUser", {}, JSON.stringify(message)
     stompClient.send "/app/log", {}, JSON.stringify(message)
@@ -198,15 +212,15 @@ $('#chatMessage').on 'keyup', (event) ->
         message.text = ''
         message.status = 'temp'
         message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val()
+        message.username = $('#userName').val().trim()
 
         stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
-    else if event.keyCode is 13 and $.trim($('#chatMessage').val()) isnt ''
+    else if event.keyCode is 13 and $('#chatMessage').val().trim() isnt ''
         message = {}
-        message.text = _.escape($.trim($('#chatMessage').val()))
+        message.text = _.escape($('#chatMessage').val().trim())
         message.status = 'fixed'
         message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val()
+        message.username = $('#userName').val().trim()
 
         stompClient.send "/app/message", {}, JSON.stringify(message)
         $('#chatMessage').val ''
@@ -220,7 +234,7 @@ heartbeatUser = () ->
     message.text = ''
     message.status = 'heartbeat'
     message.chatroom = $('#chatRoomSelected').val()
-    message.username = $('#userName').val()
+    message.username = $('#userName').val().trim()
 
     stompClient.send "/app/heartbeat", {}, JSON.stringify(message)
 
@@ -232,7 +246,7 @@ setInterval ->
     
 # WebSocket user message receive eventhandler
 onReceiveByUser = (message) ->
-    console.log "@#{$('#userName').val()}: " +  message.body
+    console.log "@#{$('#userName').val().trim()}: " +  message.body
     msg = JSON.parse(message.body)
 
     if msg.chatRoomList
@@ -267,7 +281,7 @@ onReceiveByUser = (message) ->
         displayTempMessages()
     else if msg.status is 'closeTime'
         selectedDate = $('#datetimepickerInline').data('DateTimePicker').date().format('YYYY-MM-DD')
-        $('#area00').append """
+        $('#area_log').append """
         <div class="row" style="background-color: lightgray;">
         <div class="col-sm-11 col-sm-offset-1">
             <div class="row">
@@ -277,7 +291,7 @@ onReceiveByUser = (message) ->
         </div>
         <hr/>
         """
-        $('#area00').scrollTop(($("#area00")[0].scrollHeight))
+        $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
     else
         onReceiveChatRoom(message)
 
@@ -315,31 +329,48 @@ onReceiveChatRoom = (message) ->
     if msg.text.match /^https{0,1}:\/\/.+/
         msg.text = "<a href='#{msg.text}'>#{msg.text}</a>"
 
-    if lastUser is msg['username']
-        $('#area00').append """
+    classQuote = ''
+    if msg.text.match /^\&gt;[ \s]+/ or msg.text.match /^>[ \s]+/
+        classQuote = 'quote-message'
+
+    targetArea = '#area00'
+    if msg.status is 'log'
+        targetArea = '#area_log'
+        num = parseInt($('#logNumberBadge').text()) + 1
+        $('#logNumberBadge').text num
+
+    if (msg.status is 'log' and lastUserLog is msg.username) or (msg.status isnt 'log' and lastUser is msg.username)
+        $("#{targetArea}").append """
         <div class="row">
         <div class="col-sm-11 col-sm-offset-1">
-            <div class="row" id="message#{msg['id']}" data-toggle="tooltip"
-                 data-placement="left" title="#{msg['time']}">
-                #{msg['text']}
+            <div class="row #{classQuote}" id="message#{msg.id}" data-toggle="tooltip"
+                 data-placement="left" title="#{msg.time}"
+                 data-date="#{msg.date}"
+                 data-time="#{msg.time}"
+                 data-username="#{msg.username}">
+                #{msg.text}
             </div>
         </div>
         </div>
         """
     else
         iconIndex++
-        $('#area00').append """
+        $("#{targetArea}").append """
         <div class="row">
         <div class="col-sm-1" align="center" id="icon#{iconIndex}">
-            <img id='image#{iconIndex}' src='/chat/icon?name=#{msg['username']}' style='height: 40px;'/>
+            <img id='image#{iconIndex}' src='/chat/icon?name=#{msg.username}' style='height: 40px;'/>
         </div>
         <div class="col-sm-11">
             <div class="row">
-                <strong>#{msg['username']}</strong>&nbsp;<i>#{msg.time}</i>
+                <strong>#{msg.username}</strong>&nbsp;<i>#{msg.time}</i>
             </div>
-            <div class="row" id="message#{msg['id']}" data-toggle="tooltip"
-                 data-placement="left" title="#{msg['time']}">
-                #{msg['text']}
+            <div class="row #{classQuote}"
+                  id="message#{msg.id}" data-toggle="tooltip"
+                 data-placement="left" title="#{msg.time}"
+                 data-date="#{msg.date}"
+                 data-time="#{msg.time}"
+                 data-username="#{msg.username}">
+                #{msg.text}
             </div>
         </div>
         </div>
@@ -347,25 +378,32 @@ onReceiveChatRoom = (message) ->
 
         $("#image#{iconIndex}").on 'error', (error) ->
             error.currentTarget.parentNode.innerHTML = "<svg width='40' height='40' id='identicon#{('' + error.timeStamp).replace(/\./, '_')}'></svg>"
-            jdenticon.update("#identicon#{('' + error.timeStamp).replace(/\./, '_')}", sha1(msg['username']))
+            jdenticon.update("#identicon#{('' + error.timeStamp).replace(/\./, '_')}", sha1(msg.username))
 
-    $('#area00').scrollTop(($("#area00")[0].scrollHeight))
-    lastUser = msg['username']
-
-    if msg['id']?
-        $("#message#{msg['id']}").tooltip()
-        textNoti = $("#message#{msg['id']}").text().trim()
+    if msg.status is 'log'
+        $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
     else
-        textNoti = msg['text']
+        $('#area00').scrollTop(($("#area00")[0].scrollHeight))
+
+    if msg.status is 'log'
+        lastUserLog = msg.username
+    else
+        lastUser = msg.username
+
+    if msg.id?
+        $("#message#{msg.id}").tooltip()
+        textNoti = $("#message#{msg.id}").text().trim()
+    else
+        textNoti = msg.text
 
     optionsNoti =
         body: textNoti
-        icon: "/chat/icon?name=#{msg['username']}"
+        icon: "/chat/icon?name=#{msg.username}"
 
-    if canNotify and "#{msg['date']} #{msg['time']}" > lastNotified and $('#userName').val() isnt msg['username']
-        tmpNoti = new Notification("#{msg['username']} / gki Chat", optionsNoti)
+    if canNotify and "#{msg.date} #{msg.time}" > lastNotified and $('#userName').val().trim() isnt msg.username
+        tmpNoti = new Notification("#{msg.username} / gki Chat", optionsNoti)
         setTimeout(tmpNoti.close.bind(tmpNoti), notificationTimeout)
-        lastNotified = "#{msg['date']} #{msg['time']}"
+        lastNotified = moment().format("YYYY-MM-DD HH:mm:ss")
 
     
 # WebSocket connect eventhandler
@@ -378,12 +416,12 @@ onConnect = () ->
     $('#wsstatus').html 'OnLine'
     $('#wsstatus').tooltip({'placement': 'top', 'title': startTime})
 
-    if $('#userName').val() isnt ''
+    if $('#userName').val().trim() isnt ''
         message = {}
         message.text = moment().format('YYYY-MM-DD')
         message.status = ''
         message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val()
+        message.username = $('#userName').val().trim()
 
         stompClient.send '/app/addUser', {}, JSON.stringify(message)
         
@@ -394,7 +432,7 @@ onDisconnect = () ->
     $('#wsstatus').addClass 'label-danger'
     $('#wsstatus').html 'OffLine'
     $('#wsstatus').tooltip('destroy')
-    OffLineTime = mom.format("YYYY-MM-DD HH:mm:ss")
+    OffLineTime = moment().format("YYYY-MM-DD HH:mm:ss")
     $('#wsstatus').tooltip('show')
     $('#wsstatus').tooltip({'placement': 'bottom', 'title': OffLineTime})
 
@@ -416,18 +454,19 @@ connect = () ->
     
 # initialize display
 $(document).ready ->
-    $("#refresh").tooltip()
+    $('#collapseLog').collapse('hide')
+    $('#refresh').tooltip()
     $('#iconImageUploadPopover').popover()
     $('#chatMessage').popover()
     # Display username from localStorage if exists.
-    if localStorage['userName']? and $('#userName').val()?
+    if localStorage['userName']? and $('#userName').val().trim()?
         $('#userName').val localStorage['userName']
 
         connect()
 
-    if $('#userName').val()?
-        $('#uploadButton').val "upload image of #{$('#userName').val()}"
-#        $('#userIconImage').html "<img src='/chat/icon?name=#{$('#userName').val()}'  style='width: 40px; height: 40px;'>"
+    if $('#userName').val().trim()?
+        $('#uploadButton').val "upload image of #{$('#userName').val().trim()}"
+#        $('#userIconImage').html "<img src='/chat/icon?name=#{$('#userName').val().trim()}'  style='width: 40px; height: 40px;'>"
 
     updateMessageNumberBadges()
     

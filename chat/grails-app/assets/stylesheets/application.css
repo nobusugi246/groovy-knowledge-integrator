@@ -24,3 +24,11 @@
     right: 0px;
     top: 0px;
 }
+
+.quote-message {
+    color: #aaaaaa;
+}
+
+.collapse-hidden {
+    display: none;
+}

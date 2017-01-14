@@ -115,7 +115,29 @@
         </div>
         <hr/>
         <div class="row">
-          <div id="area00" style="height: 800px; overflow: scroll;">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <a role="button" data-toggle="collapse"
+                   data-parent="#accordion" href="#collapseLog"
+                   aria-expanded="false" aria-controls="collapseLog">
+                  Log Messages
+                  <span id="logNumberBadge" class="label label-info">0</span>
+                </a>
+              </h4>
+            </div>
+            <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
+                 role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
+              <div class="panel-body">
+                <div id="area_log" style="height: 200px; overflow: scroll;">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row">
+          <div id="area00" style="height: 480px; overflow: scroll;">
           </div>
         </div>
       </div>

@@ -59,6 +59,7 @@ class ChatService {
     log.findAll {
       it.chatroom == message.chatroom
     }.each {
+      it.status = 'log'
       String msg = it as JSON
       brokerMessagingTemplate.convertAndSend to, msg
       Thread.sleep(30)
