@@ -23,7 +23,7 @@ class ChatBotDefaultService {
   SimpMessagingTemplate brokerMessagingTemplate
 
   def commandList = [
-    ['hello', '利用方法の説明(このメッセージ)', /(こんにちは|今日は|hello|help|usage)/,
+    ['hello / help / usage', '利用方法の説明(このメッセージ)', /(こんにちは|今日は|hello|help|usage)/,
      { message -> hello(message.username) }],
     ['makeChatRoom <ChatRoom名>', 'ChatRoomの作成', /(makeChatRoom .+|mcr .+)/,
      { message -> makeChatRoom(message) }],
