@@ -125,11 +125,10 @@ class ChatController {
     log.info "fileExt: ${fileExt}"
     if ( file.originalFilename ) {
       chatService.setUserIconImage(userName, file.getBytes(), fileExt)
-      render view: 'index'
     } else {
       chatService.deleteUserIconImage(userName)
-      render view: 'index'
     }
+    redirect action: 'index'
   }
 
   
