@@ -11,9 +11,14 @@ startTime = moment().format("YYYY-MM-DD HH:mm:ss")
 today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
 windowHeight = $(window).height() - 50 - 34 - 43
-areaTimelineShort = windowHeight - 285
+areaTimelineShort = windowHeight - 325
 areaTimelineLong  = windowHeight - 60
 
+
+$('#usage').on 'click', (event) ->
+    $('#chatMessage').val 'usage'
+    sendFixedMessage()
+    
 
 $('#temporaryInput').on 'click', (event) ->
     $('#chatMessage').popover('toggle')
@@ -25,7 +30,7 @@ $('#datetimepickerInline').datetimepicker({
     locale: 'ja'
     showTodayButton: true
     format: 'yyyy-MM-dd'
-    dayViewHeaderFormat: 'M月 YYYY年'
+    dayViewHeaderFormat: 'YYYY年 M月'
 })
 
 
@@ -45,7 +50,7 @@ $('#fast-forward').on 'click', (event) ->
     
 $('#headingOne').on 'click', () ->
     $('#collapseLog').removeClass 'collapse-hidden'
-    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+    # $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
     $('#chatMessage').focus()
 
 
@@ -235,24 +240,32 @@ $('#chatMessage').on 'keyup', (event) ->
     if event.keyCode is 73 and event.ctrlKey is true  # Ctrl + i
         $('#chatMessage').val lastMessage
     else if $('#chatMessage').val() is ''
-        message = {}
-        message.text = ''
-        message.status = 'temp'
-        message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val().trim()
-
-        stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
+        sendTempMessage()
     else if event.keyCode is 13 and $('#chatMessage').val().trim() isnt ''
-        message = {}
-        message.text = _.escape($('#chatMessage').val().trim())
-        message.status = 'fixed'
-        message.chatroom = $('#chatRoomSelected').val()
-        message.username = $('#userName').val().trim()
+        sendFixedMessage()
 
-        stompClient.send "/app/message", {}, JSON.stringify(message)
-        $('#chatMessage').val ''
-        $('#chatMessage').focus()
-        lastMessage = message.text
+
+sendTempMessage = () ->
+    message = {}
+    message.text = ''
+    message.status = 'temp'
+    message.chatroom = $('#chatRoomSelected').val()
+    message.username = $('#userName').val().trim()
+
+    stompClient.send "/app/tempMessage", {}, JSON.stringify(message)
+
+
+sendFixedMessage = () ->
+    message = {}
+    message.text = _.escape($('#chatMessage').val().trim())
+    message.status = 'fixed'
+    message.chatroom = $('#chatRoomSelected').val()
+    message.username = $('#userName').val().trim()
+
+    stompClient.send "/app/message", {}, JSON.stringify(message)
+    $('#chatMessage').val ''
+    $('#chatMessage').focus()
+    lastMessage = message.text
 
 
 # heartbeat user
@@ -483,6 +496,7 @@ connect = () ->
 $(document).ready ->
     $('#collapseLog').collapse 'hide'
     $('#refresh').tooltip()
+    $('#usage').tooltip()
     $('#iconImageUploadPopover').popover()
     $('#chatMessage').popover()
     # Display username from localStorage if exists.

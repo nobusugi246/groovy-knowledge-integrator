@@ -111,6 +111,12 @@
                  title="Refresh the Chat">
                 <span class="glyphicon glyphicon-refresh"></span>
               </a>
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+              <a class="btn btn-warning btn-xs" id="usage"
+                 data-toggle="tooltip" data-placement="top"
+                 title="Usage">
+                <span class="glyphicon glyphicon-question-sign"></span>
+              </a>
             </div>
           </form>
         </div>
@@ -137,7 +143,7 @@
             <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
                  role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
               <div class="panel-body">
-                <div id="area_log" style="height: 200px; overflow: scroll;">
+                <div id="area_log" style="height: 240px; overflow: scroll;">
                 </div>
               </div>
             </div>

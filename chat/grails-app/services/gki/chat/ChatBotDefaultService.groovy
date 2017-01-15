@@ -22,45 +22,42 @@ class ChatBotDefaultService {
   def chatService
   SimpMessagingTemplate brokerMessagingTemplate
 
-  ChatMessage message
-  
   def commandList = [
     ['hello', '利用方法の説明(このメッセージ)', /(こんにちは|今日は|hello|help|usage)/,
-     { hello(this.message.username) }],
+     { message -> hello(message.username) }],
     ['makeChatRoom <ChatRoom名>', 'ChatRoomの作成', /(makeChatRoom .+|mcr .+)/,
-     { makeChatRoom(this.message) }],
+     { message -> makeChatRoom(message) }],
     ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /(deleteChatRoom .+|dcr .+)/,
-     { deleteChatRoom(this.message) }],
+     { message -> deleteChatRoom(message) }],
     ['users', '接続している全ユーザと、有効な WebHook, FeedCrawler, Jenkins Jobのリストを表示', /users/,
-     { displayAllConnectedUsers() }],
+     { message -> displayAllConnectedUsers(message) }],
     ['addHook <WebHook名> <URL> [<Char Room>]', 'WebHookを登録する', /addHook.*/,
-     { addHook(this.message) }],
+     { message -> addHook(message) }],
     ['deleteHook <WebHook名>', 'WebHookを削除する', /deleteHook.*/,
-     { deleteHook(this.message) }],
+     { message -> deleteHook(message) }],
     ['addFeed <Feed名> <URL> [<Char Room> <Interval>]', 'Feedを登録する', /addFeed.*/,
-     { addFeed(this.message) }],
+     { message -> addFeed(message) }],
     ['deleteFeed <Feed名>', 'Feedを削除する', /deleteFeed.*/,
-     { deleteFeed(this.message) }],
-    ['info', 'Spring Boot Actuatorの infoを表示', /info/,
-     { actuator() }],
-    ['health', 'Spring Boot Actuatorの healthを表示', /health/,
-     { actuator() }],
-    ['metrics', 'Spring Boot Actuatorの metricsを表示', /metrics/,
-     { actuator() }],
+     { message -> deleteFeed(message) }],
+    ['info', 'Spring Boot Actuatorの infoを表示', /info.*/,
+     { message -> actuator(message) }],
+    ['health', 'Spring Boot Actuatorの healthを表示', /health.*/,
+     { message -> actuator(message) }],
+    ['metrics [<Group>]', 'Spring Boot Actuatorの metricsを表示', /metrics.*/,
+     { message -> actuator(message) }],
     ['addJenkins <Jenkins Job名> <URL> [<Username> <Password>]', 'Jenkins Jobを登録する', /addJenkins.*/,
-     { addJenkins(this.message) }],
+     { message -> addJenkins(message) }],
     ['deleteJenkins <Jenkins Job名>', 'Jenkins Jobを削除する', /deleteJenkins.*/,
-     { deleteJenkins(this.message) }],
+     { message -> deleteJenkins(message) }],
     ['build <Jenkins Job名>', 'Jenkins Jobのビルドを依頼する', /build.*/,
-     { buildByJenkins(this.message) }]
+     { message -> buildByJenkins(message) }]
   ]
 
   
   void defaultHandler(ChatMessage message) {
-    this.message = message
     commandList.each { commandName, desc, trigger, closure ->
       if( message.text ==~ trigger ) {
-        closure.call()
+        closure.call(message)
       }
     }
   }
@@ -92,6 +89,22 @@ class ChatBotDefaultService {
     Thread.sleep(20)
     replyMessage username,
                  "<span class='glyphicon glyphicon-pencil'></span> チャットメッセージを入力するテキストフィールドをクリックすることで、入力途中表示の有無を切り替えることができます。"
+
+    Thread.sleep(20)
+    replyMessage username,
+                 "カレンダーには、その日にやり取りしたメッセージ数が表示され、日にちをクリックすることでそのメッセージを見ることができます。"
+
+    Thread.sleep(20)
+    replyMessage username,
+                 "これまでのメッセージは、「Past Messages」内に表示されます。"
+
+    Thread.sleep(20)
+    replyMessage username,
+                 "受信したメッセージをクリックすることで、引用できます。"
+
+    Thread.sleep(20)
+    replyMessage username,
+                 "利用するチャットルームは、「Chat Room」のリストから選択してください。"
 
     Thread.sleep(20)
     replyMessage username,
@@ -146,7 +159,7 @@ class ChatBotDefaultService {
   }
 
 
-  void displayAllConnectedUsers() {
+  void displayAllConnectedUsers(ChatMessage message) {
     def userList = ChatUser.findAllWhere(enabled: true)
     def whList = WebHook.findAllWhere(enabled: true)
     def fcList = FeedCrawler.findAllWhere(enabled: true)
@@ -278,8 +291,13 @@ class ChatBotDefaultService {
   }
 
 
-  void actuator() {
-    def type = this.message.text
+  void actuator(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+    def type = words[0]
+    def group = ''
+    if( words.size() > 1){
+      group = words[1]
+    }
     def endpoints = ['info': infoEndpoint, 'health': healthEndpoint,
                      'metrics': metricsEndpoint
                     ]
@@ -298,9 +316,15 @@ class ChatBotDefaultService {
     } else {
       result = endpoint.invoke()
     }
-                 
+
     result.each { key, value ->
-      replyMessage message.username, "${key} : ${value}"
+      if(group) {
+        if (key =~ /^${group}/) {
+          replyMessage message.username, "${key} : ${value}"
+        }
+      } else {
+          replyMessage message.username, "${key} : ${value}"
+      }
       Thread.sleep(20)
     }
   }
