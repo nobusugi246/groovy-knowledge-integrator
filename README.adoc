@@ -436,7 +436,7 @@ Apache License Version 2.0
 
 == ChangLog / 変更履歴
 
-* Ver.1.1.0, Fix Web Notification, separate Past Messages in a Collapse. : 2017-01-15
+* Ver.1.1.0, Fix Web Notification, separate Past Messages in an Accordion. : 2017-01-15
 
 * Ver.1.0.10, Fix User List and cache MessageNumber. : 2017-01-13
 
