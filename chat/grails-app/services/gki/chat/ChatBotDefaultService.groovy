@@ -104,6 +104,10 @@ class ChatBotDefaultService {
 
     Thread.sleep(20)
     replyMessage username,
+                 "Ctrl + i により、直前に自分で送信したメッセージを、入力フィールドに再入力できます。 "
+
+    Thread.sleep(20)
+    replyMessage username,
                  "利用するチャットルームは、「Chat Room」のリストから選択してください。"
 
     Thread.sleep(20)
