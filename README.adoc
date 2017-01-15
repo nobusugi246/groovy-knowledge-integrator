@@ -69,6 +69,8 @@ $ java -jar gki-chat-1.1.0.jar
 ----
 ====
 
+This will generate 2 Database files (prodDb.mv.db, prodDb.trace.db) at the current folder.
+
 And access http://localhost:8080/chat/index from your Browser.
 
 If you want to change port number(ex. 8081), then
