@@ -35,6 +35,7 @@
 
 .area-timeline {
     overflow: scroll;
+    overflow-x:hidden;
 }
 
 .footer {

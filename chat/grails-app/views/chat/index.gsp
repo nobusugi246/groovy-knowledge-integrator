@@ -143,7 +143,7 @@
             <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
                  role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
               <div class="panel-body">
-                <div id="area_log" style="height: 240px; overflow: scroll;">
+                <div id="area_log" style="height: 240px; overflow: scroll; overflow-x:hidden;">
                 </div>
               </div>
             </div>
