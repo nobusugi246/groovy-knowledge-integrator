@@ -153,7 +153,7 @@
         </div>
 
         <div class="row">
-          <div id="area00" class="area-timeline">
+          <div id="area00" class="collapsing area-timeline">
           </div>
         </div>
       </div>
