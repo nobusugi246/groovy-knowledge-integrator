@@ -436,7 +436,7 @@ Apache License Version 2.0
 
 == ChangLog / 変更履歴
 
-* Ver.1.1.1, Remove the horizontal scroll bar, add a Accordion icon. : 2017-01-22
+* Ver.1.1.1, Remove horizontal scroll bars, add a Accordion icon. : 2017-01-22
 
 * Ver.1.1.0, Fix Web Notification, separate Past Messages in an Accordion. : 2017-01-15
 
