@@ -55,11 +55,15 @@ $('#headingOne').on 'click', () ->
 
 
 $('#collapseLog').on 'hidden.bs.collapse', (event) ->
+    $('#collapseLogPannel').removeClass 'glyphicon-collapse-up'
+    $('#collapseLogPannel').addClass 'glyphicon-collapse-down'
     $('.area-timeline').css 'height', "#{areaTimelineLong}"
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
 
 
 $('#collapseLog').on 'show.bs.collapse', (event) ->
+    $('#collapseLogPannel').removeClass 'glyphicon-collapse-down'
+    $('#collapseLogPannel').addClass 'glyphicon-collapse-up'
     $('.area-timeline').css 'height', "#{areaTimelineShort}"
     $('#area00').scrollTop(($("#area00")[0].scrollHeight))
 

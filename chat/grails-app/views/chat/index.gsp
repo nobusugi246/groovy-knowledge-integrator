@@ -129,6 +129,8 @@
                    aria-expanded="false" aria-controls="collapseLog">
                 Past Messages
                 <span id="logNumberBadge" class="label label-info">0</span>
+                <span id="collapseLogPannel"
+                      class="glyphicon glyphicon-collapse-down"></span>
                 &nbsp; &nbsp;
                 <button class="btn btn-primary btn-xs" id="fast-backward"
                         type="submit">
