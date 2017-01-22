@@ -10,7 +10,7 @@ canNotify = typeof window.Notification isnt 'undefined'
 startTime = moment().format("YYYY-MM-DD HH:mm:ss")
 today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
-windowHeight = $(window).height() - 50 - 34 - 43
+windowHeight = $(window).height() - 127 # (+ 50 34 43) 127
 areaTimelineShort = windowHeight - 325
 areaTimelineLong  = windowHeight - 60
 
@@ -80,7 +80,7 @@ $('#datetimepickerInline').on 'dp.clicked', (event) ->
 
 # DateTimePicker changed eventhandler
 $('#datetimepickerInline').on 'dp.change', (event) ->
-    updateMessageNumberBadges()
+    # updateMessageNumberBadges()
     selectedDate = moment(event.date).format('YYYY-MM-DD')
 
     if selectedDate >= moment().format('YYYY-MM-DD') then return

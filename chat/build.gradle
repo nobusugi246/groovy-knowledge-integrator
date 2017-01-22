@@ -97,8 +97,8 @@ dependencies {
     compile 'org.grails.plugins:grails-spring-websocket:2.3.0'
     console 'org.grails:grails-console'
 
-    profile "org.grails.profiles:web"
-    provided "org.codehaus.groovy:groovy-ant"
+    profile 'org.grails.profiles:web'
+    provided 'org.codehaus.groovy:groovy-ant:2.4.8'
 
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:${assetPipelineVersion}"
     runtime "com.h2database:h2:${H2Version}"
