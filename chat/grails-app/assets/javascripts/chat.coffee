@@ -11,7 +11,7 @@ startTime = moment().format("YYYY-MM-DD HH:mm:ss")
 today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
 windowHeight = $(window).height() - 127 # (+ 50 34 43) 127
-areaTimelineShort = windowHeight - 328
+areaTimelineShort = windowHeight - 331
 areaTimelineLong  = windowHeight - 60
 
 
