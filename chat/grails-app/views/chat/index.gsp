@@ -129,7 +129,7 @@
                    aria-expanded="false" aria-controls="collapseLog">
                 Past Messages
                 <span id="logNumberBadge" class="label label-info">0</span>
-                <span id="collapseLogPannel"
+                <span id="collapseLogPannel" style="font-size: 19px;"
                       class="glyphicon glyphicon-collapse-down"></span>
                 &nbsp; &nbsp;
                 <button class="btn btn-primary btn-xs" id="fast-backward"
@@ -144,7 +144,7 @@
             </div>
             <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
                  role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
-              <div class="panel-body">
+              <div class="panel-body" id="panelBody">
                 <div id="area_log" style="height: 240px; overflow: scroll; overflow-x:hidden;">
                 </div>
               </div>
