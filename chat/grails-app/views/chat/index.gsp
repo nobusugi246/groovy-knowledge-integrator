@@ -127,15 +127,16 @@
               <div class="panel-title" role="button" data-toggle="collapse"
                    data-parent="#accordion" href="#collapseLog"
                    aria-expanded="false" aria-controls="collapseLog">
+                <span id="collapseLogPannel" style="font-size: 18px;"
+                      class="glyphicon glyphicon-collapse-down"></span>
                 Past Messages
                 <span id="logNumberBadge" class="label label-info">0</span>
-                <span id="collapseLogPannel" style="font-size: 19px;"
-                      class="glyphicon glyphicon-collapse-down"></span>
-                &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp;
                 <button class="btn btn-primary btn-xs" id="fast-backward"
                         type="submit">
                   <span class="glyphicon glyphicon-fast-backward"></span>
                 </button>
+                &nbsp;
                 <button class="btn btn-primary btn-xs" id="fast-forward"
                         type="submit">
                   <span class="glyphicon glyphicon-fast-forward"></span>
