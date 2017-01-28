@@ -376,7 +376,7 @@ onReceiveChatRoom = (message) ->
     displayTempMessages()
     
     if msg.text.match /^https{0,1}:\/\/.+/
-        msg.text = "<a href='#{msg.text}'>#{msg.text}</a>"
+        msg.text = "<a href='#{msg.text}' target='_blank'>#{msg.text}</a>"
 
     classQuote = ''
     if msg.text.match /^\&gt;[ \s]+/ or msg.text.match /^>[ \s]+/
