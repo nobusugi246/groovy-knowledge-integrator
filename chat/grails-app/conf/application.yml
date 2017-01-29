@@ -60,7 +60,7 @@ grails:
             maxRequestSize: 5000000
 info:
     app:
-        name: '@info.app.name@'
+        name: 'gki-chat'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
 spring:

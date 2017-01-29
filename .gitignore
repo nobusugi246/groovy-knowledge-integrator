@@ -1,12 +1,27 @@
 Thumbs.db
 .DS_Store
 .gradle
-build/
+/build/
 out/
-.idea
-*.iml
-*.ipr
-*.iws
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
 .project
 .settings
-.classpath
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
