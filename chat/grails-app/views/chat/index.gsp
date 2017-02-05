@@ -120,41 +120,54 @@
             </div>
           </form>
         </div>
-        <hr/>
-        <div class="row">
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingOne">
-              <div class="panel-title" role="button" data-toggle="collapse"
-                   data-parent="#accordion" href="#collapseLog"
-                   aria-expanded="false" aria-controls="collapseLog">
-                <span id="collapseLogPannel" style="font-size: 18px;"
-                      class="glyphicon glyphicon-collapse-down"></span>
-                Past Messages
-                <span id="logNumberBadge" class="label label-info">0</span>
-                &nbsp; &nbsp; &nbsp;
-                <button class="btn btn-primary btn-xs" id="fast-backward"
+
+        <div> <!-- class="row" -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+              <a href="#tabNow" aria-controls="tabNow"
+                 role="tab" data-toggle="tab" id="AncTabNow">
+                Now
+                &nbsp;
+                <span id="nowNumberBadge" class="label label-info">0</span>
+                &nbsp;
+                <button class="btn btn-primary btn-xs" id="now-fast-backward"
                         type="submit">
                   <span class="glyphicon glyphicon-fast-backward"></span>
                 </button>
                 &nbsp;
-                <button class="btn btn-primary btn-xs" id="fast-forward"
+                <button class="btn btn-primary btn-xs" id="now-fast-forward"
                         type="submit">
                   <span class="glyphicon glyphicon-fast-forward"></span>
                 </button>
-              </div>
-            </div>
-            <div id="collapseLog" class="panel-collapse collapse in collapse-hidden"
-                 role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
-              <div class="panel-body" id="panelBody">
-                <div id="area_log" style="height: 240px; overflow: scroll; overflow-x:hidden;">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              </a>
+            </li>
+            <li role="presentation">
+              <a href="#tabPast" aria-controls="tabPast"
+                 role="tab" data-toggle="tab" id="AncTabPast">
+                Past
+                &nbsp;
+                <span id="logNumberBadge" class="label label-info">0</span>
+                &nbsp;
+                <button class="btn btn-primary btn-xs" id="log-fast-backward"
+                        type="submit">
+                  <span class="glyphicon glyphicon-fast-backward"></span>
+                </button>
+                &nbsp;
+                <button class="btn btn-primary btn-xs" id="log-fast-forward"
+                        type="submit">
+                  <span class="glyphicon glyphicon-fast-forward"></span>
+                </button>
+              </a>
+            </li>
+          </ul>
 
-        <div class="row">
-          <div id="area00" class="collapsing area-timeline">
+          <div class="tab-content" style="height:500px; overflow: scroll; overflow-x:hidden;" id="tabContent">
+            <div role="tabpanel" class="tab-pane" id="tabPast">
+              <div id="area_log"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane active" id="tabNow">
+              <div id="area_now"></div>
+            </div>
           </div>
         </div>
       </div>
