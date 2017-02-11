@@ -1,6 +1,6 @@
 node {
   stage('Checkout'){
-    git url: 'http://localhost:8280/git/nobusugi246/groovy-knowledge-integrator.git'
+    git branch: 'tab', url: 'http://localhost:8280/git/nobusugi246/groovy-knowledge-integrator.git'
   }
 
   dir('chat') {

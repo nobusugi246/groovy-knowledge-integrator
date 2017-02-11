@@ -10,11 +10,17 @@ canNotify = typeof window.Notification isnt 'undefined'
 startTime = moment().format("YYYY-MM-DD HH:mm:ss")
 today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
-windowHeight = $(window).height() - 127 # (+ 50 34 43) 127
-areaTimelineShort = windowHeight - 331
-areaTimelineLong  = windowHeight - 60
+windowHeight = $(window).height() - 160
 
 
+$('a[data-toggle="tab"]').on 'click', (e) ->
+    $('#chatMessage').focus()
+
+
+$('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
+    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
+
+    
 $('#usage').on 'click', (event) ->
     $('#chatMessage').val 'usage'
     sendFixedMessage()
@@ -34,45 +40,30 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
-$('#fast-backward').on 'click', (event) ->
-    $('#collapseLog').collapse 'show'
-    $('#area_log').scrollTop(0)
+$('#now-fast-backward').on 'click', (event) ->
+    $('#tabContent').scrollTop(0)
     $('#chatMessage').focus()
-    event.stopPropagation()
+#    event.stopPropagation()
 
 
-$('#fast-forward').on 'click', (event) ->
-    $('#collapseLog').collapse 'show'
-    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+$('#now-fast-forward').on 'click', (event) ->
+    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
     $('#chatMessage').focus()
-    event.stopPropagation()
+#    event.stopPropagation()
 
     
-$('#headingOne').on 'click', () ->
-    $('#collapseLog').removeClass 'collapse-hidden'
+$('#log-fast-backward').on 'click', (event) ->
+    $('#tabContent').scrollTop(0)
     $('#chatMessage').focus()
+#    event.stopPropagation()
 
 
-$('#collapseLog').on 'hide.bs.collapse', (event) ->
-    $('#collapseLogPannel').removeClass 'glyphicon-collapse-up'
-    $('#collapseLogPannel').addClass 'glyphicon-collapse-down'
-    $('.area-timeline').css 'height', "#{areaTimelineLong}"
+$('#log-fast-forward').on 'click', (event) ->
+    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
+    $('#chatMessage').focus()
+#    event.stopPropagation()
 
-
-$('#collapseLog').on 'hidden.bs.collapse', (event) ->
-    $('#area00').scrollTop(($("#area00")[0].scrollHeight))
-
-
-$('#collapseLog').on 'show.bs.collapse', (event) ->
-    $('#collapseLogPannel').removeClass 'glyphicon-collapse-down'
-    $('#collapseLogPannel').addClass 'glyphicon-collapse-up'
-    $('.area-timeline').css 'height', "#{areaTimelineShort}"
-
-
-$('#collapseLog').on 'shown.bs.collapse', (event) ->
-    $('#area00').scrollTop(($("#area00")[0].scrollHeight))
-
-
+    
 $('div').on 'click', (event) ->
     if event.target.id.substring(0,7) is 'message'
         msg = event.target.textContent.trim()
@@ -120,7 +111,7 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     message.username = $('#userName').val().trim()
 
     stompClient.send "/app/log", {}, JSON.stringify(message)
-    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
     $('#chatMessage').focus()
 
 
@@ -215,15 +206,17 @@ $('#chatRoomSelected').on 'change', (event) ->
     
 
 resetPage = (event) ->
+    $('#tabContent').css 'height', windowHeight
     $("a[title='Go to today']").click()
     updateMessageNumberBadges()
     lastNotified = moment().format("YYYY-MM-DD HH:mm:ss")
 
-    $('#collapseLog').collapse 'hide'
+    $('#AncTabNow').tab 'show'
     $('#logNumberBadge').text 0
+    $('#nowNumberBadge').text 0
 
     $('#area_log').html ''
-    $('#area00').html ''
+    $('#area_now').html ''
     lastUser = ''
     lastUserLog = ''
 
@@ -340,7 +333,7 @@ onReceiveByUser = (message) ->
         </div>
         <hr/>
         """
-        $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+        $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
     else
         onReceiveChatRoom(message)
 
@@ -382,11 +375,14 @@ onReceiveChatRoom = (message) ->
     if msg.text.match /^\&gt;[ \s]+/ or msg.text.match /^>[ \s]+/
         classQuote = 'quote-message'
 
-    targetArea = '#area00'
+    targetArea = '#area_now'
     if msg.status is 'log'
         targetArea = '#area_log'
         num = parseInt($('#logNumberBadge').text()) + 1
         $('#logNumberBadge').text num
+    else
+        num = parseInt($('#nowNumberBadge').text()) + 1
+        $('#nowNumberBadge').text num
 
     if (msg.status is 'log' and lastUserLog is msg.username) or (msg.status isnt 'log' and lastUser is msg.username)
         $("#{targetArea}").append """
@@ -429,10 +425,7 @@ onReceiveChatRoom = (message) ->
             error.currentTarget.parentNode.innerHTML = "<svg width='40' height='40' id='identicon#{('' + error.timeStamp).replace(/\./, '_')}'></svg>"
             jdenticon.update("#identicon#{('' + error.timeStamp).replace(/\./, '_')}", sha1(msg.username))
 
-    if msg.status is 'log'
-        $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
-    else
-        $('#area00').scrollTop(($("#area00")[0].scrollHeight))
+    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
 
     if msg.status is 'log'
         lastUserLog = msg.username
@@ -503,7 +496,7 @@ connect = () ->
     
 # initialize display
 $(document).ready ->
-    $('#collapseLog').collapse 'hide'
+    $('#tabContent').css 'height', windowHeight
     $('#refresh').tooltip()
     $('#usage').tooltip()
     $('#iconImageUploadPopover').popover()
