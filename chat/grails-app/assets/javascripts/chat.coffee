@@ -23,6 +23,7 @@ $('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
     
 $('#usage').on 'click', (event) ->
     $('#chatMessage').val 'usage'
+    $('#AncTabNow').tab 'show'
     sendFixedMessage()
     
 
