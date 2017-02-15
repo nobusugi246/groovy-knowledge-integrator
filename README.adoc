@@ -58,14 +58,14 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.1.5.jar` from
+Download `gki-chat-1.1.6.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run this application
 ====
 ----
-$ java -jar gki-chat-1.1.5.jar
+$ java -jar gki-chat-1.1.6.jar
 ----
 ====
 
@@ -78,7 +78,7 @@ If you want to change port number(ex. 8081), then
 .How to change port number
 ====
 ----
-$ java -jar gki-chat-1.1.5.jar --server.port=8081
+$ java -jar gki-chat-1.1.6.jar --server.port=8081
 ----
 ====
 
@@ -435,6 +435,8 @@ Apache License Version 2.0
 
 
 == ChangLog / 変更履歴
+
+* Ver.1.1.6, Update Grails to Ver.3.2.6, change tab to Now when chat message sent. : 2017-02-15
 
 * Ver.1.1.5, Change Accordion to Tab. : 2017-02-05
 
