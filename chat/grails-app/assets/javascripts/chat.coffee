@@ -244,6 +244,7 @@ $('#chatMessage').on 'keyup', (event) ->
     else if $('#chatMessage').val() is ''
         sendTempMessage()
     else if event.keyCode is 13 and $('#chatMessage').val().trim() isnt ''
+        $('#AncTabNow').tab 'show'
         sendFixedMessage()
 
 
