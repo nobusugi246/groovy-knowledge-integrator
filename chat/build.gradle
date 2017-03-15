@@ -10,11 +10,10 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:${assetPipelineVersion}"
         classpath "com.bertramlabs.plugins:coffee-asset-pipeline:${assetPipelineVersion}"
-        classpath "org.grails.plugins:hibernate5:${gormVersion}"
     }
 }
 
-version '1.1.6'
+version '1.1.7'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'
@@ -43,7 +42,7 @@ dependencyManagement {
 }
 
 codenarc {
-    toolVersion = '0.26.0'
+    toolVersion = "${codenarcVersion}"
     ignoreFailures = true
     configFile = file('../config/codenarc/codenarc.groovy')
     sourceSets = [project.sourceSets.main]
@@ -80,7 +79,7 @@ stats {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy:2.4.8'
+    compile "org.codehaus.groovy:groovy:${groovyVersion}"
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-logging'
@@ -99,7 +98,7 @@ dependencies {
     console 'org.grails:grails-console'
 
     profile 'org.grails.profiles:web'
-    provided 'org.codehaus.groovy:groovy-ant'
+    provided "org.codehaus.groovy:groovy-ant:${groovyVersion}"
 
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:${assetPipelineVersion}"
     runtime "com.h2database:h2:${H2Version}"
@@ -108,7 +107,7 @@ dependencies {
     testCompile 'org.grails.plugins:geb'
 
     testRuntime 'org.seleniumhq.selenium:selenium-htmlunit-driver:2.52.0'
-    testRuntime 'net.sourceforge.htmlunit:htmlunit:2.24'
+    testRuntime 'net.sourceforge.htmlunit:htmlunit:2.25'
 }
 
 task wrapper(type: Wrapper) {
