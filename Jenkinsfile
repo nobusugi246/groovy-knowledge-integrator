@@ -19,7 +19,7 @@ node {
 
   dir('modeling') {
     stage('Modeling Build'){
-      sh './gradlew clean build jacoco'
+      sh './gradlew clean build jacocoTR'
     }
   
     stage('Modeling ResultArchiver'){
