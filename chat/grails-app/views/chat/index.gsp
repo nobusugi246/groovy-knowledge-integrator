@@ -121,7 +121,7 @@
           </form>
         </div>
 
-        <div> <!-- class="row" -->
+        <!--
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
               <a href="#tabNow" aria-controls="tabNow"
@@ -160,16 +160,50 @@
               </a>
             </li>
           </ul>
+        -->
 
-          <div class="tab-content" style="height:500px; overflow: scroll; overflow-x:hidden;" id="tabContent">
-            <div role="tabpanel" class="tab-pane" id="tabPast">
-              <div id="area_log"></div>
+        <hr class="uk-divider-icon">
+        <ul uk-accordion="multiple: true">
+          <li class="uk-open uk-box-shadow-small">
+            <h3 class="uk-accordion-title">Past
+              &nbsp;
+              <span id="logNumberBadge" class="uk-badge">0</span>
+              &nbsp;
+              <button class="uk-button uk-button-default uk-button-small" id="log-fast-backward"
+                      type="submit">
+                <span uk-icon="icon: triangle-left"></span>
+              </button>
+              &nbsp;
+              <button class="uk-button uk-button-default uk-button-small" id="log-fast-forward"
+                      type="submit">
+                <span uk-icon="icon: triangle-right"></span>
+              </button>
+            </h3>
+            <div class="uk-accordion-content">
+              <div id="area_log" class="uk-panel uk-width-1-1 uk-panel-scrollable uk-resize-vertical uk-box-shadow-large"></div>
             </div>
-            <div role="tabpanel" class="tab-pane active" id="tabNow">
-              <div id="area_now"></div>
+          </li>
+          <li class="uk-open uk-box-shadow-small">
+            <h3 class="uk-accordion-title">Now
+              &nbsp;
+              <span id="nowNumberBadge" class="uk-badge">0</span>
+              &nbsp;
+              <button class="uk-button uk-button-default uk-button-small" id="now-fast-backward"
+                      type="submit">
+                <span uk-icon="icon: triangle-left"></span>
+              </button>
+              &nbsp;
+              <button class="uk-button uk-button-default uk-button-small" id="now-fast-forward"
+                      type="submit">
+                <span uk-icon="icon: triangle-right"></span>
+              </button>
+            </h3>
+            <div class="uk-accordion-content">
+              <div id="area_now" class="uk-panel uk-width-1-1 uk-panel-scrollable uk-resize-vertical uk-box-shadow-large"></div>
             </div>
-          </div>
-        </div>
+          </li>
+        </ul>
+        
       </div>
     </div>
     

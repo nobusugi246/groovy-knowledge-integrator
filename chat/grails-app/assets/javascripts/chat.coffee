@@ -13,17 +13,12 @@ lastNotified = startTime
 windowHeight = $(window).height() - 160
 
 
-$('a[data-toggle="tab"]').on 'click', (e) ->
+$('.uk-accordion-title').on 'click', (e) ->
     $('#chatMessage').focus()
 
 
-$('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
-    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
-
-    
 $('#usage').on 'click', (event) ->
     $('#chatMessage').val 'usage'
-    $('#AncTabNow').tab 'show'
     sendFixedMessage()
     
 
@@ -42,27 +37,27 @@ $('#datetimepickerInline').datetimepicker({
 
 
 $('#now-fast-backward').on 'click', (event) ->
-    $('#tabContent').scrollTop(0)
+    $('#area_now').scrollTop(0)
     $('#chatMessage').focus()
-#    event.stopPropagation()
+    event.stopPropagation()
 
 
 $('#now-fast-forward').on 'click', (event) ->
-    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
+    $('#area_now').scrollTop(($("#area_now")[0].scrollHeight))
     $('#chatMessage').focus()
-#    event.stopPropagation()
+    event.stopPropagation()
 
     
 $('#log-fast-backward').on 'click', (event) ->
-    $('#tabContent').scrollTop(0)
+    $('#area_log').scrollTop(0)
     $('#chatMessage').focus()
-#    event.stopPropagation()
+    event.stopPropagation()
 
 
 $('#log-fast-forward').on 'click', (event) ->
-    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
+    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
     $('#chatMessage').focus()
-#    event.stopPropagation()
+    event.stopPropagation()
 
     
 $('div').on 'click', (event) ->
@@ -112,7 +107,7 @@ $('#datetimepickerInline').on 'dp.change', (event) ->
     message.username = $('#userName').val().trim()
 
     stompClient.send "/app/log", {}, JSON.stringify(message)
-    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
+    $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
     $('#chatMessage').focus()
 
 
@@ -207,12 +202,10 @@ $('#chatRoomSelected').on 'change', (event) ->
     
 
 resetPage = (event) ->
-    $('#tabContent').css 'height', windowHeight
     $("a[title='Go to today']").click()
     updateMessageNumberBadges()
     lastNotified = moment().format("YYYY-MM-DD HH:mm:ss")
 
-    $('#AncTabNow').tab 'show'
     $('#logNumberBadge').text 0
     $('#nowNumberBadge').text 0
 
@@ -245,7 +238,6 @@ $('#chatMessage').on 'keyup', (event) ->
     else if $('#chatMessage').val() is ''
         sendTempMessage()
     else if event.keyCode is 13 and $('#chatMessage').val().trim() isnt ''
-        $('#AncTabNow').tab 'show'
         sendFixedMessage()
 
 
@@ -335,7 +327,8 @@ onReceiveByUser = (message) ->
         </div>
         <hr/>
         """
-        $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
+        $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+#        $('#area_now').scrollTop(($("#area_now")[0].scrollHeight))
     else
         onReceiveChatRoom(message)
 
@@ -427,7 +420,7 @@ onReceiveChatRoom = (message) ->
             error.currentTarget.parentNode.innerHTML = "<svg width='40' height='40' id='identicon#{('' + error.timeStamp).replace(/\./, '_')}'></svg>"
             jdenticon.update("#identicon#{('' + error.timeStamp).replace(/\./, '_')}", sha1(msg.username))
 
-    $('#tabContent').scrollTop(($("#tabContent")[0].scrollHeight))
+    $(targetArea).scrollTop(($(targetArea)[0].scrollHeight))
 
     if msg.status is 'log'
         lastUserLog = msg.username
@@ -498,7 +491,7 @@ connect = () ->
     
 # initialize display
 $(document).ready ->
-    $('#tabContent').css 'height', windowHeight
+#    $('#tabContent').css 'height', windowHeight
     $('#refresh').tooltip()
     $('#usage').tooltip()
     $('#iconImageUploadPopover').popover()
