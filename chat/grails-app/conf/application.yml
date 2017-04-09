@@ -63,6 +63,7 @@ info:
         name: 'gki-chat'
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
+        groovyVersion: '2.4.10'
 spring:
     groovy:
         template:
