@@ -36,18 +36,6 @@ $('#datetimepickerInline').datetimepicker({
 })
 
 
-$('#now-fast-backward').on 'click', (event) ->
-    $('#area_now').scrollTop(0)
-    $('#chatMessage').focus()
-    event.stopPropagation()
-
-
-$('#now-fast-forward').on 'click', (event) ->
-    $('#area_now').scrollTop(($("#area_now")[0].scrollHeight))
-    $('#chatMessage').focus()
-    event.stopPropagation()
-
-    
 $('#log-fast-backward').on 'click', (event) ->
     $('#area_log').scrollTop(0)
     $('#chatMessage').focus()
@@ -56,6 +44,18 @@ $('#log-fast-backward').on 'click', (event) ->
 
 $('#log-fast-forward').on 'click', (event) ->
     $('#area_log').scrollTop(($("#area_log")[0].scrollHeight))
+    $('#chatMessage').focus()
+    event.stopPropagation()
+
+    
+$('#now-fast-backward').on 'click', (event) ->
+    $('#area_now').scrollTop(0)
+    $('#chatMessage').focus()
+    event.stopPropagation()
+
+
+$('#now-fast-forward').on 'click', (event) ->
+    $('#area_now').scrollTop(($("#area_now")[0].scrollHeight))
     $('#chatMessage').focus()
     event.stopPropagation()
 
