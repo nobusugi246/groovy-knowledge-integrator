@@ -10,7 +10,7 @@ canNotify = typeof window.Notification isnt 'undefined'
 startTime = moment().format("YYYY-MM-DD HH:mm:ss")
 today = moment().format("YYYY/MM/DD")
 lastNotified = startTime
-windowHeight = $(window).height() - 160
+windowHeight = $(window).height() - 230
 
 
 $('.uk-accordion-title').on 'click', (e) ->
@@ -510,6 +510,12 @@ $(document).ready ->
     
 
 configNotification = () ->
+#    console.log $('#accRoot')
+    console.log $('#accPastTitle').click()
+    console.log $('#area_log').css('height':"#{windowHeight/2}px")
+    console.log $('#area_now').css('height':"#{windowHeight}px")
+    console.log $('#accNow')
+    
     if Notification.permission is "granted"
         notification = new Notification("Web Notification is Active. / gki Chat")
         setTimeout(notification.close.bind(notification), 3000)

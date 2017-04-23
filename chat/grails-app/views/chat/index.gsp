@@ -162,10 +162,10 @@
           </ul>
         -->
 
-        <hr class="uk-divider-icon">
-        <ul uk-accordion="multiple: true">
-          <li class="uk-open uk-box-shadow-small">
-            <h3 class="uk-accordion-title">Past
+        <hr class="uk-divider-icon"/>
+        <ul uk-accordion="multiple: true" id="accRoot">
+          <li class="uk-open uk-box-shadow-small" id="accPast">
+            <h3 class="uk-accordion-title" id="accPastTitle">Past
               &nbsp;
               <span id="logNumberBadge" class="uk-badge">0</span>
               &nbsp;
@@ -179,12 +179,12 @@
                 <span uk-icon="icon: triangle-right"></span>
               </button>
             </h3>
-            <div class="uk-accordion-content">
+            <div class="uk-accordion-content" id="accPastContent">
               <div id="area_log" class="uk-panel uk-width-1-1 uk-panel-scrollable uk-resize-vertical uk-box-shadow-large"></div>
             </div>
           </li>
-          <li class="uk-open uk-box-shadow-small">
-            <h3 class="uk-accordion-title">Now
+          <li class="uk-open uk-box-shadow-small" id="accNow">
+            <h3 class="uk-accordion-title" id="accNowTitle">Now
               &nbsp;
               <span id="nowNumberBadge" class="uk-badge">0</span>
               &nbsp;
@@ -198,7 +198,7 @@
                 <span uk-icon="icon: triangle-right"></span>
               </button>
             </h3>
-            <div class="uk-accordion-content">
+            <div class="uk-accordion-content" id="accNowContent">
               <div id="area_now" class="uk-panel uk-width-1-1 uk-panel-scrollable uk-resize-vertical uk-box-shadow-large"></div>
             </div>
           </li>

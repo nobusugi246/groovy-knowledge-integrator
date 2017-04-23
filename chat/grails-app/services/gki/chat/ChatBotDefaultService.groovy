@@ -96,7 +96,7 @@ class ChatBotDefaultService {
 
     Thread.sleep(20)
     replyMessage username,
-                 "これまでのメッセージは、「Past Messages」内に表示されます。"
+                 "これまでのメッセージは、「Past」内に表示されます。"
 
     Thread.sleep(20)
     replyMessage username,
