@@ -171,12 +171,12 @@
               &nbsp;
               <button class="uk-button uk-button-default uk-button-small" id="log-fast-backward"
                       type="submit">
-                <span uk-icon="icon: triangle-left"></span>
+                <span uk-icon="icon: chevron-up"></span>
               </button>
               &nbsp;
               <button class="uk-button uk-button-default uk-button-small" id="log-fast-forward"
                       type="submit">
-                <span uk-icon="icon: triangle-right"></span>
+                <span uk-icon="icon: chevron-down"></span>
               </button>
             </h3>
             <div class="uk-accordion-content" id="accPastContent">
@@ -190,12 +190,12 @@
               &nbsp;
               <button class="uk-button uk-button-default uk-button-small" id="now-fast-backward"
                       type="submit">
-                <span uk-icon="icon: triangle-left"></span>
+                <span uk-icon="icon: chevron-up"></span>
               </button>
               &nbsp;
               <button class="uk-button uk-button-default uk-button-small" id="now-fast-forward"
                       type="submit">
-                <span uk-icon="icon: triangle-right"></span>
+                <span uk-icon="icon: chevron-down"></span>
               </button>
             </h3>
             <div class="uk-accordion-content" id="accNowContent">
