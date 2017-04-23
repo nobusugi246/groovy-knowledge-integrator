@@ -206,6 +206,9 @@ resetPage = (event) ->
     updateMessageNumberBadges()
     lastNotified = moment().format("YYYY-MM-DD HH:mm:ss")
 
+    if $('#accPast').hasClass('uk-open')
+        $('#accPastTitle').click()
+
     $('#logNumberBadge').text 0
     $('#nowNumberBadge').text 0
 
@@ -511,10 +514,9 @@ $(document).ready ->
 
 configNotification = () ->
 #    console.log $('#accRoot')
-    console.log $('#accPastTitle').click()
-    console.log $('#area_log').css('height':"#{windowHeight/2}px")
-    console.log $('#area_now').css('height':"#{windowHeight}px")
-    console.log $('#accNow')
+#    console.log $('#accPastTitle').click()
+    $('#area_log').css('height':"#{windowHeight/2}px")
+    $('#area_now').css('height':"#{windowHeight}px")
     
     if Notification.permission is "granted"
         notification = new Notification("Web Notification is Active. / gki Chat")

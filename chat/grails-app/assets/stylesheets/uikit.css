@@ -618,11 +618,11 @@ a.uk-link-reset:focus,
   /* 1 */
   border: none;
   /* 2 */
-  margin-bottom: 2px;
+  margin-bottom: 20px;
 }
 /* Add margin if adjacent element */
 * + [class*='uk-divider'] {
-  margin-top: 2px;
+  margin-top: 20px;
 }
 /* Icon
  ========================================================================== */
@@ -4469,7 +4469,7 @@ ul.uk-nav-sub {
 /* Content
  ========================================================================== */
 .uk-accordion-content {
-  margin-top: 5px;
+  margin-top: 20px;
 }
 /*
  * Micro clearfix

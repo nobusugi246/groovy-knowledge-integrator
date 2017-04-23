@@ -43,3 +43,27 @@
     background: 0;
     padding: 0;
 }
+
+[class*='uk-divider'] {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.uk-accordion > :nth-child(n+2) {
+  margin-top: 10px;
+}
+
+.uk-accordion-content {
+  margin-top: 5px;
+}
+
+.uk-close {
+  color: inherit;
+  line-height: inherit;
+}
+
+.uk-close:hover,
+.uk-close:focus {
+  color: inherit;
+  outline: inherit;
+}

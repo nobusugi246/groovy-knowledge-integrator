@@ -164,7 +164,7 @@
 
         <hr class="uk-divider-icon"/>
         <ul uk-accordion="multiple: true" id="accRoot">
-          <li class="uk-open uk-box-shadow-small" id="accPast">
+          <li class="uk-close uk-box-shadow-small" id="accPast">
             <h3 class="uk-accordion-title" id="accPastTitle">Past
               &nbsp;
               <span id="logNumberBadge" class="uk-badge">0</span>
