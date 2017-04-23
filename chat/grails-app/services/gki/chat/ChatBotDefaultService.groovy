@@ -96,7 +96,11 @@ class ChatBotDefaultService {
 
     Thread.sleep(20)
     replyMessage username,
-                 "これまでのメッセージは、「Past」内に表示されます。"
+                 "利用するチャットルームは、「Chat Room」のリストから選択してください。"
+
+    Thread.sleep(20)
+    replyMessage username,
+                 "チャットルームに入る前に送信されたメッセージは、「Past」内に表示されます。"
 
     Thread.sleep(20)
     replyMessage username,
@@ -105,10 +109,6 @@ class ChatBotDefaultService {
     Thread.sleep(20)
     replyMessage username,
                  "Ctrl + i により、直前に自分で送信したメッセージを、入力フィールドに再入力できます。 "
-
-    Thread.sleep(20)
-    replyMessage username,
-                 "利用するチャットルームは、「Chat Room」のリストから選択してください。"
 
     Thread.sleep(20)
     replyMessage username,
