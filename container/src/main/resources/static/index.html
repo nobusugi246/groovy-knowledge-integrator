@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <title>gKI Bot Container</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/application.css" />
+</head>
+<body class="uk-invisible">
+
+<nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+            <li class="uk-active"><a href="#">gKI</a></li>
+            <li><a href="#">Chat</a></li>
+            <li><a href="#">Bots</a></li>
+        </ul>
+    </div>
+    <div class="uk-navbar-right">
+        <ul class="uk-navbar-nav">
+            <li><a href="" uk-icon="icon: cog"></a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="uk-grid-small" uk-grid>
+    <div class="uk-width-1-5"><div class="uk-card uk-card-default uk-card-small uk-card-body">
+        <article class="uk-article">
+            gKI Bot コンテナ
+        </article>
+        <hr class="uk-divider-icon">
+
+        <div id="yourName">
+            {{ message }}
+            <button v-on:click="reverseMessage" class="uk-button uk-button-small uk-button-default">Reverse Message</button>
+        </div>
+        <hr class="uk-divider-icon">
+
+        <button id="newBotButton" class="uk-button uk-button-small uk-button-primary">Bot 新規作成</button>
+        <hr class="uk-divider-icon">
+
+        <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+            <li class="uk-parent uk-active uk-open">
+                <a href="#">Bot リスト</a>
+                <ul class="uk-nav-sub">
+                    <li><a href="#">Sub item 1</a></li>
+                    <li><a href="#">Sub item 2</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div></div>
+    <div class="uk-width-4-5"><div class="uk-card uk-card-default uk-card-small uk-card-body">
+        4-5-M
+    </div></div>
+</div>
+
+<script src="/assets/application.js"></script>
+</body>
+</html>

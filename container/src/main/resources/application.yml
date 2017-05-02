@@ -1,0 +1,11 @@
+server.port: 8081
+
+endpoints.sensitive: true
+management.security.enabled: false
+
+spring.datasource.url: jdbc:h2:./botContainerDB;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+spring.datasource.driverClassName: org.h2.Driver
+spring.datasource.username: sa
+spring.datasource.password:
+spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
