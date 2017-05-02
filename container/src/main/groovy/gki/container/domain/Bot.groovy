@@ -1,11 +1,14 @@
 package gki.container.domain
 
+import groovy.transform.CompileStatic
+
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import java.sql.Timestamp
 
+@CompileStatic
 @Entity
 class Bot {
     @Id

@@ -24,34 +24,52 @@
 </nav>
 
 <div class="uk-grid-small" uk-grid>
-    <div class="uk-width-1-5"><div class="uk-card uk-card-default uk-card-small uk-card-body">
-        <article class="uk-article">
-            gKI Bot コンテナ
-        </article>
-        <hr class="uk-divider-icon">
+    <div class="uk-width-1-5">
+        <div class="uk-card uk-card-default uk-card-small uk-card-body">
+            <article class="uk-article">
+                gKI Bot コンテナ
+            </article>
+            <hr class="uk-divider-icon">
 
-        <div id="yourName">
-            {{ message }}
-            <button v-on:click="reverseMessage" class="uk-button uk-button-small uk-button-default">Reverse Message</button>
+            <div id="yourName">
+                {{ message }}
+                <button v-on:click="reverseMessage" class="uk-button uk-button-small uk-button-default">Reverse Message</button>
+            </div>
+            <hr class="uk-divider-icon">
+
+            <button id="newBotButton" class="uk-button uk-button-primary uk-button-small" uk-toggle="target: #newBotModal">
+                Bot 新規作成
+            </button>
+            <div id="newBotModal" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body">
+                    <div class="uk-modal-header">
+                        Bot 新規作成
+                    </div>
+                    <p>test</p>
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close">Cancel</button>
+                        <button class="uk-button uk-button-primary uk-modal-close">Save</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="uk-divider-icon">
+
+            <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+                <li class="uk-parent uk-active uk-open">
+                    <a href="#">Bot リスト</a>
+                    <ul class="uk-nav-sub">
+                        <li><a href="#">Sub item 1</a></li>
+                        <li><a href="#">Sub item 2</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-        <hr class="uk-divider-icon">
-
-        <button id="newBotButton" class="uk-button uk-button-small uk-button-primary">Bot 新規作成</button>
-        <hr class="uk-divider-icon">
-
-        <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
-            <li class="uk-parent uk-active uk-open">
-                <a href="#">Bot リスト</a>
-                <ul class="uk-nav-sub">
-                    <li><a href="#">Sub item 1</a></li>
-                    <li><a href="#">Sub item 2</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div></div>
-    <div class="uk-width-4-5"><div class="uk-card uk-card-default uk-card-small uk-card-body">
-        4-5-M
-    </div></div>
+    </div>
+    <div class="uk-width-4-5">
+        <div class="uk-card uk-card-default uk-card-small uk-card-body">
+            4-5-M
+        </div>
+    </div>
 </div>
 
 <script src="/assets/application.js"></script>
