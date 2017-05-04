@@ -48,7 +48,8 @@ dependencies {
   compile 'org.springframework.boot:spring-boot-starter-data-rest'
   compile "com.bertramlabs.plugins:asset-pipeline-core:${assetPipelineVersion}"
 
-  compileOnly 'org.springframework.boot:spring-boot-devtools'
+  compile 'org.springframework.boot:spring-boot-devtools'
+
   compileOnly 'org.projectlombok:lombok'
 
   runtime 'org.flywaydb:flyway-core'

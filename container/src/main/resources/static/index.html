@@ -24,54 +24,101 @@
 </nav>
 
 <div class="uk-grid-small" uk-grid>
-    <div class="uk-width-1-5">
+    <div class="uk-width-1-4">
         <div class="uk-card uk-card-default uk-card-small uk-card-body">
-            <article class="uk-article">
-                gKI Bot コンテナ
-            </article>
-            <hr class="uk-divider-icon">
-
-            <div id="yourName">
-                {{ message }}
-                <button v-on:click="reverseMessage" class="uk-button uk-button-small uk-button-default">Reverse Message</button>
-            </div>
-            <hr class="uk-divider-icon">
-
-            <button id="newBotButton" class="uk-button uk-button-primary uk-button-small" uk-toggle="target: #newBotModal">
-                Bot 新規作成
-            </button>
-            <div id="newBotModal" uk-modal>
-                <div class="uk-modal-dialog uk-modal-body">
-                    <div class="uk-modal-header">
-                        Bot 新規作成
-                    </div>
-                    <p>test</p>
-                    <div class="uk-modal-footer uk-text-right">
-                        <button class="uk-button uk-button-default uk-modal-close">Cancel</button>
-                        <button class="uk-button uk-button-primary uk-modal-close">Save</button>
-                    </div>
+            <form class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-1">
+                    <strong>gKI Bot Container</strong>
                 </div>
-            </div>
+
+                <div class="uk-width-1-2">
+                    <span uk-icon="icon: user"></span>
+                    Your Name
+                </div>
+                <div class="uk-width-1-2">
+                    <input class="uk-input uk-form-small" type="text" placeholder="Your Name" id="userName" required>
+                </div>
+
+                <div class="uk-width-1-1">
+                    <hr class="uk-divider-icon">
+                </div>
+                <div class="uk-width-1-1">
+                    <button id="createNewBotButton" class="uk-button uk-button-primary uk-button-small" uk-toggle="target: #newBotModal">
+                        Create New Bot
+                    </button>
+                </div>
+            </form>
             <hr class="uk-divider-icon">
 
-            <ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+            <ul id="botsList" class="uk-nav-default uk-nav-parent-icon" uk-nav>
                 <li class="uk-parent uk-active uk-open">
-                    <a href="#">Bot リスト</a>
-                    <ul class="uk-nav-sub">
-                        <li><a href="#">Sub item 1</a></li>
-                        <li><a href="#">Sub item 2</a></li>
-                    </ul>
+                    <a href="#">
+                        Bots List &nbsp;
+                        <button class="uk-button uk-button-small" v-on:click="left">
+                            <span uk-icon="icon: triangle-left" v-show="botsList.page.number > 0"></span>
+                        </button>
+                        <button class="uk-button uk-button-small" v-on:click="right">
+                            <span uk-icon="icon: triangle-right" v-show="botsList.page.number+1 < botsList.page.totalPages"></span>
+                        </button>
+                    </a>
+                    <!-- div class="uk-panel uk-panel-scrollable uk-resize-vertical" -->
+                        <ul class="uk-nav-sub">
+                            <li v-for="bot in botsList._embedded.bots">
+                                {{ bot.name }}
+                            </li>
+                        </ul>
+                    <!-- /div -->
                 </li>
             </ul>
         </div>
     </div>
-    <div class="uk-width-4-5">
-        <div class="uk-card uk-card-default uk-card-small uk-card-body">
-            4-5-M
+    <div class="uk-width-3-4">
+        <div class="uk-panel uk-panel-scrollable uk-resize-vertical" id="editor"></div>
+        <button class="uk-button uk-button-default">Cancel</button>
+        <button class="uk-button uk-button-primary">Save</button>
+    </div>
+</div>
+
+<div id="newBotModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <div class="uk-modal-header">
+            <strong>New Bot</strong>
+        </div>
+
+        <div class="uk-padding-small" uk-grid>
+            <div class="uk-width-1-4">
+                Bot Name
+            </div>
+            <div class="uk-width-3-4">
+                <input class="uk-input" type="text" placeholder="New Bot Name" id="newBotName" v-model="name" required>
+            </div>
+
+            <div class="uk-width-1-4">
+                Quote from
+            </div>
+            <div class="uk-width-3-4">
+                <select class="uk-select" id="fromBotName" v-model="from">
+                    <option v-for="bot in botsList">
+                        {{ bot.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="uk-width-3-4">
+                <i>{{ message }}</i>
+            </div>
+            <div class="uk-width-1-4">
+                <button id="saveNewBotButton" class="uk-button uk-button-primary" v-on:click="createNewBot">Create</button>
+            </div>
+        </div>
+
+        <div class="uk-modal-footer uk-text-right">
+            <button class="uk-button uk-button-default uk-modal-close" v-on:click="close">Close</button>
         </div>
     </div>
 </div>
 
 <script src="/assets/application.js"></script>
+<script src="/ace.js"></script>
 </body>
 </html>
