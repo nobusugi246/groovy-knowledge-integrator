@@ -1,3 +1,10 @@
+serverErrorHandler = (xhr, msg, ext) ->
+  UIkit.notification
+    message: "Server #{msg}: status = #{xhr.status}"
+    status: 'danger'
+    pos: 'bottom-center'
+    timeout: 2000
+
 sideMenuVue = new Vue
   el: '#sideMenu'
   data:
@@ -46,11 +53,7 @@ botsListVue = new Vue
         success: (e) ->
           botsListVue.botsList = e
         error: (xhr, msg, ext) ->
-          UIkit.notification
-            message: "#{msg}: status = #{xhr.status}"
-            status: 'danger'
-            pos: 'bottom-center'
-            timeout: 2000
+          serverErrorHandler(xhr, msg, ext)
   computed:
     pageLeft: () ->
       @botsList.page?.number > 0
@@ -76,11 +79,7 @@ modalNewBotVue = new Vue
         success: (e) ->
           modalNewBotVue.botsList = e._embedded.bots
         error: (xhr, msg, ext) ->
-          UIkit.notification
-            message: "#{msg}: status = #{xhr.status}"
-            status: 'danger'
-            pos: 'bottom-center'
-            timeout: 2000
+          serverErrorHandler(xhr, msg, ext)
     createNewBot: () ->
       userName = sideMenuVue.userName
       if !userName
@@ -104,17 +103,9 @@ modalNewBotVue = new Vue
               botsListVue.botsList = e
               modalNewBotVue.updateBotsList()
             error: (xhr, msg, ext) ->
-              UIkit.notification
-                message: "#{msg}: status = #{xhr.status}"
-                status: 'danger'
-                pos: 'bottom-center'
-                timeout: 2000
+              serverErrorHandler(xhr, msg, ext)
         error: (xhr, msg, ext) ->
-          UIkit.notification
-            message: "#{msg}: status = #{xhr.status}"
-            status: 'danger'
-            pos: 'bottom-center'
-            timeout: 2000
+          serverErrorHandler(xhr, msg, ext)
 
 botEditorVue = new Vue
   el: '#botEditor'
@@ -148,11 +139,7 @@ botEditorVue = new Vue
           decoded = new TextDecoderLite('utf-8').decode(b64Decoded)
           botEditorVue.editor.setValue decoded
         error: (xhr, msg, ext) ->
-          UIkit.notification
-            message: "#{msg}: status = #{xhr.status}"
-            status: 'danger'
-            pos: 'bottom-center'
-            timeout: 2000
+          serverErrorHandler(xhr, msg, ext)
     toggle: () ->
       @bot.revisedBy = sideMenuVue.userName
       @bot.updatedDate = moment().format()
@@ -169,11 +156,7 @@ botEditorVue = new Vue
             pos: 'bottom-center'
             timeout: 2000
         error: (xhr, msg, ext) ->
-          UIkit.notification
-            message: "#{msg}: status = #{xhr.status}"
-            status: 'danger'
-            pos: 'bottom-center'
-            timeout: 2000
+          serverErrorHandler(xhr, msg, ext)
     save: () ->
       @bot.revision++
       encoded = new TextEncoderLite('utf-8').encode(@editor.getValue())
@@ -194,11 +177,7 @@ botEditorVue = new Vue
             pos: 'bottom-center'
             timeout: 2000
         error: (xhr, msg, ext) ->
-          UIkit.notification
-            message: "#{msg}: status = #{xhr.status}"
-            status: 'danger'
-            pos: 'bottom-center'
-            timeout: 2000
+          serverErrorHandler(xhr, msg, ext)
 
 # ----------------------------------------------------------------
 $(() ->
