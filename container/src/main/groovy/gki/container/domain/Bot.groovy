@@ -1,7 +1,7 @@
 package gki.container.domain
 
 import groovy.transform.CompileStatic
-import groovy.transform.builder.Builder
+import groovy.transform.ToString
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull
 import java.sql.Timestamp
 
 @CompileStatic
-@Builder
+@ToString(includeNames=true)
 @Entity
 class Bot {
     @Id

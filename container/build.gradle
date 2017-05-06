@@ -40,7 +40,7 @@ codenarc {
 }
 
 dependencies {
-  compile "org.codehaus.groovy:groovy:${groovyVersion}"
+  compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
   compile 'org.springframework.boot:spring-boot-starter-web'
   compile 'org.springframework.boot:spring-boot-starter-actuator'
   compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
