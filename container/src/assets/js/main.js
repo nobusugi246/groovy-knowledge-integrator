@@ -68,6 +68,14 @@
           url: "/bots?page=" + page,
           success: function(e) {
             return botsListVue.botsList = e;
+          },
+          error: function(xhr, msg, ext) {
+            return UIkit.notification({
+              message: msg + ": status = " + xhr.status,
+              status: 'danger',
+              pos: 'bottom-center',
+              timeout: 2000
+            });
           }
         });
       }
@@ -104,6 +112,14 @@
           url: '/bots?size=10000',
           success: function(e) {
             return modalNewBotVue.botsList = e._embedded.bots;
+          },
+          error: function(xhr, msg, ext) {
+            return UIkit.notification({
+              message: msg + ": status = " + xhr.status,
+              status: 'danger',
+              pos: 'bottom-center',
+              timeout: 2000
+            });
           }
         });
       },
@@ -133,7 +149,23 @@
               success: function(e) {
                 botsListVue.botsList = e;
                 return modalNewBotVue.updateBotsList();
+              },
+              error: function(xhr, msg, ext) {
+                return UIkit.notification({
+                  message: msg + ": status = " + xhr.status,
+                  status: 'danger',
+                  pos: 'bottom-center',
+                  timeout: 2000
+                });
               }
+            });
+          },
+          error: function(xhr, msg, ext) {
+            return UIkit.notification({
+              message: msg + ": status = " + xhr.status,
+              status: 'danger',
+              pos: 'bottom-center',
+              timeout: 2000
             });
           }
         });
@@ -181,6 +213,14 @@
             b64Decoded = base64js.toByteArray(e.script);
             decoded = new TextDecoderLite('utf-8').decode(b64Decoded);
             return botEditorVue.editor.setValue(decoded);
+          },
+          error: function(xhr, msg, ext) {
+            return UIkit.notification({
+              message: msg + ": status = " + xhr.status,
+              status: 'danger',
+              pos: 'bottom-center',
+              timeout: 2000
+            });
           }
         });
       },
@@ -197,6 +237,14 @@
             return UIkit.notification({
               message: "Enabled: " + e.enabled + ".",
               status: 'success',
+              pos: 'bottom-center',
+              timeout: 2000
+            });
+          },
+          error: function(xhr, msg, ext) {
+            return UIkit.notification({
+              message: msg + ": status = " + xhr.status,
+              status: 'danger',
               pos: 'bottom-center',
               timeout: 2000
             });
@@ -221,6 +269,14 @@
             return UIkit.notification({
               message: 'saved.',
               status: 'success',
+              pos: 'bottom-center',
+              timeout: 2000
+            });
+          },
+          error: function(xhr, msg, ext) {
+            return UIkit.notification({
+              message: msg + ": status = " + xhr.status,
+              status: 'danger',
               pos: 'bottom-center',
               timeout: 2000
             });

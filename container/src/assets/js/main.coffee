@@ -45,6 +45,12 @@ botsListVue = new Vue
         url: "/bots?page=#{page}"
         success: (e) ->
           botsListVue.botsList = e
+        error: (xhr, msg, ext) ->
+          UIkit.notification
+            message: "#{msg}: status = #{xhr.status}"
+            status: 'danger'
+            pos: 'bottom-center'
+            timeout: 2000
   computed:
     pageLeft: () ->
       @botsList.page?.number > 0
@@ -69,6 +75,12 @@ modalNewBotVue = new Vue
         url: '/bots?size=10000'
         success: (e) ->
           modalNewBotVue.botsList = e._embedded.bots
+        error: (xhr, msg, ext) ->
+          UIkit.notification
+            message: "#{msg}: status = #{xhr.status}"
+            status: 'danger'
+            pos: 'bottom-center'
+            timeout: 2000
     createNewBot: () ->
       userName = sideMenuVue.userName
       if !userName
@@ -91,6 +103,18 @@ modalNewBotVue = new Vue
             success: (e) ->
               botsListVue.botsList = e
               modalNewBotVue.updateBotsList()
+            error: (xhr, msg, ext) ->
+              UIkit.notification
+                message: "#{msg}: status = #{xhr.status}"
+                status: 'danger'
+                pos: 'bottom-center'
+                timeout: 2000
+        error: (xhr, msg, ext) ->
+          UIkit.notification
+            message: "#{msg}: status = #{xhr.status}"
+            status: 'danger'
+            pos: 'bottom-center'
+            timeout: 2000
 
 botEditorVue = new Vue
   el: '#botEditor'
@@ -123,6 +147,12 @@ botEditorVue = new Vue
           b64Decoded = base64js.toByteArray(e.script)
           decoded = new TextDecoderLite('utf-8').decode(b64Decoded)
           botEditorVue.editor.setValue decoded
+        error: (xhr, msg, ext) ->
+          UIkit.notification
+            message: "#{msg}: status = #{xhr.status}"
+            status: 'danger'
+            pos: 'bottom-center'
+            timeout: 2000
     toggle: () ->
       @bot.revisedBy = sideMenuVue.userName
       @bot.updatedDate = moment().format()
@@ -136,6 +166,12 @@ botEditorVue = new Vue
           UIkit.notification
             message: "Enabled: #{e.enabled}."
             status: 'success'
+            pos: 'bottom-center'
+            timeout: 2000
+        error: (xhr, msg, ext) ->
+          UIkit.notification
+            message: "#{msg}: status = #{xhr.status}"
+            status: 'danger'
             pos: 'bottom-center'
             timeout: 2000
     save: () ->
@@ -155,6 +191,12 @@ botEditorVue = new Vue
           UIkit.notification
             message: 'saved.'
             status: 'success'
+            pos: 'bottom-center'
+            timeout: 2000
+        error: (xhr, msg, ext) ->
+          UIkit.notification
+            message: "#{msg}: status = #{xhr.status}"
+            status: 'danger'
             pos: 'bottom-center'
             timeout: 2000
 
