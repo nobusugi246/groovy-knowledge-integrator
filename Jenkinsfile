@@ -17,7 +17,7 @@ node {
     }
   }
 
-  dir('modeling') {
+  dir('container') {
     stage('Modeling Build'){
       sh './gradlew clean build jacocoTR'
     }
