@@ -170,9 +170,10 @@ class ChatBotDefaultService {
     def whList = WebHook.findAllWhere(enabled: true)
     def fcList = FeedCrawler.findAllWhere(enabled: true)
     def jsList = Jenkins.findAllWhere(enabled: true)
+    def botList = ChatBotServer.findAllWhere(enabled: true)
 
     replyMessage message.username,
-                 "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size}, FeedCrawlerは ${fcList.size}, Jenkins Jobは ${jsList.size} です。"
+     "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size}, FeedCrawlerは ${fcList.size}, Jenkins Jobは ${jsList.size}, Botコンテナサーバは ${botList.size} です。"
 
     userList.each { user ->
       def chatroom = ChatRoom.get(user.chatroom)
@@ -193,6 +194,11 @@ class ChatBotDefaultService {
     jsList.each { jenkins ->
       replyMessage message.username,
                    "Jenkins Job '${jenkins.name}' (${jenkins.url}) が有効です。"
+    }
+
+    botList.each { bot ->
+      replyMessage message.username,
+              "Botコンテナサーバ '${bot.name}' (${bot.uri}) が有効です。"
     }
   }
 

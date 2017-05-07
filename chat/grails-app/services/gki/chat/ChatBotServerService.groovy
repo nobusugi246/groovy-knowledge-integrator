@@ -21,7 +21,7 @@ class ChatBotServerService {
         ChatBotServer.findAllWhere(enabled: true).each { target ->
             log.info "${target.name}: ${target.uri}"
             try {
-                botServer.getForEntity target.uri, String, (message as JSON).toString()
+                botServer.postForLocation target.uri, (message as JSON).toString()
             } catch (e) {
                 log.info e.message
             }
