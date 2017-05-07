@@ -18,11 +18,11 @@ node {
   }
 
   dir('container') {
-    stage('Modeling Build'){
+    stage('Bot Container Build'){
       sh './gradlew clean build jacocoTR'
     }
   
-    stage('Modeling ResultArchiver'){
+    stage('Bot Container ResultArchiver'){
       archiveArtifacts 'build/libs/*.jar'
       
       junit allowEmptyResults: true, testResults: 'build/test-results/*.xml'
