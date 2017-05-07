@@ -13,6 +13,7 @@ class FeedCrawlerService {
   static lazyInit = false
    
   def chatBotDefaultService
+  def chatBotServerService
 
   def atomDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
   def rssDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ")
@@ -124,8 +125,9 @@ class FeedCrawlerService {
 
 
   def sendMessageByChatroom(String chatroomName, String msg, String name){
-    def sendToList = ChatRoom.findByName(chatroomName)
-    if( !sendToList ) {
+    def sendTo = ChatRoom.findByName(chatroomName)
+    def sendToList = sendTo
+    if( !sendTo ) {
       sendToList = ChatRoom.findAll()
     }
 
@@ -136,5 +138,8 @@ class FeedCrawlerService {
     reclist.each {
       chatBotDefaultService.replyMessage it, msg, true, name
     }
+
+    def message = new ChatMessage(text: msg, username: name, status: 'fixed', chatroom: sendTo.id)
+    chatBotServerService.sendMessage(message)
   }
 }

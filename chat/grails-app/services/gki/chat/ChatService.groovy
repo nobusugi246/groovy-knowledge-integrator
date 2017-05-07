@@ -12,7 +12,8 @@ class ChatService {
   static lazyInit = false
    
   def chatBotDefaultService
-  
+  def chatBotServerService
+
   SimpMessagingTemplate brokerMessagingTemplate
 
   void receiveMessage(ChatMessage message) {
@@ -24,6 +25,7 @@ class ChatService {
     
     brokerMessagingTemplate.convertAndSend to, msg
 
+    chatBotServerService.sendMessage(message)
     chatBotDefaultService.defaultHandler(message)
   }
 
@@ -128,7 +130,7 @@ class ChatService {
 
   @Scheduled(fixedRate=10000L)
   void updateUserConnection() {
-    log.info 'update UserList'
+    // log.info 'update UserList'
 
     def users = ChatUser.findAll()
     users.findAll{

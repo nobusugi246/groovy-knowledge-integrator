@@ -50,7 +50,9 @@ class ChatBotDefaultService {
     ['deleteJenkins <Jenkins Job名>', 'Jenkins Jobを削除する', /deleteJenkins.*/,
      { message -> deleteJenkins(message) }],
     ['build <Jenkins Job名>', 'Jenkins Jobのビルドを依頼する', /build.*/,
-     { message -> buildByJenkins(message) }]
+     { message -> buildByJenkins(message) }],
+    ['addBotServer <Botコンテナサーバ名> <BotコンテナサーバURL>', 'Botコンテナサーバを登録する', /addBotServer.*/,
+     { message -> addBotServer(message) }]
   ]
 
   
@@ -498,17 +500,41 @@ class ChatBotDefaultService {
   }
 
   
+  void addBotServer(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+
+    if( words.size() != 3 ) {
+      replyMessage message.username,
+                   XmlUtil.escapeXml("addBotServer <Botコンテナサーバ名> <BotコンテナサーバURL>と入力してください。")
+      return
+    }
+
+    if( ChatBotServer.findByName(words[1]) ) {
+      replyMessage message.username,
+              "すでに '${words[1]}' という Botコンテナサーバ は登録されています。"
+      return
+    }
+
+    new ChatBotServer(name: words[1], uri: words[2]).save()
+
+    if( ChatBotServer.findByName(words[1]) ){
+      replyMessage message.chatroom,
+                   XmlUtil.escapeXml("Botコンテナサーバ '${words[1]}' を登録しました。"),
+                   true
+    }
+  }
+
+
   void replyMessage(String to, String message,
                     boolean persistence = false,
                     String replyname = 'gkibot') {
+
     String replyto = "/topic/${to}"
     def msg = new ChatMessage(text: message, username: replyname)
 
     if (persistence) {
       msg.status = 'fixed'
       msg.chatroom = to
-
-      log.info msg.toString()
       msg.save()
     }
 
