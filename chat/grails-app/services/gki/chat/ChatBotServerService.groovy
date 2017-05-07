@@ -3,6 +3,9 @@ package gki.chat
 import grails.converters.JSON
 import groovy.util.logging.Slf4j
 import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.client.RestTemplate
 
@@ -21,7 +24,11 @@ class ChatBotServerService {
         ChatBotServer.findAllWhere(enabled: true).each { target ->
             log.info "${target.name}: ${target.uri}"
             try {
-                botServer.postForLocation target.uri, (message as JSON).toString()
+                HttpHeaders headers = new HttpHeaders()
+                headers.setContentType(MediaType.APPLICATION_JSON)
+
+                HttpEntity<String> entity = new HttpEntity<String>((message as JSON).toString() ,headers)
+                botServer.postForLocation target.uri, entity
             } catch (e) {
                 log.info e.message
             }

@@ -13,6 +13,9 @@ spring.jpa.hibernate.ddl-auto: update
 
 spring.jackson.date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
 
+logging.level.org.springframework.web: DEBUG
+server.tomcat.accesslog.enabled: true
+
 # logging.level.org.hibernate.SQL: DEBUG
 # logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
