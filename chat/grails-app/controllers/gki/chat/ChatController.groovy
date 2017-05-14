@@ -1,9 +1,8 @@
 package gki.chat
 
-import groovy.util.logging.Slf4j
-import groovy.json.JsonSlurper
 import grails.converters.JSON
-
+import groovy.json.JsonSlurper
+import groovy.util.logging.Slf4j
 import org.springframework.messaging.handler.annotation.MessageMapping
 
 @Slf4j
@@ -64,6 +63,15 @@ class ChatController {
   protected String heartbeatCount(ChatMessage message) {
     log.debug "heartbeat: ${message}"
     chatService.heartbeatCount(message)
+  }
+
+
+  def chatMessage(){
+    def msg = request.getJSON()
+    def message = new ChatMessage(text: msg.text, username: msg.username, chatroom: msg.chatroom, date: msg.date, time: msg.time)
+    log.info "message(API): ${message}"
+    chatService.receiveMessage(message)
+    render ''
   }
 
 

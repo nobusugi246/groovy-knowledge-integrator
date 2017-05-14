@@ -1,10 +1,12 @@
 package gki.container.service
 
+import gki.container.common.ChatMessage
 import gki.container.domain.Bot
 import gki.container.domain.BotRepository
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 import java.sql.Timestamp
@@ -34,9 +36,22 @@ class BotService {
                 createdDate: new Timestamp(System.currentTimeMillis()),
                 script: botFrom[0].script)
         repository.save(newBot)
-
-        log.info java.net.URLDecoder.decode(new String(newBot.script.decodeBase64(), 'UTF-8'), 'UTF-8')
-
         return "Created."
+    }
+
+    @Async
+    void execBotScript(ChatMessage message){
+        log.info message.toString()
+
+        repository.findAll().each { bot ->
+            if( bot.enabled ){
+                log.info "bot: ${bot.name}"
+                if( message.username == bot.name) return
+
+                message.botname = bot.name
+                def script = URLDecoder.decode(new String(bot.script.decodeBase64(), 'UTF-8'), 'UTF-8')
+                Eval.me('message', message, script)
+            }
+        }
     }
 }

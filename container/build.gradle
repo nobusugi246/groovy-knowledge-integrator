@@ -56,6 +56,8 @@ dependencies {
   runtime "com.h2database:h2:${H2Version}"
   runtime "com.bertramlabs.plugins:asset-pipeline-spring-boot:${assetPipelineVersion}"
 
+  runtime 'org.jsoup:jsoup:1.10.2'
+
   testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 

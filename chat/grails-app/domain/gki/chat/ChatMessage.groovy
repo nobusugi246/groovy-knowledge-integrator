@@ -11,6 +11,7 @@ class ChatMessage {
   String chatroom = ''
   String text = ''
   String username = ''
+  String dmtarget = ''
 
   String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
   String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
@@ -20,6 +21,7 @@ class ChatMessage {
     chatroom editable: true
     text editable: true, maxSize: 1024
     status editable: true, nullable: true, display: false
+    dmtarget editable: false
     date editable: false
     time editable: false
   }

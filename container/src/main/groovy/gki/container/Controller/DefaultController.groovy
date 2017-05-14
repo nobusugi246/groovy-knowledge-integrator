@@ -5,7 +5,6 @@ import gki.container.service.BotService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
@@ -28,6 +27,6 @@ class DefaultController {
 
     @PostMapping('/chatMessage')
     void receiveChatMessage(@RequestBody ChatMessage message){
-        log.info message.toString()
+        botService.execBotScript(message)
     }
 }
