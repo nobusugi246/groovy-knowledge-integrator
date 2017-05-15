@@ -140,7 +140,7 @@ botEditorVue = new Vue
           botEditorVue.editor.setValue decoded
         error: (xhr, msg, ext) ->
           serverErrorHandler(xhr, msg, ext)
-    toggle: () ->
+    toggleE: () ->
       @bot.revisedBy = sideMenuVue.userName
       @bot.updatedDate = moment().format()
       @bot.enabled = not @bot.enabled
@@ -150,8 +150,26 @@ botEditorVue = new Vue
         url: @bot._links.self.href
         data: JSON.stringify @bot
         success: (e) ->
+          botsListVue.updateBotsList(botsListVue.page)
           UIkit.notification
             message: "Enabled: #{e.enabled}."
+            status: 'success'
+            pos: 'bottom-center'
+            timeout: 2000
+        error: (xhr, msg, ext) ->
+          serverErrorHandler(xhr, msg, ext)
+    toggleAA: () ->
+      @bot.revisedBy = sideMenuVue.userName
+      @bot.updatedDate = moment().format()
+      @bot.acceptAll = not @bot.acceptAll
+      $.ajax
+        method: 'PUT'
+        contentType: 'application/json'
+        url: @bot._links.self.href
+        data: JSON.stringify @bot
+        success: (e) ->
+          UIkit.notification
+            message: "Accept All: #{e.acceptAll}."
             status: 'success'
             pos: 'bottom-center'
             timeout: 2000

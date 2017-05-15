@@ -208,7 +208,7 @@
           }
         });
       },
-      toggle: function() {
+      toggleE: function() {
         this.bot.revisedBy = sideMenuVue.userName;
         this.bot.updatedDate = moment().format();
         this.bot.enabled = !this.bot.enabled;
@@ -218,8 +218,31 @@
           url: this.bot._links.self.href,
           data: JSON.stringify(this.bot),
           success: function(e) {
+            botsListVue.updateBotsList(botsListVue.page);
             return UIkit.notification({
               message: "Enabled: " + e.enabled + ".",
+              status: 'success',
+              pos: 'bottom-center',
+              timeout: 2000
+            });
+          },
+          error: function(xhr, msg, ext) {
+            return serverErrorHandler(xhr, msg, ext);
+          }
+        });
+      },
+      toggleAA: function() {
+        this.bot.revisedBy = sideMenuVue.userName;
+        this.bot.updatedDate = moment().format();
+        this.bot.acceptAll = !this.bot.acceptAll;
+        return $.ajax({
+          method: 'PUT',
+          contentType: 'application/json',
+          url: this.bot._links.self.href,
+          data: JSON.stringify(this.bot),
+          success: function(e) {
+            return UIkit.notification({
+              message: "Accept All: " + e.acceptAll + ".",
               status: 'success',
               pos: 'bottom-center',
               timeout: 2000

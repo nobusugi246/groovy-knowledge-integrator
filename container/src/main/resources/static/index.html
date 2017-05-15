@@ -68,7 +68,10 @@
                     </a>
                     <ul class="uk-nav-sub">
                         <li v-for="bot in bots">
-                            <a @click="edit(bot.id)" class="uk-margin-remove" href="#">
+                            <a v-if="bot.enabled" @click="edit(bot.id)" class="uk-margin-remove" href="#">
+                                <u><strong>{{ bot.name }} (Rev.{{ bot.revision }})</strong></u>
+                            </a>
+                            <a v-else @click="edit(bot.id)" class="uk-margin-remove" href="#">
                                 {{ bot.name }} (Rev.{{ bot.revision }})
                             </a>
                         </li>
@@ -108,13 +111,21 @@
                 Updated Date: {{ formatedUpdatedDate }}
             </div>
 
+            <div class="uk-width-1-3">
+                <span uk-icon="icon: sign-in"></span>
+                Accept All: {{ bot.acceptAll }}
+            </div>
+            <div class="uk-width-2-3">
+            </div>
+
             <div class="uk-width-1-1">
                 <span uk-icon="icon: pencil"></span>
                 Script <br/>
                 <div class="uk-panel uk-height-large" id="editor"></div>
             </div>
             <div class="uk-width-2-3">
-                <button class="uk-button uk-button-default" @click="toggle">Toggle Enabled</button>
+                <button class="uk-button uk-button-default" @click="toggleE">Toggle Enabled</button>
+                <button class="uk-button uk-button-default" @click="toggleAA">Toggle Accept All</button>
             </div>
             <div class="uk-width-1-3">
                 <!-- button class="uk-button uk-button-default">Cancel</button -->

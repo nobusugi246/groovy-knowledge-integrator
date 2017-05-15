@@ -33,6 +33,7 @@ class Bot {
 
     Timestamp updatedDate
     boolean enabled
+    boolean acceptAll
 
     @NotNull
     String script
