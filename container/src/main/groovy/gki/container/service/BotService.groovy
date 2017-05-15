@@ -56,6 +56,7 @@ class BotService {
 
                 def script = URLDecoder.decode(new String(bot.script.decodeBase64(), 'UTF-8'), 'UTF-8')
                 def result = Eval.me('message', message, script)
+                if( result == '' ) return
 
                 HttpHeaders headers = new HttpHeaders()
                 headers.setContentType(MediaType.APPLICATION_JSON)

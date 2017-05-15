@@ -273,7 +273,9 @@ sendFixedMessage = () ->
     stompClient.send "/app/message", {}, JSON.stringify(message)
     $('#chatMessage').val ''
     $('#chatMessage').focus()
-    lastMessage = message.text
+    dmt = ''
+    if message.dmtarget then dmt = "@#{message.dmtarget}"
+    lastMessage = "#{dmt} #{message.text}".trim()
 
 
 # heartbeat user

@@ -75,6 +75,13 @@ class ChatController {
   }
 
 
+  def messagesByDate(){
+    def messages = ChatMessage.findAllByDate(params.day)
+
+    render messages as JSON
+  }
+
+
   def countMessages() {
     def day = params.day.replace('/', '-')
     def counted = ChatMessage.countByChatroomAndDate(params.room, day)
