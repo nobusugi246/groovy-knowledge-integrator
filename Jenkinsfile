@@ -15,7 +15,7 @@ node {
     stage('Chat ResultArchiver'){
       archiveArtifacts 'build/libs/*.jar'
 
-      junit allowEmptyResults: true, testResults: 'build/test-results/*.xml'
+      junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
       step([$class: 'JacocoPublisher'])
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/codenarc', reportFiles: 'main.html', reportName: 'Codenarc Report Of Chat'])
     }
@@ -33,7 +33,7 @@ node {
     stage('Bot Container ResultArchiver'){
       archiveArtifacts 'build/libs/*.jar'
       
-      junit allowEmptyResults: true, testResults: 'build/test-results/*.xml'
+      junit allowEmptyResults: true, testResults: 'build/test-results/test/*.xml'
       step([$class: 'JacocoPublisher'])
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/codenarc', reportFiles: 'main.html', reportName: 'Codenarc Report Of Modeling'])
     }
