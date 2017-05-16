@@ -17,11 +17,11 @@ class ChatMessage {
   String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
 
   static constraints = {
-    username editable: true
-    chatroom editable: true
-    text editable: true, maxSize: 1024
+    username editable: false
+    chatroom editable: false
+    text editable: false, maxSize: 1024
     status editable: true, nullable: true, display: false
-    dmtarget editable: false
+    dmtarget editable: false, nullable: true
     date editable: false
     time editable: false
   }
