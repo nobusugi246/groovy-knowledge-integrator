@@ -35,7 +35,7 @@ class ApplicationInitializer {
                     enabled: true,
                     createdBy: 'gKI Bot Container',
                     createdDate: now,
-                    script: '')
+                    script: '\"メッセージの長さは ${message.text.size()} 文字です。\"')
             log.info starterBot.toString()
             repository.save(starterBot)
 

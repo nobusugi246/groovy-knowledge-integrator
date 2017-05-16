@@ -40,11 +40,11 @@
                 </div>
                 <div class="uk-width-1-2">
                     <input class="uk-input uk-form-small" type="text" placeholder="Your Name" required
-                           v-model="userName">
+                           v-model="userName"/>
                 </div>
 
                 <div class="uk-width-1-1">
-                    <hr class="uk-divider-icon">
+                    <hr class="uk-divider-icon"/>
                 </div>
                 <div class="uk-width-1-1">
                     <button id="createNewBotButton" class="uk-button uk-button-primary uk-button-small"
@@ -53,7 +53,7 @@
                     </button>
                 </div>
             </form>
-            <hr class="uk-divider-icon">
+            <hr class="uk-divider-icon"/>
 
             <ul id="botsList" class="uk-nav-default uk-nav-parent-icon" uk-nav>
                 <li class="uk-parent uk-active uk-open">
@@ -86,13 +86,9 @@
                 <span uk-icon="icon: happy"></span>
                 Bot Name: {{ bot.name }}
             </div>
-            <div class="uk-width-1-3">
+            <div class="uk-width-2-3">
                 <span uk-icon="icon: hashtag"></span>
                 Revision: {{ bot.revision }}
-            </div>
-            <div class="uk-width-1-3">
-                <span uk-icon="icon: check"></span>
-                Enabled: {{ bot.enabled }}
             </div>
             <div class="uk-width-1-3">
                 <span uk-icon="icon: user"></span>
@@ -112,10 +108,21 @@
             </div>
 
             <div class="uk-width-1-3">
+                <span uk-icon="icon: check"></span>
+                Enabled: {{ bot.enabled }}
+            </div>
+            <div class="uk-width-2-3">
                 <span uk-icon="icon: sign-in"></span>
                 Accept All: {{ bot.acceptAll }}
             </div>
-            <div class="uk-width-2-3">
+
+            <div class="uk-width-1-3">
+                <button class="uk-button uk-button-primary uk-button-small" @click="toggleE">Toggle 'Enabled'</button>
+            </div>
+            <div class="uk-width-1-3">
+                <button class="uk-button uk-button-primary uk-button-small" @click="toggleAA">Toggle 'Accept All'</button>
+            </div>
+            <div class="uk-width-1-3">
             </div>
 
             <div class="uk-width-1-1">
@@ -123,13 +130,33 @@
                 Script <br/>
                 <div class="uk-panel uk-height-large" id="editor"></div>
             </div>
-            <div class="uk-width-2-3">
-                <button class="uk-button uk-button-default" @click="toggleE">Toggle Enabled</button>
-                <button class="uk-button uk-button-default" @click="toggleAA">Toggle Accept All</button>
+
+            <div class="uk-width-3-5">
+                <form>
+                    <span uk-icon="icon: file-edit"></span>
+                    <input class="uk-input uk-width-5-6" type="text" placeholder="Test Message"
+                           v-model="testMessage"/>
+                </form>
             </div>
-            <div class="uk-width-1-3">
-                <!-- button class="uk-button uk-button-default">Cancel</button -->
+            <div class="uk-width-1-5">
+                <button class="uk-button uk-button-secondary" @click="test">Test</button>
+            </div>
+            <div class="uk-width-1-5">
                 <button class="uk-button uk-button-primary" @click="save">Save</button>
+            </div>
+
+            <div class="uk-width-5-6">
+                <span uk-icon="icon: sign-out"></span>
+                Test Result<br/>
+                <form>
+                    <div class="uk-textarea" id="testResult">
+                    </div>
+                </form>
+            </div>
+            <div class="uk-width-1-6">
+            </div>
+            <div class="uk-width-1-1">
+                <hr class="uk-divider-icon"/>
             </div>
         </div>
     </div>

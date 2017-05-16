@@ -1,6 +1,7 @@
 package gki.container.controller
 
 import gki.container.common.ChatMessage
+import gki.container.common.TestDataSet
 import gki.container.service.BotService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
@@ -28,5 +29,10 @@ class DefaultController {
     @PostMapping('/chatMessage')
     void receiveChatMessage(@RequestBody ChatMessage message){
         botService.execBotScript(message)
+    }
+
+    @PostMapping('/testBot')
+    String testBot(@RequestBody TestDataSet dataSet){
+        return botService.testBot(dataSet)
     }
 }

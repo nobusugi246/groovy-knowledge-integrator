@@ -68,7 +68,8 @@ class ChatController {
 
   def chatMessage(){
     def msg = request.getJSON()
-    def message = new ChatMessage(text: msg.text, username: msg.username, chatroom: msg.chatroom, date: msg.date, time: msg.time)
+    def message = new ChatMessage(text: msg.text, username: msg.username, dmtarget: msg.dmtarget,
+                                  chatroom: msg.chatroom, date: msg.date, time: msg.time)
     log.info "message(API): ${message}"
     chatService.receiveMessage(message)
     render ''

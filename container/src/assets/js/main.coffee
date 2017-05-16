@@ -113,8 +113,15 @@ botEditorVue = new Vue
     bot: {}
     visible: false
     editor: {}
+    testMessage: ''
   mounted: () ->
     @editor = ace.edit("editor")
+    @editor.setOptions
+      enableBasicAutocompletion: true
+      enableLiveAutocompletion: true
+      showPrintMargin: false
+#      maxLines: Infinity
+      fontSize: "85%"
     @editor.setTheme("ace/theme/monokai")
     @editor.getSession().setMode("ace/mode/groovy")
     @setup(1)
@@ -125,6 +132,8 @@ botEditorVue = new Vue
       @bot.updatedDate?.replace('T',' ').substring(0, 19)
   methods:
     setup: (botId) ->
+      @testMessage = ''
+      $('#testResult').html ''
       $.ajax
         url: "/bots/#{botId}"
         success: (e) ->
@@ -138,6 +147,7 @@ botEditorVue = new Vue
           b64Decoded = base64js.toByteArray(e.script)
           decoded = new TextDecoderLite('utf-8').decode(b64Decoded)
           botEditorVue.editor.setValue decoded
+          botEditorVue.editor.gotoLine(0)
         error: (xhr, msg, ext) ->
           serverErrorHandler(xhr, msg, ext)
     toggleE: () ->
@@ -154,7 +164,7 @@ botEditorVue = new Vue
           UIkit.notification
             message: "Enabled: #{e.enabled}."
             status: 'success'
-            pos: 'bottom-center'
+            pos: 'top-center'
             timeout: 2000
         error: (xhr, msg, ext) ->
           serverErrorHandler(xhr, msg, ext)
@@ -171,7 +181,26 @@ botEditorVue = new Vue
           UIkit.notification
             message: "Accept All: #{e.acceptAll}."
             status: 'success'
-            pos: 'bottom-center'
+            pos: 'top-center'
+            timeout: 2000
+        error: (xhr, msg, ext) ->
+          serverErrorHandler(xhr, msg, ext)
+    test: () ->
+      $('#testResult').html ''
+      encoded = new TextEncoderLite('utf-8').encode(@editor.getValue())
+      b64Encoded = base64js.fromByteArray(encoded)
+      $.ajax
+        method: 'POST'
+        contentType: 'application/json'
+        url: '/testBot'
+        data: JSON.stringify({ 'botname':@bot.name, 'script': b64Encoded, 'message': @testMessage })
+        success: (e) ->
+          console.log e
+          $('#testResult').append e
+          UIkit.notification
+            message: 'Tested.'
+            status: 'success'
+            pos: 'bottom-right'
             timeout: 2000
         error: (xhr, msg, ext) ->
           serverErrorHandler(xhr, msg, ext)
@@ -190,9 +219,9 @@ botEditorVue = new Vue
         success: (e) ->
           botsListVue.updateBotsList(botsListVue.page)
           UIkit.notification
-            message: 'saved.'
+            message: 'Saved.'
             status: 'success'
-            pos: 'bottom-center'
+            pos: 'bottom-right'
             timeout: 2000
         error: (xhr, msg, ext) ->
           serverErrorHandler(xhr, msg, ext)

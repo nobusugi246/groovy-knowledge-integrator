@@ -167,10 +167,17 @@
     data: {
       bot: {},
       visible: false,
-      editor: {}
+      editor: {},
+      testMessage: ''
     },
     mounted: function() {
       this.editor = ace.edit("editor");
+      this.editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        showPrintMargin: false,
+        fontSize: "85%"
+      });
       this.editor.setTheme("ace/theme/monokai");
       this.editor.getSession().setMode("ace/mode/groovy");
       return this.setup(1);
@@ -187,6 +194,8 @@
     },
     methods: {
       setup: function(botId) {
+        this.testMessage = '';
+        $('#testResult').html('');
         return $.ajax({
           url: "/bots/" + botId,
           success: function(e) {
@@ -201,7 +210,8 @@
             botEditorVue.editor.$blockScrolling = 2e308;
             b64Decoded = base64js.toByteArray(e.script);
             decoded = new TextDecoderLite('utf-8').decode(b64Decoded);
-            return botEditorVue.editor.setValue(decoded);
+            botEditorVue.editor.setValue(decoded);
+            return botEditorVue.editor.gotoLine(0);
           },
           error: function(xhr, msg, ext) {
             return serverErrorHandler(xhr, msg, ext);
@@ -222,7 +232,7 @@
             return UIkit.notification({
               message: "Enabled: " + e.enabled + ".",
               status: 'success',
-              pos: 'bottom-center',
+              pos: 'top-center',
               timeout: 2000
             });
           },
@@ -244,7 +254,36 @@
             return UIkit.notification({
               message: "Accept All: " + e.acceptAll + ".",
               status: 'success',
-              pos: 'bottom-center',
+              pos: 'top-center',
+              timeout: 2000
+            });
+          },
+          error: function(xhr, msg, ext) {
+            return serverErrorHandler(xhr, msg, ext);
+          }
+        });
+      },
+      test: function() {
+        var b64Encoded, encoded;
+        $('#testResult').html('');
+        encoded = new TextEncoderLite('utf-8').encode(this.editor.getValue());
+        b64Encoded = base64js.fromByteArray(encoded);
+        return $.ajax({
+          method: 'POST',
+          contentType: 'application/json',
+          url: '/testBot',
+          data: JSON.stringify({
+            'botname': this.bot.name,
+            'script': b64Encoded,
+            'message': this.testMessage
+          }),
+          success: function(e) {
+            console.log(e);
+            $('#testResult').append(e);
+            return UIkit.notification({
+              message: 'Tested.',
+              status: 'success',
+              pos: 'bottom-right',
               timeout: 2000
             });
           },
@@ -269,9 +308,9 @@
           success: function(e) {
             botsListVue.updateBotsList(botsListVue.page);
             return UIkit.notification({
-              message: 'saved.',
+              message: 'Saved.',
               status: 'success',
-              pos: 'bottom-center',
+              pos: 'bottom-right',
               timeout: 2000
             });
           },

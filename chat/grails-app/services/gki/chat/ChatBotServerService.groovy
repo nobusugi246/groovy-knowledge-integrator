@@ -28,7 +28,7 @@ class ChatBotServerService {
                 headers.setContentType(MediaType.APPLICATION_JSON)
 
                 HttpEntity<String> entity = new HttpEntity<String>((message as JSON).toString() ,headers)
-                botServer.postForLocation target.uri, entity
+                botServer.postForLocation "${target.uri}/chatMessage", entity
             } catch (e) {
                 log.info e.message
             }

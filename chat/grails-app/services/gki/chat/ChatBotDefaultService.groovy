@@ -2,6 +2,7 @@ package gki.chat
 
 import grails.converters.JSON
 import grails.transaction.Transactional
+import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
 import groovy.xml.XmlUtil
 import org.apache.commons.codec.binary.Base64
@@ -14,7 +15,6 @@ import org.springframework.web.client.RestTemplate
 @Slf4j
 @Transactional
 class ChatBotDefaultService {
-
   def infoEndpoint
   def healthEndpoint
   def metricsEndpoint
@@ -29,7 +29,7 @@ class ChatBotDefaultService {
      { message -> makeChatRoom(message) }],
     ['deleteChatRoom <ChatRoom名>', 'ChatRoomの削除', /(deleteChatRoom .+|dcr .+)/,
      { message -> deleteChatRoom(message) }],
-    ['users', '接続している全ユーザと、有効な WebHook, FeedCrawler, Jenkins Jobのリストを表示', /users/,
+    ['users', '接続している全ユーザと、有効な WebHook, FeedCrawler, Jenkins Job, Bot のリストを表示', /users/,
      { message -> displayAllConnectedUsers(message) }],
     ['addHook <WebHook名> <URL> [<Char Room>]', 'WebHookを登録する', /addHook.*/,
      { message -> addHook(message) }],
@@ -52,7 +52,9 @@ class ChatBotDefaultService {
     ['build <Jenkins Job名>', 'Jenkins Jobのビルドを依頼する', /build.*/,
      { message -> buildByJenkins(message) }],
     ['addBotServer <Botコンテナサーバ名> <BotコンテナサーバURL>', 'Botコンテナサーバを登録する', /addBotServer.*/,
-     { message -> addBotServer(message) }]
+     { message -> addBotServer(message) }],
+    ['deleteBotServer <Botコンテナサーバ名>', 'Botコンテナサーバを削除する', /deleteBotServer.*/,
+     { message -> deleteBotServer(message) }]
   ]
 
   
@@ -66,22 +68,19 @@ class ChatBotDefaultService {
 
 
   void hello(String username){
-    replyMessage username,
-                 "こんにちは、${username}さん"
+    replyMessage username, "こんにちは、${username}さん"
     Thread.sleep(20)
 
     def messageList = ChatMessage.findAllByUsername(username, [sort: 'id'])
     if( messageList.size >= 2 ){
       def lastMessage = messageList[-2]
             
-      replyMessage username,
-                   "あなたの最新のメッセージは"
+      replyMessage username, "あなたの最新のメッセージは"
       Thread.sleep(20)
       replyMessage username,
                    "${lastMessage.date} ${lastMessage.time} '${lastMessage.text}'"
       Thread.sleep(20)
-      replyMessage username,
-                   "です。"
+      replyMessage username, "です。"
       Thread.sleep(20)
     }
 
@@ -173,7 +172,7 @@ class ChatBotDefaultService {
     def botList = ChatBotServer.findAllWhere(enabled: true)
 
     replyMessage message.username,
-     "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size}, FeedCrawlerは ${fcList.size}, Jenkins Jobは ${jsList.size}, Botコンテナサーバは ${botList.size} です。"
+      "${message.username}さん, 接続中のユーザは ${userList.size}名, 有効な WebHookは ${whList.size}, FeedCrawlerは ${fcList.size}, Jenkins Jobは ${jsList.size}, Botコンテナサーバは ${botList.size} です。"
 
     userList.each { user ->
       def chatroom = ChatRoom.get(user.chatroom)
@@ -196,9 +195,18 @@ class ChatBotDefaultService {
                    "Jenkins Job '${jenkins.name}' (${jenkins.url}) が有効です。"
     }
 
-    botList.each { bot ->
+    botList.each { botSv ->
       replyMessage message.username,
-              "Botコンテナサーバ '${bot.name}' (${bot.uri}) が有効です。"
+                   "Botコンテナサーバ '${botSv.name}' (${botSv.uri}) が有効です。"
+      def client = new RestTemplate()
+      def list = client.getForObject("${botSv.uri}/bots?size=10000", String)
+      def bots = new JsonSlurper().parseText(list)
+      bots._embedded.bots.each { bot ->
+        if( bot.enabled ){
+          replyMessage message.username,
+                  "Bot '${bot.name}' が有効です。"
+        }
+      }
     }
   }
 
@@ -527,6 +535,25 @@ class ChatBotDefaultService {
       replyMessage message.chatroom,
                    XmlUtil.escapeXml("Botコンテナサーバ '${words[1]}' を登録しました。"),
                    true
+    }
+  }
+
+
+  void deleteBotServer(ChatMessage message) {
+    def words = message.text.split(/[ \t]+/).toList()
+
+    if( words.size() != 2 ) {
+      replyMessage message.username,
+              XmlUtil.escapeXml("deleteBotServer <Botコンテナサーバ名> と入力してください。")
+      return
+    }
+
+    ChatBotServer.findByName(words[1]).delete()
+
+    if( !ChatBotServer.findByName(words[1]) ){
+      replyMessage message.chatroom,
+              XmlUtil.escapeXml("Botコンテナサーバ '${words[1]}' を削除しました。"),
+              true
     }
   }
 

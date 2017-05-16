@@ -1,6 +1,7 @@
 package gki.container.service
 
 import gki.container.common.ChatMessage
+import gki.container.common.TestDataSet
 import gki.container.domain.Bot
 import gki.container.domain.BotRepository
 import groovy.transform.CompileStatic
@@ -49,7 +50,7 @@ class BotService {
 
         repository.findAll().each { bot ->
             if( bot.enabled ){
-                log.info "bot: ${bot.name}"
+                log.info "- bot: ${bot.name}"
                 if( message.username == bot.name) return
 
                 if( !bot.acceptAll && (message.dmtarget != bot.name) ) return
@@ -62,12 +63,25 @@ class BotService {
                 headers.setContentType(MediaType.APPLICATION_JSON)
 
                 def repmsg = new ChatMessage(text: result.toString(), chatroom: message.chatroom,
-                                             username: bot.name)
+                                             username: bot.name, dmtarget: message.username)
 
                 def restTemplate = new RestTemplate()
                 HttpEntity<ChatMessage> entity = new HttpEntity<ChatMessage>(repmsg ,headers)
                 restTemplate.postForLocation 'http://localhost:8080/chat/chatMessage', entity
             }
         }
+    }
+
+    String testBot(TestDataSet dataSet){
+        dataSet.script = URLDecoder.decode(new String(dataSet.script.decodeBase64(), 'UTF-8'), 'UTF-8')
+        def result = ''
+        def message = new ChatMessage(username: 'test', text: dataSet.message,
+                                      chatroom: 0, dmtarget: dataSet.botname)
+        try {
+            result = Eval.me('message', message, dataSet.script)
+        } catch (e) {
+            result = '<strong>Script Error</strong>:<br/>' + e.message.toString()
+        }
+        return result
     }
 }
