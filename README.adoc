@@ -8,8 +8,8 @@
 :toclevels: 5
 :example-caption: List
 
-An application for Knowledge Integration by grails/groovy.
-Now only a Chat Microservice with groovy chatbot system.
+A System for Knowledge Integration by grails/groovy.
+A Chat Microservice and a Chatbot Microservice by groovy language.
 
 
 == ScreenShot
@@ -20,12 +20,13 @@ image::images/chatIndex.png[width=800]
 
 == Features
 
-This is a Chat Application builded by Grails Ver.3.2.
+A Chat Microservice builded by Grails Ver.3.2 and
+a Chatbot Microservice builded by Spring Boot/Groovy.
 
 . Chatbot by groovy language.
-** Now only embedded one. It will be connected with other microservices of bots.
-** Displays Spring Boot Actuator info / health / metrics of this Chat Server.
-. Accepts Github webhooks.
+** A Chat Microservice has embedded one, a Chatbot Microservice is a
+container of any bot by groovy language.
+. Accepts Github webhooks at the Chat Microservice.
 ** Now tested by Gitbucket's webhooks.
 ** Payload URL (ex. http://localhost:8080/chat/webhook/) with
    Content type "application/x-www-form-urlencoded".
@@ -58,27 +59,29 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.1.8.jar` from
+Download `gki-chat-1.1.9.jar` and `gki-container-0.1.0.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
-.How to run this application
+.How to run Microservices
 ====
 ----
-$ java -jar gki-chat-1.1.8.jar
+$ java -jar gki-chat-1.1.9.jar
+$ java -jar gki-container-0.1.0.jar
 ----
 ====
 
-This will generate 2 Database files (prodDb.mv.db, prodDb.trace.db) at the current folder.
+This will generate 2 Database files (prodDb.mv.db, botContainerDB.mv.db) at the current folder.
 
-And access http://localhost:8080/chat/index from your Browser.
+And access http://localhost:8080/chat/index (Chat),
+http://localhost:8081 (Chatbot) from your Browser
 
-If you want to change port number(ex. 8081), then
+If you want to change port number(ex. 8082), then
 
 .How to change port number
 ====
 ----
-$ java -jar gki-chat-1.1.8.jar --server.port=8081
+$ java -jar gki-chat-1.1.9.jar --server.port=8082
 ----
 ====
 
@@ -436,7 +439,9 @@ Apache License Version 2.0
 
 == ChangLog / 変更履歴
 
-* Ver.1.1.8, Setup the frontend at startup. : 2017-04-24
+* Chat Ver.1.1.9 / Chatbot Ver.0.1.0, Initial release of the Chatbot Microservice. : 2017-05-17
+
+* Ver.1.1.8, Resize the frontend at startup. : 2017-04-24
 
 * Ver.1.1.7, Update Grails to Ver.3.2.8, change UX with uikit. : 2017-04-10
 
