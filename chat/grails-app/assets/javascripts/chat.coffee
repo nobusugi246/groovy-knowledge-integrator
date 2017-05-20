@@ -393,7 +393,7 @@ onReceiveChatRoom = (message) ->
         num = parseInt($('#nowNumberBadge').text()) + 1
         $('#nowNumberBadge').text num
 
-    if msg.dmtarget isnt ''
+    if msg.dmtarget isnt '' and msg.dmtarget isnt 'null'
         msg.text = "@#{msg.dmtarget} #{msg.text}"
 
     if (msg.status is 'log' and lastUserLog is msg.username) or (msg.status isnt 'log' and lastUser is msg.username)
