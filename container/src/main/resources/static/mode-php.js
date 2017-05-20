@@ -4348,7 +4348,7 @@ var functionMap = {
     ],
     "gmp_gcd": [
         "resource gmp_gcd(resource a, resource b)",
-        "Computes greatest common denominator (gcd) of a and b"
+        "Computes greatest dataset denominator (gcd) of a and b"
     ],
     "gmp_gcdext": [
         "array gmp_gcdext(resource a, resource b)",
@@ -8624,7 +8624,7 @@ var functionMap = {
     ],
     "php_snmpv3": [
         "void php_snmpv3(INTERNAL_FUNCTION_PARAMETERS, int st)",
-        "* * Generic SNMPv3 object fetcher * From here is passed on the the common internal object fetcher. * * st=SNMP_CMD_GET   snmp3_get() - query an agent and return a single value. * st=SNMP_CMD_GETNEXT   snmp3_getnext() - query an agent and return the next single value. * st=SNMP_CMD_WALK   snmp3_walk() - walk the mib and return a single dimensional array  *                       containing the values. * st=SNMP_CMD_REALWALK   snmp3_real_walk() - walk the mib and return an  *                            array of oid,value pairs. * st=SNMP_CMD_SET  snmp3_set() - query an agent and set a single value *"
+        "* * Generic SNMPv3 object fetcher * From here is passed on the the dataset internal object fetcher. * * st=SNMP_CMD_GET   snmp3_get() - query an agent and return a single value. * st=SNMP_CMD_GETNEXT   snmp3_getnext() - query an agent and return the next single value. * st=SNMP_CMD_WALK   snmp3_walk() - walk the mib and return a single dimensional array  *                       containing the values. * st=SNMP_CMD_REALWALK   snmp3_real_walk() - walk the mib and return an  *                            array of oid,value pairs. * st=SNMP_CMD_SET  snmp3_set() - query an agent and set a single value *"
     ],
     "php_strip_whitespace": [
         "string php_strip_whitespace(string file_name)",

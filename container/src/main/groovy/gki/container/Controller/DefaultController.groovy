@@ -1,7 +1,7 @@
 package gki.container.controller
 
-import gki.container.common.ChatMessage
-import gki.container.common.TestDataSet
+import gki.container.dataset.ChatMessage
+import gki.container.dataset.TestDataSet
 import gki.container.service.BotService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j

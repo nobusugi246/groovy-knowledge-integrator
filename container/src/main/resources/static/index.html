@@ -55,6 +55,61 @@
             </form>
             <hr class="uk-divider-icon"/>
 
+            <div class="uk-card uk-card-small uk-card-default" id="chatServersList">
+                <div>
+                     ChatServer List ({{ count }})
+                </div>
+                <div uk-drop="offset: 5">
+                    <div class="uk-card uk-card-small uk-card-default">
+                        <div class="uk-inline">
+                            <a href="#" uk-icon="icon: plus-circle" @click="newChatServer"></a>
+                            <div uk-drop>
+                                <div class="uk-card uk-card-body uk-card-default">
+                                    <h3 class="uk-card-title">ChatServer</h3>
+                                    <div class="uk-margin-small">
+                                        <input class="uk-input" type="text" v-model="newName" placeholder="ChatServer Name" required/>
+                                    </div>
+                                    <div class="uk-margin-small">
+                                        <input class="uk-input" type="text" v-model="newUrl" placeholder="ChatServer URL" required/>
+                                    </div>
+                                    <div class="uk-margin-small">
+                                        <button id="newChatServer" class="uk-button uk-button-primary uk-button-small"
+                                                @click="newChatServer">
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" uk-icon="icon: triangle-left" @click="left" v-show="pageLeft"></a>
+                            <a href="#" uk-icon="icon: triangle-right" @click="right" v-show="pageRight"></a>
+                        </div>
+                        <table class="uk-table uk-table-small uk-table-striped uk-margin-remove-top">
+                            <thead>
+                            <tr>
+                                <th class="uk-table-shrink">Name</th>
+                                <th>Url</th>
+                                <th class="uk-table-shrink"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="chatServer in chatServers">
+                                <td @click="toggle(chatServer.id)">
+                                    {{ chatServer.name }}
+                                </td>
+                                <td>
+                                    {{ chatServer.url }}
+                                </td>
+                                <td>
+                                    <a href="#" uk-icon="icon: close" @click="deleteChatServer(chatServer.id)"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr class="uk-divider-icon"/>
+
             <ul id="botsList" class="uk-nav-default uk-nav-parent-icon" uk-nav>
                 <li class="uk-parent uk-active uk-open">
                     <a href="#">
@@ -204,6 +259,7 @@
 </div>
 
 <script src="/ace.js"></script>
+<script src="/ext-language_tools.js"></script>
 <script src="/assets/application.js"></script>
 </body>
 </html>

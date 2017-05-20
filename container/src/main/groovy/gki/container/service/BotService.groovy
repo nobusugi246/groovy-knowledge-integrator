@@ -1,9 +1,12 @@
 package gki.container.service
 
-import gki.container.common.ChatMessage
-import gki.container.common.TestDataSet
+import gki.container.dataset.ChatMessage
+import gki.container.dataset.ExecDataSet
+import gki.container.dataset.TestDataSet
 import gki.container.domain.Bot
 import gki.container.domain.BotRepository
+import gki.container.domain.ChatServer
+import gki.container.domain.ChatServerRepository
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,16 +24,19 @@ import java.sql.Timestamp
 @Service
 class BotService {
     @Autowired
-    BotRepository repository
+    BotRepository botRepository
+
+    @Autowired
+    ChatServerRepository chatServerRepository
 
     String createBot(String name, String from, String userName){
         log.info "name: ${name}, from: ${from}, user: ${userName}"
 
-        if( repository.findByName(name).size() > 0 ){
+        if( botRepository.findByName(name).size() > 0 ){
             return "Same name bot already exists."
         }
 
-        def botFrom = repository.findByName(from)
+        def botFrom = botRepository.findByName(from)
         if( botFrom.size() == 0 ){
             return "Bot for quoting is not exist."
         }
@@ -40,7 +46,7 @@ class BotService {
                 createdBy: userName,
                 createdDate: new Timestamp(System.currentTimeMillis()),
                 script: botFrom[0].script)
-        repository.save(newBot)
+        botRepository.save(newBot)
         return "Created."
     }
 
@@ -48,7 +54,7 @@ class BotService {
     void execBotScript(ChatMessage message){
         log.info "message: ${message.date} ${message.time}, ${message.username}"
 
-        repository.findAll().each { bot ->
+        botRepository.findAll().each { bot ->
             if( bot.enabled ){
                 log.info "- bot: ${bot.name}"
                 if( message.username == bot.name) return
@@ -56,7 +62,9 @@ class BotService {
                 if( !bot.acceptAll && (message.dmtarget != bot.name) ) return
 
                 def script = URLDecoder.decode(new String(bot.script.decodeBase64(), 'UTF-8'), 'UTF-8')
-                def result = Eval.me('message', message, script)
+                def chatServers = chatServerRepository.findAll()
+                def dataset = new ExecDataSet(chatServers: chatServers, message: message)
+                def result = Eval.me('ds', dataset, script)
                 if( result == '' ) return
 
                 HttpHeaders headers = new HttpHeaders()
@@ -77,8 +85,11 @@ class BotService {
         def result = ''
         def message = new ChatMessage(username: 'test', text: dataSet.message,
                                       chatroom: 0, dmtarget: dataSet.botname)
+
+        def chatServers = chatServerRepository.findAll()
+        def dataset = new ExecDataSet(chatServers: chatServers, message: message)
         try {
-            result = Eval.me('message', message, dataSet.script)
+            result = Eval.me('ds', dataset, dataSet.script)
         } catch (e) {
             result = '<strong>Script Error</strong>:<br/>' + e.message.toString()
         }

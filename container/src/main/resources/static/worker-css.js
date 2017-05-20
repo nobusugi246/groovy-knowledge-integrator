@@ -6556,7 +6556,7 @@ CSSLint.addRule({
 CSSLint.addRule({
     id: "duplicate-background-images",
     name: "Disallow duplicate background images",
-    desc: "Every background-image should be unique. Use a common class for e.g. sprites.",
+    desc: "Every background-image should be unique. Use a dataset class for e.g. sprites.",
     browsers: "All",
     init: function(parser, reporter){
         var rule = this,
