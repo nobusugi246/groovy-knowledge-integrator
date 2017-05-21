@@ -184,7 +184,24 @@
                 <button class="uk-button uk-button-primary uk-button-small" @click="toggleAA">Toggle 'Accept All'</button>
             </div>
             <div class="uk-width-1-3">
-                <button class="uk-button uk-button-warning" @click="deleteBot">Delete</button>
+                <div class="uk-inline">
+                    <button class="uk-button uk-button-warning">Delete</button>
+                    <div uk-drop>
+                        <div v-show="bot.name !== 'Starter'" class="uk-card uk-card-body uk-card-default uk-card-small">
+                            <div class="uk-card-header">
+                                <span uk-icon="icon: happy"></span>
+                                Bot Name: {{ bot.name }}
+                            </div>
+                            <div class="uk-card-body">
+                                <span uk-icon="icon: hashtag"></span>
+                                Revision: {{ bot.revision }}
+                            </div>
+                            <div class="uk-card-footer uk-align-right">
+                                <button class="uk-button uk-button-default" @click="deleteBot">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="uk-width-1-1">
