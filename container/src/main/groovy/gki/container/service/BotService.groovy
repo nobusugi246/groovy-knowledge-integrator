@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate
 import java.sql.Timestamp
 
 @Slf4j
-@CompileStatic
 @Service
 class BotService {
     @Autowired
@@ -74,8 +73,10 @@ class BotService {
                                              username: bot.name, dmtarget: message.username)
 
                 def restTemplate = new RestTemplate()
-                HttpEntity<ChatMessage> entity = new HttpEntity<ChatMessage>(repmsg ,headers)
-                restTemplate.postForLocation 'http://localhost:8080/chat/chatMessage', entity
+                chatServerRepository.findAll().findAll { it?.enabled }?.each { server ->
+                    HttpEntity<ChatMessage> entity = new HttpEntity<ChatMessage>(repmsg ,headers)
+                    restTemplate.postForLocation "${server.url}/chat/chatMessage", entity
+                }
             }
         }
     }
