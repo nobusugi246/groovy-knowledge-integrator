@@ -70,4 +70,3 @@ assets {
   minifyCss = true
   enableSourceMaps = true
 }
-
