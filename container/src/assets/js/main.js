@@ -413,6 +413,34 @@
           }
         });
       },
+      deleteBot: function() {
+        if (this.bot.name === 'Starter') {
+          UIkit.notification({
+            message: "Can't delete 'Starter'.",
+            status: 'warning',
+            pos: 'top-center',
+            timeout: 2000
+          });
+          return;
+        }
+        return $.ajax({
+          method: 'DELETE',
+          url: this.bot._links.self.href,
+          success: function(e) {
+            botsListVue.updateBotsList(botsListVue.page);
+            botEditorVue.setup(1);
+            return UIkit.notification({
+              message: "Bot deleted.",
+              status: 'success',
+              pos: 'top-center',
+              timeout: 2000
+            });
+          },
+          error: function(xhr, msg, ext) {
+            return serverErrorHandler(xhr, msg, ext);
+          }
+        });
+      },
       test: function() {
         var b64Encoded, encoded;
         $('#testResult').html('');

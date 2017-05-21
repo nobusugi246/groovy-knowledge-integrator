@@ -292,6 +292,27 @@ botEditorVue = new Vue
             timeout: 2000
         error: (xhr, msg, ext) ->
           serverErrorHandler(xhr, msg, ext)
+    deleteBot: () ->
+      if @bot.name is 'Starter'
+        UIkit.notification
+          message: "Can't delete 'Starter'."
+          status: 'warning'
+          pos: 'top-center'
+          timeout: 2000
+        return
+      $.ajax
+        method: 'DELETE'
+        url: @bot._links.self.href
+        success: (e) ->
+          botsListVue.updateBotsList(botsListVue.page)
+          botEditorVue.setup(1)
+          UIkit.notification
+            message: "Bot deleted."
+            status: 'success'
+            pos: 'top-center'
+            timeout: 2000
+        error: (xhr, msg, ext) ->
+          serverErrorHandler(xhr, msg, ext)
     test: () ->
       $('#testResult').html ''
       encoded = new TextEncoderLite('utf-8').encode(@editor.getValue())
