@@ -59,15 +59,15 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.1.19.jar` and `gki-container-0.1.1.jar` from
+Download `gki-chat-1.1.11.jar` and `gki-container-0.1.2.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run Microservices
 ====
 ----
-$ java -jar gki-chat-1.1.10.jar
-$ java -jar gki-container-0.1.1.jar
+$ java -jar gki-chat-1.1.11.jar
+$ java -jar gki-container-0.1.2.jar
 ----
 ====
 
@@ -81,7 +81,7 @@ If you want to change port number(ex. 8082), then
 .How to change port number
 ====
 ----
-$ java -jar gki-chat-1.1.10.jar --server.port=8082
+$ java -jar gki-chat-1.1.11.jar --server.port=8082
 ----
 ====
 
@@ -436,8 +436,16 @@ Apache License Version 2.0
 * Many thanks to Jdenticon.
 ** https://github.com/dmester/jdenticon
 
+* Many thanks to the UIKit Teem.
+** https://getuikit.com/
+
+* Many thanks to the ACE editor Team.
+** https://ace.c9.io/
+
 
 == ChangLog / 変更履歴
+
+* Chat Ver.1.1.11 / Chatbot Ver.0.1.2, Add dropdown list of NavBar for ChatServer and ChatBotServer : 2017-05-25
 
 * Chat Ver.1.1.10 / Chatbot Ver.0.1.1, Fix null DM message Chat, add ChatServer Manager at Chatbot Microservice. : 2017-05-22
 
