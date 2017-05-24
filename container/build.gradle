@@ -21,7 +21,7 @@ apply plugin: 'com.bertramlabs.asset-pipeline'
 apply plugin: 'codenarc'
 apply plugin: 'jacoco'
 
-version = '0.1.1'
+version = '0.1.2'
 jar.baseName = 'gki-container'
 
 sourceCompatibility = 1.8
