@@ -30,6 +30,16 @@
           <ul class="nav navbar-nav">
             <li><a href="/chat/index">Chat</a></li>
           </ul>
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Bots <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <g:each var="server" in="${gki.chat.ChatBotServer.findAll()}">
+                  <li><a href="${server.uri}">${server.name}</a></li>
+                </g:each>
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
             <g:pageProperty name="page.nav" />
             <li><div id="userIconImage" style="width: 40px; height: 40px;"></div></li>
