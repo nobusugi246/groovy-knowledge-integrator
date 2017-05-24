@@ -145,7 +145,7 @@ updateMessageNumberBadgeOnDay = (targetDay) ->
         setMessageNumberBadgeOnDay(targetDay, count)
     else if targetDay <= today
         $.ajax {
-            url: "countMessages"
+            url: "/chat/countMessages"
             data: { room: $('#chatRoomSelected').val(), day: targetDay }
         }
         .done ( msg ) ->

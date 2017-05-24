@@ -5,6 +5,19 @@ serverErrorHandler = (xhr, msg, ext) ->
     pos: 'bottom-center'
     timeout: 2000
 
+navBarVue = new Vue
+  el: '#navBar'
+  data:
+    chatServers: {}
+  computed:
+    chatIndexes: () ->
+      list = []
+      _.each @chatServers, (server) ->
+        list.push
+          "name" : server.name
+          "url" : server.url + '/chat/index'
+      return list
+
 sideMenuVue = new Vue
   el: '#sideMenu'
   data:
@@ -33,6 +46,7 @@ chatServersListVue = new Vue
       @updateChatServersList(page)
     chatServersList: (val) ->
       @chatServers = val._embedded.chatServers
+      navBarVue.chatServers = @chatServers
       _.each @chatServers, (server) ->
         server.id = _.last server?._links.self.href.split('/')
       @count = val.page.totalElements

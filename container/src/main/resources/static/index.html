@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <title>gKI Bot Container</title>
     <meta charset="utf-8">
@@ -13,10 +13,19 @@
 
 <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-left">
-        <ul class="uk-navbar-nav">
+        <ul class="uk-navbar-nav" id="navBar">
             <li class="uk-active"><a href="#">gKI</a></li>
-            <li><a href="#">Chat</a></li>
-            <li><a href="#">Bots</a></li>
+            <li>
+                <a href="#">Chat</a>
+                <div class="uk-navbar-dropdown">
+                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                        <li v-for="server in chatIndexes">
+                            <a v-bind:href="server.url">{{ server.name }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="">Bots</a></li>
         </ul>
     </div>
     <div class="uk-navbar-right">
