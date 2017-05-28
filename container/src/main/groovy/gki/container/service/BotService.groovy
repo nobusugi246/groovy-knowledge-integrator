@@ -66,6 +66,8 @@ class BotService {
                 def result = Eval.me('ds', dataset, script)
                 if( result == '' ) return
 
+                if( bot.description ) result = bot.description + '<br/>' + result
+
                 HttpHeaders headers = new HttpHeaders()
                 headers.setContentType(MediaType.APPLICATION_JSON)
 

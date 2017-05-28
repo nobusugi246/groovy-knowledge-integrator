@@ -37,4 +37,6 @@ class Bot {
 
     @NotNull
     String script
+
+    String description
 }

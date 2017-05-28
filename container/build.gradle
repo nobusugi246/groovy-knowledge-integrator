@@ -21,7 +21,7 @@ apply plugin: 'com.bertramlabs.asset-pipeline'
 apply plugin: 'codenarc'
 apply plugin: 'jacoco'
 
-version = '0.1.2'
+version = '0.1.3'
 jar.baseName = 'gki-container'
 
 sourceCompatibility = 1.8
@@ -58,7 +58,12 @@ dependencies {
 
   runtime 'org.jsoup:jsoup:1.10.2'
 
-  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  compile 'org.springframework.boot:spring-boot-starter-test'
+  compile "org.gebish:geb-spock:${gebSpockVersion}"
+  compile 'org.seleniumhq.selenium:selenium-support'
+  compile 'org.seleniumhq.selenium:htmlunit-driver'
+  compile "com.codeborne:phantomjsdriver:${phantomJsDriverVersion}"
+  compile 'org.spockframework:spock-core:1.1-groovy-2.4'
 }
 
 bootRun {
