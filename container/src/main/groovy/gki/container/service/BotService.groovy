@@ -62,7 +62,7 @@ class BotService {
 
                 def script = URLDecoder.decode(new String(bot.script.decodeBase64(), 'UTF-8'), 'UTF-8')
                 def chatServers = chatServerRepository.findAll()
-                def dataset = new ExecDataSet(chatServers: chatServers, message: message)
+                def dataset = new ExecDataSet(chatServers: chatServers, message: message, name: bot.name)
                 def result = Eval.me('ds', dataset, script)
                 if( result == '' ) return
 
@@ -90,7 +90,7 @@ class BotService {
                                       chatroom: 0, dmtarget: dataSet.botname)
 
         def chatServers = chatServerRepository.findAll()
-        def dataset = new ExecDataSet(chatServers: chatServers, message: message)
+        def dataset = new ExecDataSet(chatServers: chatServers, message: message, name: dataSet.botname)
         try {
             result = Eval.me('ds', dataset, dataSet.script)
         } catch (e) {
