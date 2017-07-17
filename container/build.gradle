@@ -30,6 +30,7 @@ targetCompatibility = 1.8
 repositories {
   jcenter()
   mavenCentral()
+  maven { url 'https://jitpack.io' }
 }
 
 codenarc {
@@ -50,7 +51,7 @@ dependencies {
 
   compile 'org.springframework.boot:spring-boot-devtools'
 
-  compileOnly 'org.projectlombok:lombok'
+  compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
   runtime 'org.flywaydb:flyway-core'
   runtime "com.h2database:h2:${H2Version}"
@@ -60,10 +61,16 @@ dependencies {
 
   compile 'org.springframework.boot:spring-boot-starter-test'
   compile "org.gebish:geb-spock:${gebSpockVersion}"
-  compile 'org.seleniumhq.selenium:selenium-support'
-  compile 'org.seleniumhq.selenium:htmlunit-driver'
-  compile "com.codeborne:phantomjsdriver:${phantomJsDriverVersion}"
+  compile "org.seleniumhq.selenium:htmlunit-driver:${htmlunitDriverVersion}"
+  compile "org.seleniumhq.selenium:selenium-support:${seleniumVersion}"
+  compile "org.seleniumhq.selenium:selenium-chrome-driver:${seleniumVersion}"
+  compile "org.seleniumhq.selenium:selenium-firefox-driver:${seleniumVersion}"
+  compile "org.seleniumhq.selenium:selenium-ie-driver:${seleniumVersion}"
+  //  compile "com.codeborne:phantomjsdriver:${phantomJsDriverVersion}"
+  compile "com.github.detro:ghostdriver:${phantomJsDriverVersion}"
   compile 'org.spockframework:spock-core:1.1-groovy-2.4'
+
+  compile "io.github.bonigarcia:webdrivermanager:${wdmVersion}"
 }
 
 bootRun {
