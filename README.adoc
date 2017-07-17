@@ -26,6 +26,7 @@ a Chatbot Microservice builded by Spring Boot/Groovy.
 . Chatbot by groovy language.
 ** A Chat Microservice has embedded one, a Chatbot Microservice is a
 container of any bot by groovy language.
+** Chatbot for Robotic Process Automation(RPA) with Selenium/Geb.
 . Accepts Github webhooks at the Chat Microservice.
 ** Now tested by Gitbucket's webhooks.
 ** Payload URL (ex. http://localhost:8080/chat/webhook/) with
@@ -59,7 +60,7 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.1.11.jar` and `gki-container-0.1.4.jar` from
+Download `gki-chat-1.1.11.jar` and `gki-container-0.1.5.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
@@ -67,7 +68,11 @@ link, then
 ====
 ----
 $ java -jar gki-chat-1.1.11.jar
-$ java -jar gki-container-0.1.4.jar
+$ java -jar gki-container-0.1.5.jar
+
+or
+
+$ java -Dgeb.env=chrome -jar gki-container-0.1.5.jar
 ----
 ====
 
@@ -444,6 +449,8 @@ Apache License Version 2.0
 
 
 == ChangLog / 変更履歴
+
+* Chatbot Ver.0.1.5, Update libraries around Selenium and Geb. : 2017-07-17
 
 * Chatbot Ver.0.1.4, Add send/reply methods for chatbot. : 2017-06-05
 
