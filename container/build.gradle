@@ -70,6 +70,7 @@ dependencies {
   compile "com.github.detro:ghostdriver:${phantomJsDriverVersion}"
   compile 'org.spockframework:spock-core:1.1-groovy-2.4'
 
+  compile "net.sourceforge.htmlunit:htmlunit:${htmlunitDriverVersion}"
   compile "io.github.bonigarcia:webdrivermanager:${wdmVersion}"
 }
 
