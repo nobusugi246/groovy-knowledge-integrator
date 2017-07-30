@@ -60,7 +60,7 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.1.11.jar` and `gki-container-0.1.5.jar` from
+Download `gki-chat-1.1.11.jar` and `gki-container-0.1.6.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
@@ -68,11 +68,11 @@ link, then
 ====
 ----
 $ java -jar gki-chat-1.1.11.jar
-$ java -jar gki-container-0.1.5.jar
+$ java -jar gki-container-0.1.6.jar
 
 or
 
-$ java -Dgeb.env=chrome -jar gki-container-0.1.5.jar
+$ java -Dgeb.env=chrome -jar gki-container-0.1.6.jar
 ----
 ====
 
@@ -449,6 +449,8 @@ Apache License Version 2.0
 
 
 == ChangLog / 変更履歴
+
+* Chatbot Ver.0.1.6, Update libraries and fix HtmlUnit. : 2017-07-30
 
 * Chatbot Ver.0.1.5, Update libraries around Selenium and Geb. : 2017-07-17
 
