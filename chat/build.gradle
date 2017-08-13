@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
 
         classpath "org.grails:grails-gradle-plugin:${grailsVersion}"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:${assetPipelineVersion}"
@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-version '1.1.11'
+version '1.1.12'
 group 'gki'
 
 apply plugin: 'org.kordamp.gradle.stats'
