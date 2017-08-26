@@ -39,7 +39,7 @@ node {
       step([$class: 'JacocoPublisher'])
       publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'build/reports/codenarc', reportFiles: 'main.html', reportName: 'Codenarc Report Of Bot Container'])
 
-      mattermostSend channel: 'jenkins@town-square', color: 'good', endpoint: 'http://localhost:8880/hooks/xxyzbnbibjyzpryyqew7t318ie', message: 'build done.'
+      mattermostSend channel: 'jenkins@town-square', color: 'good', endpoint: 'http://localhost:8880/hooks/xxyzbnbibjyzpryyqew7t318ie', message: 'gki build done.'
     }
   }
 }
