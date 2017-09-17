@@ -60,14 +60,14 @@ GitHubでの開発者の Public Activity、Jenkinsによるビルド状況など
 
 == How to run / 実行方法
 
-Download `gki-chat-1.1.13.jar` and `gki-container-0.1.8.jar` from
+Download `gki-chat-1.1.12.jar` and `gki-container-0.1.8.jar` from
 https://github.com/nobusugi246/groovy-knowledge-integrator/releases[releases]
 link, then
 
 .How to run Microservices
 ====
 ----
-$ java -jar gki-chat-1.1.13.jar
+$ java -jar gki-chat-1.1.12.jar
 $ java -jar gki-container-0.1.8.jar
 
 or
@@ -86,7 +86,7 @@ If you want to change port number(ex. 8082), then
 .How to change port number
 ====
 ----
-$ java -jar gki-chat-1.1.13.jar --server.port=8082
+$ java -jar gki-chat-1.1.12.jar --server.port=8082
 ----
 ====
 
@@ -450,7 +450,7 @@ Apache License Version 2.0
 
 == ChangLog / 変更履歴
 
-* Chat Ver.1.1.13 / Chatbot Ver.0.1.8, . : 2017-09-18
+* Chatbot Ver.0.1.8, . : 2017-09-18
 
 * Chat Ver.1.1.12 / Chatbot Ver.0.1.7, Update grails to Ver.3.2.11 for Chat, update uikit for Chatbot. : 2017-08-16
 
