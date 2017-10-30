@@ -1,0 +1,24 @@
+server.port: 8080
+
+endpoints.sensitive: true
+management.security.enabled: false
+
+spring.datasource.url: jdbc:h2:./mmbotContainerDB;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=TRUE
+spring.datasource.driverClassName: org.h2.Driver
+spring.datasource.username: sa
+spring.datasource.password:
+
+spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto: update
+
+spring.jackson.date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+
+# logging.level.org.springframework.web: DEBUG
+# server.tomcat.accesslog.enabled: true
+
+# logging.level.org.hibernate.SQL: DEBUG
+# logging.level.org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+# spring.jpa.properties.hibernate.type: trace
+
+spring.jackson.property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES

@@ -1,0 +1,75 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+    //classpath 'com.bmuschko:gradle-docker-plugin:3.0.11'
+  }
+}
+
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'jacoco'
+//apply plugin: 'com.bmuschko.docker-remote-api'
+//apply plugin: 'com.bmuschko.docker-java-application'
+
+version = '0.1.0'
+jar.baseName = 'SlackBot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+  compile 'org.springframework.boot:spring-boot-starter-web'
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+  compile 'org.springframework.boot:spring-boot-starter-data-rest'
+
+  compile 'org.springframework.boot:spring-boot-devtools'
+
+  runtime "com.h2database:h2:${H2Version}"
+
+  runtime 'org.jsoup:jsoup:1.10.3'
+
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+}
+
+bootRun {
+  jvmArgs('-Dspring.output.ansi.enabled=always')
+}
+
+/*
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+
+task createDockerfile(type: Dockerfile) {
+  destFile = project.file('build/docker/Dockerfile')
+  from 'openjdk:8'
+}
+
+task buildImage(type: DockerBuildImage) {
+  dependsOn createDockerfile
+  inputDir = createDockerfile.destFile.parentFile
+  tag = 'mmbot-container:0.1.0'
+}
+
+task createContainer(type: DockerCreateContainer) {
+  dependsOn buildImage
+  targetImageId { buildImage.getImageId() }
+  portBindings = ['8081:8080']
+}
+*/
